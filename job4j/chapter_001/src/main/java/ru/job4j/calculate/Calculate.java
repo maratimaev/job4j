@@ -16,6 +16,7 @@ public class Calculate{
 	}
 
 	/**
+	/*
 	* Method echo.
 	* @param name Your name.
 	* @return Echo plus your name.
