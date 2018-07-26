@@ -12,6 +12,7 @@ public class Fit {
 
     /**
      * Идеальный вес для женщины.
+     *
      * @param height Рост.
      * @return идеальный вес.
      */
