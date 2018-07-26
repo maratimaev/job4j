@@ -13,7 +13,6 @@ public class Triangle {
 
     /**
      * Метод вычисления полупериметра по длинам сторон.
-     *
      * Формула.
      * (ab + ac + bc) / 2
      *
@@ -33,7 +32,7 @@ public class Triangle {
      */
     public double area() {
         double rsl = -1; // мы устанавливаем значение -1, так как может быть что треугольника нет.
-                         // Это значение говорит о том. что треугольника нет.
+        // Это значение говорит о том. что треугольника нет.
         double ab = this.a.distanceTo(this.b);
         double ac = this.a.distanceTo(this.c);
         double bc = this.b.distanceTo(this.c);
@@ -53,18 +52,7 @@ public class Triangle {
      * @return да или нет
      */
     private boolean exist(double ab, double ac, double bc) {
-        if (ab + ac < bc) return false;
-        else if (ab + bc < ac) return false;
-        else if (bc + ac < ab) return false;
-        else return true;
+        return (ab + ac > bc) && (ab + bc > ac) && (bc + ac > ab);
     }
-
-    /*public static void main(String[] args) {
-        Point a = new Point(1, 1);
-        Point b = new Point(2, 4);
-        Point c = new Point(4, 1);
-        Triangle t = new Triangle(a, b, c);
-        System.out.println(t.area());
-    }*/
 }
 
