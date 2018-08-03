@@ -69,7 +69,6 @@ public class Logic3T {
                 result = false;
                 break;
             }
-
         }
         return result;
     }
