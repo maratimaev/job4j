@@ -48,8 +48,7 @@ public class TrackerTest {
 		Item third = new Item("test3", "testDescription3", 12345L);
     	tracker.add(third);
 		tracker.delete(second.getId());
-//		System.out.println((tracker.getAll()[1]).getName());
-    	//assertThat((tracker.getAll()[1]).getName(), is("test3"));
+    	assertThat((tracker.getAll()[1]).getName(), is("test3"));
 	}
 
 }
