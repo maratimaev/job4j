@@ -25,7 +25,11 @@ public class TrackerTest {
 		Tracker tracker = new Tracker();
     	Item item = new Item("test1", "testDescription", 123L);
 		tracker.add(item);
-    	assertThat((tracker.findByName("test1"))[0], is(item));
+        Item item1 = new Item("test2", "testDescription2", 123L);
+        tracker.add(item);
+        Item item2 = new Item("test1", "testDescription1", 123L);
+        tracker.add(item);
+    	assertThat((tracker.findByName("test1"))[1], is(item2));
 	}
 
 	@Test
