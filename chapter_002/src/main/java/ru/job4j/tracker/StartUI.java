@@ -103,9 +103,9 @@ public class StartUI {
         Item[] items = tracker.findByName(name);
         for (Item item: items) {
             if (item != null) {
-                System.out.println( " Имя заявки: " + item.getName() +
-                                    " Описание заявки: " + item.getDescription() +
-                                    " ID заявки: " + item.getId());
+                System.out.println(" Имя заявки: " + item.getName()
+                                + " Описание заявки: " + item.getDescription()
+                                + " ID заявки: " + item.getId());
             }
         }
         System.out.println("-------------------------------------------");
