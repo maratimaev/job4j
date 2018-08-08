@@ -39,6 +39,7 @@ public class Tracker {
 	public void replace(String id, Item item) {
 	    for (int i = 0; i != this.position; i++) {
 			if (this.items[i].getId().equals(id)) {
+                item.setId(id);
 				this.items[i] = item;
 			}
 		}
@@ -48,18 +49,21 @@ public class Tracker {
 			if (this.items[i].getId().equals(id)) {
 				System.arraycopy(this.items, i + 1, this.items, i, this.items.length - 1 - i);
 				this.position--;
+				break;
 			}
 		}
 	}
 	public Item[] findByName(String key) {
-		Item[] result = new Item[this.position];
+	    Item[] result;
+		Item[] array = new Item[this.position];
 		int i = -1;
 		for (Item item : items) {
 			if (item != null && item.getName().equals(key)) {				
 				i++;
-				result[i] = item;
+				array[i] = item;
 			}
-		}		
+		}
+		result = Arrays.copyOf(array, i + 1);
 		return result;
 	}
 }

@@ -77,9 +77,9 @@ public class StartUI {
         String name = this.input.ask("Введите новое имя заявки : ");
         String desc = this.input.ask("Введите новое описание заявки : ");
         Item item = new Item(name, desc);
-        item.setId(id);
+//        item.setId(id);
         this.tracker.replace(id, item);
-        item.setId(id);
+//        item.setId(id);
         showAll();
     }
     private void deleteItem() {
