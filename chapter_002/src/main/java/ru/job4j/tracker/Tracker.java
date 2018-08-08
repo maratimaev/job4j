@@ -30,17 +30,14 @@ public class Tracker {
         return String.valueOf(System.currentTimeMillis() + RN.nextInt());
     }
 	public Item[] getAll() {
-		Item[] result = new Item[this.position];
-		for (int i = 0; i != this.position; i++) {
-			result[i] = this.items[i];
-		}		
-		return result;
+		return Arrays.copyOf(this.items, this.position);
 	}
 	public void replace(String id, Item item) {
 	    for (int i = 0; i != this.position; i++) {
 			if (this.items[i].getId().equals(id)) {
                 item.setId(id);
 				this.items[i] = item;
+				break;
 			}
 		}
 	}
@@ -54,16 +51,13 @@ public class Tracker {
 		}
 	}
 	public Item[] findByName(String key) {
-	    Item[] result;
 		Item[] array = new Item[this.position];
-		int i = -1;
+		int i = 0;
 		for (Item item : items) {
 			if (item != null && item.getName().equals(key)) {				
-				i++;
-				array[i] = item;
+				array[i++] = item;
 			}
 		}
-		result = Arrays.copyOf(array, i + 1);
-		return result;
+		return Arrays.copyOf(array, i);
 	}
 }
