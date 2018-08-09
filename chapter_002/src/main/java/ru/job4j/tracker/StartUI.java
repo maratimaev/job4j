@@ -69,7 +69,6 @@ public class StartUI {
         Item item = new Item(name, desc);
         this.tracker.add(item);
         System.out.println("------------ Новая заявка с getId : " + item.getId() + "-----------");
-        showAll();
     }
     private void editItem() {
         System.out.println("------------ Изменение поступившей заявки --------------");
