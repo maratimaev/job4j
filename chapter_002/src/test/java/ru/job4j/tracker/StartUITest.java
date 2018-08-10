@@ -13,14 +13,22 @@ import static org.junit.Assert.assertThat;
 public class StartUITest {
     PrintStream stdout = System.out;
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    String menu = "Меню.\r\n"
-                    + "0. Add new Item\r\n"
-                    + "1. Show all items\r\n"
-                    + "2. Edit item\r\n"
-                    + "3. Delete item\r\n"
-                    + "4. Find item by Id\r\n"
-                    + "5. Find items by name\r\n"
-                    + "6. Exit Program\r\n";
+    String menu = new StringBuilder().append("Меню.")
+                                    .append(System.lineSeparator())
+                                    .append("0. Add new Item")
+                                    .append(System.lineSeparator())
+                                    .append("1. Show all items")
+                                    .append(System.lineSeparator())
+                                    .append("2. Edit item")
+                                    .append(System.lineSeparator())
+                                    .append("3. Delete item")
+                                    .append(System.lineSeparator())
+                                    .append("4. Find item by Id")
+                                    .append(System.lineSeparator())
+                                    .append("5. Find items by name")
+                                    .append(System.lineSeparator())
+                                    .append("6. Exit Program")
+                                    .append(System.lineSeparator()).toString();
     @Before
     public void loadOutput() {
         System.setOut(new PrintStream(this.out));
@@ -63,12 +71,14 @@ public class StartUITest {
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
-                        .append("------------ Список всех заявок -------------\r\n")
+                        .append("------------ Список всех заявок -------------")
+                        .append(System.lineSeparator())
                         .append("test name desc " + item.getId())
                         .append(System.lineSeparator())
                         .append("test name1 desc1 " + item1.getId())
                         .append(System.lineSeparator())
-                        .append("---------------------------------------------\r\n")
+                        .append("---------------------------------------------")
+                        .append(System.lineSeparator())
                         .append(this.menu)
                         .toString()
                 )
@@ -83,8 +93,10 @@ public class StartUITest {
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
-                        .append("Имя заявки: test name Описание заявки: desc\r\n")
-                        .append("-------------------------------------------\r\n")
+                        .append("Имя заявки: test name Описание заявки: desc")
+                        .append(System.lineSeparator())
+                        .append("-------------------------------------------")
+                        .append(System.lineSeparator())
                         .append(this.menu)
                         .toString()
                 )
@@ -104,7 +116,8 @@ public class StartUITest {
                         .append(System.lineSeparator())
                         .append(" Имя заявки: test name Описание заявки: desc2 ID заявки: " + item2.getId())
                         .append(System.lineSeparator())
-                        .append("-------------------------------------------\r\n")
+                        .append("-------------------------------------------")
+                        .append(System.lineSeparator())
                         .append(this.menu)
                         .toString()
                 )
