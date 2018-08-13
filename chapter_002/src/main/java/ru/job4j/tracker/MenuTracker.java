@@ -2,13 +2,6 @@ package ru.job4j.tracker;
 import  java.util.*;
 
 public class MenuTracker {
-//    private static final int ADD = 0;
-//    private static final String SHOWALL = "1";
-//    private static final String EDIT = "2";
-//    private static final String DELETE = "3";
-//    private static final String FINDBYID = "4";
-//    private static final String FINDBYNAME = "5";
-//    private static final String EXIT = "6";
     private Input input;
     private Tracker tracker;
     private List<UserAction> actions = new ArrayList<>();
@@ -27,7 +20,7 @@ public class MenuTracker {
      * Метод для получения массива меню.
      * @return длину массива
      */
-    public int getActionsLentgh() {
+    public int getActionsLength() {
         return this.actions.size();
     }
 
@@ -61,7 +54,28 @@ public class MenuTracker {
             }
         }
     }
+    public class MenuAction implements UserAction {
+        private int menuKey;
+        private String menuString;
 
+        public MenuAction(int menuKey, String menuString) {
+            this.menuKey = menuKey;
+            this.menuString = menuString;
+        }
+
+//        @Override
+//        public int key() {
+//            return this.menuKey;
+//        }
+
+        @Override
+        public void execute(Input input, Tracker tracker) { }
+
+        @Override
+        public String info() {
+            return this.menuKey + this.menuString;
+        }
+    }
     public class AddItem extends MenuAction {
         public AddItem(int menuKey, String menuString) {
          super(menuKey, menuString);
@@ -158,26 +172,5 @@ public class MenuTracker {
 
     }
 
-    public class MenuAction implements UserAction {
-        private int menuKey;
-        private String menuString;
 
-        public MenuAction(int menuKey, String menuString) {
-            this.menuKey = menuKey;
-            this.menuString = menuString;
-        }
-
-//        @Override
-//        public int key() {
-//            return this.menuKey;
-//        }
-
-        @Override
-        public void execute(Input input, Tracker tracker) { }
-
-        @Override
-        public String info() {
-            return this.menuKey + this.menuString;
-        }
-    }
 }

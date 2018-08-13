@@ -58,7 +58,7 @@ public class StartUITest {
         assertThat(tracker.getAll()[0].getName(), is("test name1"));
     }
     @Test
-    public void whenShowAllThenPrintItemstoScreen() {
+    public void whenShowAllThenPrintItemsToScreen() {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
