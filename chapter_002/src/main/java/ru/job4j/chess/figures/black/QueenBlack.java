@@ -2,7 +2,7 @@ package ru.job4j.chess.figures.black;
 
 import ru.job4j.chess.figures.*;
 
-public class QueenBlack implements Figure{
+public class QueenBlack implements Figure {
     private final Cell position;
 
     public QueenBlack(final Cell position) {
@@ -16,7 +16,9 @@ public class QueenBlack implements Figure{
 
     @Override
     public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] { dest };
+        return new Cell[] {
+                dest
+        };
     }
 
     @Override
