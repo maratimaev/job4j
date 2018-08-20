@@ -40,7 +40,7 @@ public class MenuTracker {
         this.actions.add(this.new DeleteItem(3, ". Удаление заявки"));
         this.actions.add(this.new FindItemById(4, ". Поиск заявки по ID"));
         this.actions.add(this.new FindItemsByName(5, ". Поиск заявки по имени"));
-//        this.actions.add(new ExitProgram(6, ". Выход"));
+        this.actions.add(this.new ExitProgram(6, ". Выход"));
     }
 
     /**
@@ -238,6 +238,29 @@ public class MenuTracker {
             System.out.println("-------------------------------------------");
         }
 
+    }
+
+    /**
+     * Внутренний класс выход из программы
+     */
+    public class ExitProgram extends BaseAction {
+        /**
+         * Конструктор
+         * @param menuKey типа int
+         * @param menuString типа String
+         */
+        public ExitProgram(int menuKey, String menuString) {
+            super(menuKey, menuString);
+        }
+
+        /**
+         * Метод выход из программы
+         * @param input типа Input
+         * @param tracker типа Tracker
+         */
+        @Override
+        public void execute(Input input, Tracker tracker) {
+        }
     }
 
 

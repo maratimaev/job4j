@@ -25,6 +25,8 @@ public class StartUITest {
                                     .append("4. Поиск заявки по ID")
                                     .append(System.lineSeparator())
                                     .append("5. Поиск заявки по имени")
+                                    .append(System.lineSeparator())
+                                    .append("6. Выход")
                                     .append(System.lineSeparator()).toString();
     @Before
     public void loadOutput() {
@@ -69,9 +71,9 @@ public class StartUITest {
                         .append(this.menu)
                         .append("------------ Список всех заявок -------------")
                         .append(System.lineSeparator())
-                        .append("test name desc " + item.getId())
+                        .append("test name desc ").append(item.getId())
                         .append(System.lineSeparator())
-                        .append("test name1 desc1 " + item1.getId())
+                        .append("test name1 desc1 ").append(item1.getId())
                         .append(System.lineSeparator())
                         .append("---------------------------------------------")
                         .append(System.lineSeparator())
@@ -106,9 +108,9 @@ public class StartUITest {
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
-                        .append(" Имя заявки: test name Описание заявки: desc ID заявки: " + item.getId())
+                        .append(" Имя заявки: test name Описание заявки: desc ID заявки: ").append(item.getId())
                         .append(System.lineSeparator())
-                        .append(" Имя заявки: test name Описание заявки: desc2 ID заявки: " + item2.getId())
+                        .append(" Имя заявки: test name Описание заявки: desc2 ID заявки: ").append(item2.getId())
                         .append(System.lineSeparator())
                         .append("-------------------------------------------")
                         .append(System.lineSeparator())

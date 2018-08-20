@@ -11,7 +11,7 @@ public class StubInput implements Input {
     /** Поле массив имитации ответов пользователя */
     private final String[] answers;
     /** Поле номер ответа пользователя */
-    private int position = 0;
+    private int position;
 
     /**
      * Конструктор

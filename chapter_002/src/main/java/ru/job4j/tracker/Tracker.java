@@ -12,7 +12,7 @@ public class Tracker {
     /** Поле массив заявок */
     private final Item[] items = new Item[100];
     /** Поле порядковый номер заявки */
-    private int position = 0;
+    private int position;
     /** Поле случайно число для генерации id */
 	private static final Random RN = new Random();
 
@@ -65,7 +65,7 @@ public class Tracker {
      * @param item типа Item
      */
 	public void replace(String id, Item item) {
-	    for (int i = 0; i != this.position; i++) {
+	    for (int i = 0; i < this.position; i++) {
 			if (this.items[i].getId().equals(id)) {
                 item.setId(id);
 				this.items[i] = item;
@@ -79,7 +79,7 @@ public class Tracker {
      * @param id типа String
      */
 	public void delete(String id) {
-        for (int i = 0; i != this.position; i++) {
+        for (int i = 0; i < this.position; i++) {
 			if (this.items[i].getId().equals(id)) {
 				System.arraycopy(this.items, i + 1, this.items, i, this.items.length - 1 - i);
 				this.position--;
