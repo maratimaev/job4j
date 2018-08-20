@@ -10,6 +10,8 @@ import java.util.*;
 public class StartUI {
     private final Input input;
     private final Tracker tracker;
+    /** Поле признак выхода из прграммы*/
+    private boolean working = true;
     /**
      * Конструтор инициализирующий поля.
      * @param input ввод данных.
@@ -20,12 +22,16 @@ public class StartUI {
         this.tracker = tracker;
     }
 
+    public void setWorking(boolean working) {
+        this.working = working;
+    }
+
     /**
      * Основной метод работы с меню
      */
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
-        menu.fillActions();
+        menu.fillActions(this   );
         menu.setRange();
         do {
             try {
@@ -34,7 +40,7 @@ public class StartUI {
             } catch (ItemNotFoundException infe) {
                 System.out.println("Заявка с таким id не найдена");
             }
-        } while (!"y".equals(this.input.ask("Exit?(y): ")));
+        } while (this.working);
     }
     /**
      * Запуск программы.
