@@ -28,14 +28,25 @@ public class StartUITest {
                                     .append(System.lineSeparator())
                                     .append("6. Выход")
                                     .append(System.lineSeparator()).toString();
+    /**
+     *  Метод заменяет стандартный вывод
+     */
     @Before
     public void loadOutput() {
         System.setOut(new PrintStream(this.out));
     }
+
+    /**
+     *  Метод возвращает стандартный вывод
+     */
     @After
     public void backOutput() {
         System.setOut(this.stdout);
     }
+
+    /**
+     *  Метод имитирует добавление заявки
+     */
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Tracker tracker = new Tracker();
@@ -43,6 +54,10 @@ public class StartUITest {
         new StartUI(input, tracker).init();
         assertThat(tracker.getAll()[0].getName(), is("test name"));
     }
+
+    /**
+     *  Метод имитирует редактирование заявки
+     */
     @Test
     public void whenUpdateThenTrackerHasUpdatedValue() {
         Tracker tracker = new Tracker();
@@ -51,6 +66,10 @@ public class StartUITest {
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item.getId()).getName(), is("test replace"));
     }
+
+    /**
+     *  Метод имитирует удаление заявки
+     */
     @Test
     public void whenDeleteThenTrackerHasDeleteValue() {
         Tracker tracker = new Tracker();
@@ -60,6 +79,10 @@ public class StartUITest {
         new StartUI(input, tracker).init();
         assertThat(tracker.getAll()[0].getName(), is("test name1"));
     }
+
+    /**
+     *  Метод имитирует вывод заявок на экран
+     */
     @Test
     public void whenShowAllThenPrintItemsToScreen() {
         Tracker tracker = new Tracker();
@@ -81,6 +104,10 @@ public class StartUITest {
                 )
         );
     }
+
+    /**
+     *  Метод имитирует поиск заявки по id
+     */
     @Test
     public void whenFindByIdThenPrintItem() {
         Tracker tracker = new Tracker();
@@ -98,6 +125,44 @@ public class StartUITest {
                 )
         );
     }
+
+    /**
+     *  Метод имитирует ввод неверного id
+     */
+    @Test
+    public void whenFindByIdThenNoItem() {
+        Tracker tracker = new Tracker();
+        Input input = new StubInput(new String[]{"4", "12345", "y"});
+        new StartUI(input, tracker).init();
+        assertThat(new String(out.toByteArray()), is(new StringBuilder()
+                        .append(this.menu)
+                        .append("Заявка с таким id не найдена")
+                        .append(System.lineSeparator())
+                        .toString()
+                )
+        );
+    }
+
+    /**
+     *  Метод имитирует ввод неверного пункта меню
+     */
+    @Test
+    public void whenWrongMenuNumberThenException() {
+        Tracker tracker = new Tracker();
+        Input input = new StubInput(new String[]{"9", "6", "y"});
+        new StartUI(new ValidateInput(input), tracker).init();
+        assertThat(new String(out.toByteArray()), is(new StringBuilder()
+                        .append(this.menu)
+                        .append("Пожалуйста введите данные в диапазоне меню")
+                        .append(System.lineSeparator())
+                        .toString()
+                )
+        );
+    }
+
+    /**
+     *  Метод имитирует поиск заявки по имени
+     */
     @Test
     public void whenFindByNameThenPrintItems() {
         Tracker tracker = new Tracker();

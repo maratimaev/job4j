@@ -5,6 +5,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class TrackerTest {
+    /** Проверка добавления заявки */
 	@Test
 	public void whenAddNewItemThenTrackerHasSameItem() {
  		Tracker tracker = new Tracker();
@@ -13,6 +14,7 @@ public class TrackerTest {
  		tracker.add(item);
  		assertThat(tracker.getAll()[0], is(item));
 	}
+    /** Проверка поиска заявки по id */
 	@Test
 	public void whenFindById() {
 		Tracker tracker = new Tracker();
@@ -20,6 +22,7 @@ public class TrackerTest {
 		tracker.add(item);
     	assertThat(tracker.findById(item.getId()), is(item));
 	}
+    /** Проверка поиска заявок по имени */
 	@Test
 	public void whenFindByName() {
 		Tracker tracker = new Tracker();
@@ -32,7 +35,7 @@ public class TrackerTest {
         Item result = (tracker.findByName("test1"))[1];
     	assertThat(result, is(item2));
 	}
-
+    /** Проверка редактирования заявки */
 	@Test
 	public void whenReplaceNameThenReturnNewName() {
     	Tracker tracker = new Tracker();
@@ -43,6 +46,7 @@ public class TrackerTest {
     	tracker.replace(previous.getId(), next);
     	assertThat(tracker.findById(previous.getId()).getName(), is("test2"));
 	}
+    /** Проверка удаления заявки */
 	@Test
 	public void whenDelete() {
     	Tracker tracker = new Tracker();

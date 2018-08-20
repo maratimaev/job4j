@@ -31,9 +31,9 @@ public class StartUI {
             try {
                 menu.show();
                 menu.select(input.ask("select:", menu.range));
-            }catch (ItemNotFoundException infe) {
+            } catch (ItemNotFoundException infe) {
                 System.out.println("Заявка с таким id не найдена");
-            };
+            }
         } while (!"y".equals(this.input.ask("Exit?(y): ")));
     }
     /**
