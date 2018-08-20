@@ -11,6 +11,8 @@ public class MenuTracker {
     private Tracker tracker;
     /** Поле список возможных действий пользователя */
     private List<UserAction> actions = new ArrayList<>();
+    /** Поле список номеров пунктов */
+    List<Integer> range = new ArrayList<>();
 
     /**
      * Конструктор.
@@ -20,6 +22,15 @@ public class MenuTracker {
     public MenuTracker(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
+    }
+
+    /**
+     * Метод заполняет список номерами пунктов.
+     */
+    public void setRange() {
+        for (UserAction action: actions) {
+            range.add(action.key());
+        }
     }
 
     /**
@@ -212,7 +223,6 @@ public class MenuTracker {
             System.out.println("Имя заявки: " + item.getName() + " Описание заявки: " + item.getDescription());
             System.out.println("-------------------------------------------");
         }
-
     }
 
     /**

@@ -25,15 +25,12 @@ public class StartUI {
      */
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
-        List<Integer> range = new ArrayList<>();
         menu.fillActions();
-        for (int i = 0; i < menu.getActionsLength(); i++) {
-            range.add(i);
-        }
+        menu.setRange();
         do {
             try {
                 menu.show();
-                menu.select(input.ask("select:", range));
+                menu.select(input.ask("select:", menu.range));
             }catch (ItemNotFoundException infe) {
                 System.out.println("Заявка с таким id не найдена");
             };

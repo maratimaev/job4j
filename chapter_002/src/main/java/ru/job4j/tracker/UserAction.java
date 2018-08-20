@@ -10,7 +10,7 @@ public interface UserAction {
      * Метод возвращает ключ опции.
      * @return ключ
      */
-//    int key();
+    int key();
 
     /**
      * Основной метод.

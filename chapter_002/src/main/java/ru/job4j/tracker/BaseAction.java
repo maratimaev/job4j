@@ -29,4 +29,13 @@ public abstract class BaseAction implements UserAction {
     public String info() {
         return this.menuKey + this.menuString;
     }
+
+    /**
+     * Метод возвращает ключ опции.
+     * @return пункт меню
+     */
+    @Override
+    public int key() {
+        return this.menuKey;
+    }
 }
