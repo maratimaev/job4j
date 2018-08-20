@@ -1,6 +1,11 @@
 package ru.job4j.tracker;
 import  java.util.*;
 
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class MenuTracker {
     private Input input;
     private Tracker tracker;
@@ -54,11 +59,25 @@ public class MenuTracker {
             }
         }
     }
+
+    /**
+     * Внутренний класс добавление заявки в tracker
+     */
     public class AddItem extends BaseAction {
+        /**
+         * Конструктор
+         * @param menuKey типа int
+         * @param menuString типа String
+         */
         public AddItem(int menuKey, String menuString) {
-         super(menuKey, menuString);
+            super(menuKey, menuString);
         }
 
+        /**
+         * Метод создает новую заявку
+         * @param input типа Input
+         * @param tracker типа Tracker
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Добавление новой заявки --------------");
@@ -69,11 +88,25 @@ public class MenuTracker {
             System.out.println("Новая заявка с getId : " + item.getId());
         }
     }
+
+    /**
+     * Внутренний класс выводит список заявок
+     */
     public class ShowItems extends BaseAction {
+        /**
+         * Конструктор
+         * @param menuKey типа int
+         * @param menuString типа String
+         */
         public ShowItems(int menuKey, String menuString) {
             super(menuKey, menuString);
         }
 
+        /**
+         * Метод выводит список заявок
+         * @param input типа Input
+         * @param tracker типа Tracker
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Список всех заявок -------------");
@@ -83,11 +116,25 @@ public class MenuTracker {
             System.out.println("---------------------------------------------");
         }
     }
+
+    /**
+     * Внутренний класс редактирование заявки
+     */
     public class EditItem extends BaseAction {
+        /**
+         * Конструктор
+         * @param menuKey типа int
+         * @param menuString типа String
+         */
         public EditItem(int menuKey, String menuString) {
             super(menuKey, menuString);
         }
 
+        /**
+         * Метод редактирует заявку
+         * @param input типа Input
+         * @param tracker типа Tracker
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Изменение поступившей заявки --------------");
@@ -98,11 +145,25 @@ public class MenuTracker {
             tracker.replace(id, item);
         }
     }
+
+    /**
+     * Внутренний класс удаление заявки
+     */
     public class DeleteItem extends BaseAction {
+        /**
+         * Конструктор
+         * @param menuKey типа int
+         * @param menuString типа String
+         */
         public DeleteItem(int menuKey, String menuString) {
             super(menuKey, menuString);
         }
 
+        /**
+         * Метод удаляет заявку
+         * @param input типа Input
+         * @param tracker типа Tracker
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Удаление заявки --------------");
@@ -115,11 +176,25 @@ public class MenuTracker {
         }
 
     }
+
+    /**
+     * Внутренний класс поиск заявки по id
+     */
     public class FindItemById extends BaseAction {
+        /**
+         * Конструктор
+         * @param menuKey типа int
+         * @param menuString типа String
+         */
         public FindItemById(int menuKey, String menuString) {
             super(menuKey, menuString);
         }
 
+        /**
+         * Метод ищет заявку по id
+         * @param input типа Input
+         * @param tracker типа Tracker
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Введите id заявки : ");
@@ -129,11 +204,25 @@ public class MenuTracker {
         }
 
     }
+
+    /**
+     * Внутренний класс поиск заявки по имени
+     */
     public class FindItemsByName extends BaseAction {
+        /**
+         * Конструктор
+         * @param menuKey типа int
+         * @param menuString типа String
+         */
         public FindItemsByName(int menuKey, String menuString) {
             super(menuKey, menuString);
         }
 
+        /**
+         * Метод ищет заявки по имени
+         * @param input типа Input
+         * @param tracker типа Tracker
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             String name = input.ask("Введите имя заявки : ");
