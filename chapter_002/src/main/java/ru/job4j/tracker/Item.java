@@ -6,8 +6,11 @@ package ru.job4j.tracker;
  * @since 0.1
  */
 public class Item {
+    /** Поле id заявки */
 	private String id;
+    /** Поле имя заявки */
 	public String name;
+    /** Поле описание заявки */
 	public String description;
 
     /**

@@ -9,6 +9,7 @@ import  java.util.*;
 public class MenuTracker {
     private Input input;
     private Tracker tracker;
+    /** Поле список возможных действий пользователя */
     private List<UserAction> actions = new ArrayList<>();
 
     /**

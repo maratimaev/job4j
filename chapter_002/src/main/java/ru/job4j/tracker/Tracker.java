@@ -9,8 +9,11 @@ import java.util.*;
  */
 
 public class Tracker {
+    /** Поле массив заявок */
     private final Item[] items = new Item[100];
+    /** Поле порядковый номер заявки */
     private int position = 0;
+    /** Поле случайно число для генерации id */
 	private static final Random RN = new Random();
 
     /**

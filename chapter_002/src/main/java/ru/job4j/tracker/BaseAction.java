@@ -6,7 +6,9 @@ package ru.job4j.tracker;
  * @since 0.1
  */
 public abstract class BaseAction implements UserAction {
+    /** Поле номер меню */
     private int menuKey;
+    /** Поле строка меню */
     private String menuString;
 
     /**

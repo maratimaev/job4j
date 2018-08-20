@@ -13,6 +13,7 @@ import static org.junit.Assert.assertThat;
 public class StartUITest {
     PrintStream stdout = System.out;
     ByteArrayOutputStream out = new ByteArrayOutputStream();
+    /** Поле строка с выводом всех пунктов */
     String menu = new StringBuilder().append("0. Добавление новой заявки")
                                     .append(System.lineSeparator())
                                     .append("1. Список всех заявок")

@@ -8,7 +8,9 @@ import java.util.List;
  * @since 0.1
  */
 public class StubInput implements Input {
+    /** Поле массив имитации ответов пользователя */
     private final String[] answers;
+    /** Поле номер ответа пользователя */
     private int position = 0;
 
     /**
