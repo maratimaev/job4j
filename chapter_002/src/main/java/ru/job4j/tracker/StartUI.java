@@ -34,12 +34,8 @@ public class StartUI {
         menu.fillActions(this);
         menu.setRange();
         do {
-            try {
-                menu.show();
-                menu.select(input.ask("select:", menu.range));
-            } catch (ItemNotFoundException infe) {
-                System.out.println("Заявка с таким id не найдена");
-            }
+            menu.show();
+            menu.select(input.ask("select:", menu.range));
         } while (this.working);
     }
     /**

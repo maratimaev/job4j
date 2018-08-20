@@ -27,7 +27,7 @@ public abstract class BaseAction implements UserAction {
      */
     @Override
     public String info() {
-        return this.menuKey + this.menuString;
+        return String.format("%d. %s", this.menuKey, this.menuString);
     }
 
     /**

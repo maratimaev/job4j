@@ -45,13 +45,13 @@ public class MenuTracker {
      * Метод заполняет массив.
      */
     public void fillActions(StartUI ui) {
-        this.actions.add(this.new AddItem(0, ". Добавление новой заявки"));
-        this.actions.add(this.new ShowItems(1, ". Список всех заявок"));
-        this.actions.add(this.new EditItem(2, ". Изменение заявки"));
-        this.actions.add(this.new DeleteItem(3, ". Удаление заявки"));
-        this.actions.add(this.new FindItemById(4, ". Поиск заявки по ID"));
-        this.actions.add(this.new FindItemsByName(5, ". Поиск заявки по имени"));
-        this.actions.add(this.new ExitProgram(6, ". Выход", ui));
+        this.actions.add(this.new AddItem(0, "Добавление новой заявки"));
+        this.actions.add(this.new ShowItems(1, "Список всех заявок"));
+        this.actions.add(this.new EditItem(2, "Изменение заявки"));
+        this.actions.add(this.new DeleteItem(3, "Удаление заявки"));
+        this.actions.add(this.new FindItemById(4, "Поиск заявки по ID"));
+        this.actions.add(this.new FindItemsByName(5, "Поиск заявки по имени"));
+        this.actions.add(this.new ExitProgram(6, "Выход", ui));
     }
 
     /**
@@ -97,7 +97,7 @@ public class MenuTracker {
             String desc = input.ask("Введите описание заявки : ");
             Item item = new Item(name, desc);
             tracker.add(item);
-            System.out.println("Новая заявка с getId : " + item.getId());
+            System.out.printf("Новая заявка с getId : %s%n", item.getId());
         }
     }
 
@@ -123,7 +123,7 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Список всех заявок -------------");
             for (Item item: tracker.getAll()) {
-                System.out.println(item.getName() + " " + item.getDescription() + " " + item.getId());
+                System.out.printf("%s %s %s%n", item.getName(), item.getDescription(), item.getId());
             }
             System.out.println("---------------------------------------------");
         }
@@ -185,11 +185,12 @@ public class MenuTracker {
             String id = input.ask("Введите id заявки : ");
             Item item = tracker.findById(id);
             if (item == null) {
-                throw new ItemNotFoundException("Id not found");
-            }
-            String sure = input.ask("Удалить заявку " + item.getName() + " " + item.getDescription() + " ? (yes/no) ");
-            if (sure.equals("yes")) {
-                tracker.delete(id);
+                System.out.println("Заявка с таким id не найдена");
+            } else {
+                String sure = input.ask("Удалить заявку " + item.getName() + " " + item.getDescription() + " ? (yes/no) ");
+                if (sure.equals("yes")) {
+                    tracker.delete(id);
+                }
             }
         }
 
@@ -218,10 +219,12 @@ public class MenuTracker {
             String id = input.ask("Введите id заявки : ");
             Item item = tracker.findById(id);
             if (item == null) {
-                throw new ItemNotFoundException("Id not found");
+                System.out.println("Заявка с таким id не найдена");
+            } else {
+                System.out.printf("Имя заявки: %s Описание заявки: %s%n",
+                        item.getName(), item.getDescription());
+                System.out.println("-------------------------------------------");
             }
-            System.out.println("Имя заявки: " + item.getName() + " Описание заявки: " + item.getDescription());
-            System.out.println("-------------------------------------------");
         }
     }
 
@@ -249,9 +252,8 @@ public class MenuTracker {
             Item[] items = tracker.findByName(name);
             for (Item item: items) {
                 if (item != null) {
-                    System.out.println(" Имя заявки: " + item.getName()
-                            + " Описание заявки: " + item.getDescription()
-                            + " ID заявки: " + item.getId());
+                    System.out.printf(" Имя заявки: %s Описание заявки: %s ID заявки: %s%n",
+                            item.getName(), item.getDescription(), item.getId());
                 }
             }
             System.out.println("-------------------------------------------");
