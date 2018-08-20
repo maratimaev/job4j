@@ -140,6 +140,9 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Изменение поступившей заявки --------------");
             String id = input.ask("Введите id заявки : ");
+            if (tracker.findById(id) == null) {
+                throw new ItemNotFoundException("Id not found");
+            }
             String name = input.ask("Введите новое имя заявки : ");
             String desc = input.ask("Введите новое описание заявки : ");
             Item item = new Item(name, desc);
@@ -170,6 +173,9 @@ public class MenuTracker {
             System.out.println("------------ Удаление заявки --------------");
             String id = input.ask("Введите id заявки : ");
             Item item = tracker.findById(id);
+            if (item == null) {
+                throw new ItemNotFoundException("Id not found");
+            }
             String sure = input.ask("Удалить заявку " + item.getName() + " " + item.getDescription() + " ? (yes/no) ");
             if (sure.equals("yes")) {
                 tracker.delete(id);
@@ -200,6 +206,9 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Введите id заявки : ");
             Item item = tracker.findById(id);
+            if (item == null) {
+                throw new ItemNotFoundException("Id not found");
+            }
             System.out.println("Имя заявки: " + item.getName() + " Описание заявки: " + item.getDescription());
             System.out.println("-------------------------------------------");
         }
