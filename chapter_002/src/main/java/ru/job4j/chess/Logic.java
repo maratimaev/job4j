@@ -15,44 +15,41 @@ public class Logic {
         this.figures[this.index++] = figure;
     }
 
-    public boolean move(Cell source, Cell dest) {
+    public boolean move(Cell source, Cell dest) throws OccupiedWayException, FigureNotFoundException {
         boolean rst = false;
         try {
-            int index = this.findBy(source);  //находим номер в массиве figures
+            int index = this.findBy(source);
             Cell[] steps = this.figures[index].way(source, dest);
-            if (!steps[steps.length - 1].equals(dest)) {
-                throw new ImposibleMoveException("Ошибка движения");
-            }
             for (int i = 0; i < steps.length; i++) {
                 for (Figure figure : figures) {
                     if (figure.position().equals(steps[i])) {
-                        throw new OccupiedWayException("Клетки заняты");
+                        throw new OccupiedWayException("Препятствие");
                     }
                 }
             }
-            rst = true;
             this.figures[index] = this.figures[index].copy(dest);
+            rst = true;
 
         } catch (ImposibleMoveException ime) {
-            // todo
+            System.out.println("Ошибка движения");
         } catch (OccupiedWayException owe) {
-            // todo
+            System.out.println("Клетки заняты");
         } catch (FigureNotFoundException fnfe) {
-            // todo
+            System.out.println("Фигура не найдена");
         }
         return rst;
     }
 
     public void clean() {
-        for (int position = 0; position != this.figures.length; position++) {
+        for (int position = 0; position < this.figures.length; position++) {
             this.figures[position] = null;
         }
         this.index = 0;
     }
 
-    private int findBy(Cell cell) {
+    private int findBy(Cell cell) throws FigureNotFoundException {
         int rst = -1;
-        for (int index = 0; index != this.figures.length; index++) {
+        for (int index = 0; index < this.figures.length; index++) {
             if (this.figures[index] != null && this.figures[index].position().equals(cell)) {
                 rst = index;
                 break;

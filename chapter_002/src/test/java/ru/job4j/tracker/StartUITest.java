@@ -50,7 +50,7 @@ public class StartUITest {
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Tracker tracker = new Tracker();
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "y"});
+        Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
         new StartUI(input, tracker).init();
         assertThat(tracker.getAll()[0].getName(), is("test name"));
     }
@@ -62,7 +62,7 @@ public class StartUITest {
     public void whenUpdateThenTrackerHasUpdatedValue() {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("test name", "desc"));
-        Input input = new StubInput(new String[]{"2", item.getId(), "test replace", "заменили заявку", "y"});
+        Input input = new StubInput(new String[]{"2", item.getId(), "test replace", "заменили заявку", "6"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item.getId()).getName(), is("test replace"));
     }
@@ -75,7 +75,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
-        Input input = new StubInput(new String[]{"3", item.getId(), "yes", "y"});
+        Input input = new StubInput(new String[]{"3", item.getId(), "yes", "6"});
         new StartUI(input, tracker).init();
         assertThat(tracker.getAll()[0].getName(), is("test name1"));
     }
@@ -88,7 +88,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
-        Input input = new StubInput(new String[]{"1", "y"});
+        Input input = new StubInput(new String[]{"1", "6"});
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
@@ -99,6 +99,9 @@ public class StartUITest {
                         .append("test name1 desc1 ").append(item1.getId())
                         .append(System.lineSeparator())
                         .append("---------------------------------------------")
+                        .append(System.lineSeparator())
+                        .append(this.menu)
+                        .append("Выбран выход из программы. До свидания! -=^_^=-")
                         .append(System.lineSeparator())
                         .toString()
                 )
@@ -113,13 +116,16 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
-        Input input = new StubInput(new String[]{"4", item.getId(), "y"});
+        Input input = new StubInput(new String[]{"4", item.getId(), "6"});
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
                         .append("Имя заявки: test name Описание заявки: desc")
                         .append(System.lineSeparator())
                         .append("-------------------------------------------")
+                        .append(System.lineSeparator())
+                        .append(this.menu)
+                        .append("Выбран выход из программы. До свидания! -=^_^=-")
                         .append(System.lineSeparator())
                         .toString()
                 )
@@ -132,11 +138,14 @@ public class StartUITest {
     @Test
     public void whenFindByIdThenNoItem() {
         Tracker tracker = new Tracker();
-        Input input = new StubInput(new String[]{"4", "12345", "y"});
+        Input input = new StubInput(new String[]{"4", "12345", "6"});
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
                         .append("Заявка с таким id не найдена")
+                        .append(System.lineSeparator())
+                        .append(this.menu)
+                        .append("Выбран выход из программы. До свидания! -=^_^=-")
                         .append(System.lineSeparator())
                         .toString()
                 )
@@ -149,11 +158,13 @@ public class StartUITest {
     @Test
     public void whenWrongMenuNumberThenException() {
         Tracker tracker = new Tracker();
-        Input input = new StubInput(new String[]{"9", "6", "y"});
+        Input input = new StubInput(new String[]{"9", "6"});
         new StartUI(new ValidateInput(input), tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
                         .append("Пожалуйста введите данные в диапазоне меню")
+                        .append(System.lineSeparator())
+                        .append("Выбран выход из программы. До свидания! -=^_^=-")
                         .append(System.lineSeparator())
                         .toString()
                 )
@@ -169,7 +180,7 @@ public class StartUITest {
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
         Item item2 = tracker.add(new Item("test name", "desc2"));
-        Input input = new StubInput(new String[]{"5", item.getName(), "y"});
+        Input input = new StubInput(new String[]{"5", item.getName(), "6"});
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
                         .append(this.menu)
@@ -178,6 +189,9 @@ public class StartUITest {
                         .append(" Имя заявки: test name Описание заявки: desc2 ID заявки: ").append(item2.getId())
                         .append(System.lineSeparator())
                         .append("-------------------------------------------")
+                        .append(System.lineSeparator())
+                        .append(this.menu)
+                        .append("Выбран выход из программы. До свидания! -=^_^=-")
                         .append(System.lineSeparator())
                         .toString()
                 )

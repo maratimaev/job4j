@@ -26,18 +26,19 @@ public class BishopBlack implements Figure {
     }
 
     @Override
-    public Cell[] way(Cell source, Cell dest) {
+    public Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] steps = new Cell[8];
         int deltaX, deltaY;
-        if (abs(dest.x - source.x) != abs(dest.y - source.y)) {
+        int absDeltaX = abs(dest.x - source.x);
+        if (absDeltaX != abs(dest.y - source.y)) {
             throw new ImposibleMoveException("Слон так не ходит");
         }
         deltaY = (dest.y - source.y > 0) ? 1 : -1;
         deltaX = (dest.x - source.x > 0) ? 1 : -1;
-        for (int i = 0; i < abs(dest.x - source.x); i++) {
+        for (int i = 0; i < absDeltaX; i++) {
             steps[i] = Cell.values()[8 * (source.x + deltaX * (i + 1)) + (source.y + deltaY * (i + 1))];
         }
-        return Arrays.copyOf(steps, abs(dest.x - source.x));
+        return Arrays.copyOf(steps, absDeltaX);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class StartUI {
      */
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
-        menu.fillActions(this   );
+        menu.fillActions(this);
         menu.setRange();
         do {
             try {

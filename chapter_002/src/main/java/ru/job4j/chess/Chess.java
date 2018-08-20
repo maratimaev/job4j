@@ -73,8 +73,8 @@ public class Chess extends Application {
 
     private Group buildGrid() {
         Group panel = new Group();
-        for (int y = 0; y != this.size; y++) {
-            for (int x = 0; x != this.size; x++) {
+        for (int y = 0; y < this.size; y++) {
+            for (int x = 0; x < this.size; x++) {
                 panel.getChildren().add(
                         this.buildRectangle(x, y, 40, (x + y) % 2 == 0)
                 );
