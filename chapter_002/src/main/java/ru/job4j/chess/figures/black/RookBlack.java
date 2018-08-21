@@ -38,7 +38,7 @@ public class RookBlack implements Figure {
      * @return типа Cell[]
      */
     @Override
-    public Cell[] way(Cell source, Cell dest) {
+    public Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] steps = new Cell[8];
         int deltaX, deltaY;
         int absDeltaX = abs(dest.x - source.x);

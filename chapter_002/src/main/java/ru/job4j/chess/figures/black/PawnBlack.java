@@ -38,7 +38,7 @@ public class PawnBlack implements Figure {
      * @return типа Cell[]
      */
     @Override
-    public Cell[] way(Cell source, Cell dest) {
+    public Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] steps = new Cell[2];
         int deltaX, deltaY;
         int absDeltaY = abs(dest.y - source.y);

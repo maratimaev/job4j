@@ -38,7 +38,7 @@ public class KingBlack implements Figure {
      * @return типа Cell[]
      */
     @Override
-    public Cell[] way(Cell source, Cell dest) {
+    public Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] steps = new Cell[1];
         int deltaX, deltaY;
         int absDeltaX = abs(dest.x - source.x);

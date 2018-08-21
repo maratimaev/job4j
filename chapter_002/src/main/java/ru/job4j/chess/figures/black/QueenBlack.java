@@ -39,7 +39,7 @@ public class QueenBlack implements Figure {
      * @return типа Cell[]
      */
     @Override
-    public Cell[] way(Cell source, Cell dest) {
+    public Cell[] way(Cell source, Cell dest) throws ImposibleMoveException {
         Cell[] steps = new Cell[8];
         int deltaX, deltaY, cells;
         int absDeltaX = abs(dest.x - source.x);
