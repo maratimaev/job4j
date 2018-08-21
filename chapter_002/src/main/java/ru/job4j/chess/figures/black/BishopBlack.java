@@ -15,11 +15,9 @@ import static java.lang.Math.abs;
  */
 public class BishopBlack implements Figure {
     private final Cell position;
-
     public BishopBlack(final Cell position) {
         this.position = position;
     }
-
     @Override
     public Cell position() {
         return this.position;
