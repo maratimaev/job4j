@@ -1,6 +1,8 @@
 package ru.job4j.chess.figures.black;
 
 import ru.job4j.chess.figures.*;
+import static java.lang.Math.abs;
+
 
 /**
  *
@@ -22,9 +24,13 @@ public class KnightBlack implements Figure {
 
     @Override
     public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] {
-                dest
-        };
+        Cell[] steps = {dest};
+        int absDeltaX = abs(dest.x - source.x);
+        int absDeltaY = abs(dest.y - source.y);
+        if (!((absDeltaX == 2 & absDeltaY == 1) || (absDeltaY == 2 & absDeltaX == 1))) {
+            throw new ImposibleMoveException("Конь так не ходит");
+        }
+        return steps;
     }
 
     @Override
