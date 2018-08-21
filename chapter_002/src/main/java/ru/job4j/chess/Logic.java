@@ -3,18 +3,30 @@ package ru.job4j.chess;
 import ru.job4j.chess.figures.*;
 
 /**
- * @author Petr Arsentev (parsentev@yandex.ru)
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @version $Id$
  * @since 0.1
  */
 public class Logic {
+
+    /** Поле массив всех фигур */
     private final Figure[] figures = new Figure[32];
     private int index = 0;
 
+    /**
+     * Метод добавляет фигуру в массив
+     * @param figure типа Figure
+     */
     public void add(Figure figure) {
         this.figures[this.index++] = figure;
     }
 
+    /**
+     * Метод проверяет занятые клетки и перемещает фигуру
+     * @param source типа Cell
+     * @param dest типа Cell
+     * @return результат перемещения типа boolean
+     */
     public boolean move(Cell source, Cell dest) throws OccupiedWayException, FigureNotFoundException {
         boolean rst = false;
         try {
@@ -40,6 +52,9 @@ public class Logic {
         return rst;
     }
 
+    /**
+     * Метод расставляет фигуры в начало
+     */
     public void clean() {
         for (int position = 0; position < this.figures.length; position++) {
             this.figures[position] = null;
@@ -47,6 +62,11 @@ public class Logic {
         this.index = 0;
     }
 
+    /**
+     * Метод номер позиции фигуры
+     * @param cell типа Cell
+     * @return типа int
+     */
     private int findBy(Cell cell) throws FigureNotFoundException {
         int rst = -1;
         for (int index = 0; index < this.figures.length; index++) {

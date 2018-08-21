@@ -4,8 +4,7 @@ import ru.job4j.chess.figures.Cell;
 import ru.job4j.chess.figures.Figure;
 
 /**
- *
- * @author Petr Arsentev (parsentev@yandex.ru)
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @version $Id$
  * @since 0.1
  */

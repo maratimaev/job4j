@@ -1,5 +1,13 @@
 package ru.job4j.chess.figures;
 
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
+/** Поле клеток доски
+ *  для сопоставления отразить по горизонтали и повернуть влево
+ */
 public enum Cell {
     A1(0, 0), A2(0, 1), A3(0, 2), A4(0, 3), A5(0, 4), A6(0, 5), A7(0, 6), A8(0, 7),
     B1(1, 0), B2(1, 1), B3(1, 2), B4(1, 3), B5(1, 4), B6(1, 5), B7(1, 6), B8(1, 7),
@@ -12,7 +20,11 @@ public enum Cell {
 
     public final int x;
     public final int y;
-
+    /**
+     * Конструктор
+     * @param x типа int
+     * @param y int
+     */
     Cell(int x, int y) {
         this.x = x;
         this.y = y;

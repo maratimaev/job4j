@@ -4,12 +4,10 @@ import ru.job4j.chess.figures.Cell;
 import ru.job4j.chess.figures.Figure;
 
 /**
- *
- * @author Petr Arsentev (parsentev@yandex.ru)
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @version $Id$
  * @since 0.1
- */
-public class RookWhite implements Figure {
+ */public class RookWhite implements Figure {
     private final Cell position;
 
     public RookWhite(final Cell position) {

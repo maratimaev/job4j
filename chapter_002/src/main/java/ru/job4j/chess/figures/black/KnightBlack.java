@@ -3,25 +3,39 @@ package ru.job4j.chess.figures.black;
 import ru.job4j.chess.figures.*;
 import static java.lang.Math.abs;
 
-
 /**
- *
- * @author Petr Arsentev (parsentev@yandex.ru)
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @version $Id$
  * @since 0.1
  */
 public class KnightBlack implements Figure {
+
+    /** Поле номер позиции фигуры */
     private final Cell position;
 
+    /**
+     * Конструктор
+     * @param position типа Cell
+     */
     public KnightBlack(final Cell position) {
         this.position = position;
     }
 
+    /**
+     * Метод возвращает позицию фигуры
+     * @return Cell
+     */
     @Override
     public Cell position() {
         return this.position;
     }
 
+    /**
+     * Метод возвращает массив позиций передвижения фигуры
+     * @param source типа Cell
+     * @param dest типа Cell
+     * @return типа Cell[]
+     */
     @Override
     public Cell[] way(Cell source, Cell dest) {
         Cell[] steps = {dest};
@@ -33,6 +47,11 @@ public class KnightBlack implements Figure {
         return steps;
     }
 
+    /**
+     * Метод устанавливает новую позицию фигуры
+     * @param dest типа Cell
+     * @return типа Cell
+     */
     @Override
     public Figure copy(Cell dest) {
         return new KnightBlack(dest);
