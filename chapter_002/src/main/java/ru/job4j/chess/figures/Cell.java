@@ -23,7 +23,7 @@ public enum Cell {
     /**
      * Конструктор
      * @param x типа int
-     * @param y int
+     * @param y типа int
      */
     Cell(int x, int y) {
         this.x = x;
