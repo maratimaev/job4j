@@ -51,7 +51,7 @@ public class KingWhite implements Figure {
         deltaX = dest.x - source.x;
         deltaX = (deltaX > 0) ? 1 : ((deltaX < 0) ? -1 : deltaX);
         steps[0] = Cell.values()[8 * (source.x + deltaX) + (source.y + deltaY)];
-        return Arrays.copyOf(steps, (absDeltaX + absDeltaY));
+        return Arrays.copyOf(steps, 1);
     }
 
     /**
