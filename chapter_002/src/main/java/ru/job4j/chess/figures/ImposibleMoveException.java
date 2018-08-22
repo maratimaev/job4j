@@ -5,7 +5,7 @@ package ru.job4j.chess.figures;
  * @version $Id$
  * @since 0.1
  */
-public class ImposibleMoveException extends RuntimeException {
+public class ImposibleMoveException extends Exception {
     public ImposibleMoveException(String msg) {
         System.out.println(msg);
     }

@@ -19,7 +19,7 @@ public interface Figure {
      * @param dest типа Cell
      * @return типа Cell[]
      */
-    Cell[] way(Cell source, Cell dest);
+    Cell[] way(Cell source, Cell dest) throws ImposibleMoveException;
 
     /**
      * Метод возвращает имя файла

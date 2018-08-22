@@ -168,7 +168,7 @@ public class Chess extends Application {
         );
     }
 
-    private Cell findBy(double graphX, double graphY) {
+    private Cell findBy(double graphX, double graphY)  {
         Cell rst = Cell.A1;
         int x = (int) graphX / 40;
         int y = (int) graphY / 40;

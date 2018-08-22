@@ -27,7 +27,7 @@ public class Logic {
      * @param dest типа Cell
      * @return результат перемещения типа boolean
      */
-    public boolean move(Cell source, Cell dest) throws OccupiedWayException, FigureNotFoundException {
+    public boolean move(Cell source, Cell dest) {
         boolean rst = false;
         try {
             int index = this.findBy(source);

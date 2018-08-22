@@ -5,7 +5,7 @@ package ru.job4j.chess.figures;
  * @version $Id$
  * @since 0.1
  */
-public class OccupiedWayException extends RuntimeException {
+public class OccupiedWayException extends Exception {
     public OccupiedWayException(String msg) {
         System.out.println(msg);
     }

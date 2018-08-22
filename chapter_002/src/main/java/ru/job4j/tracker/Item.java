@@ -9,9 +9,9 @@ public class Item {
     /** Поле id заявки */
 	private String id;
     /** Поле имя заявки */
-	public String name;
+	private String name;
     /** Поле описание заявки */
-	public String description;
+	private String description;
 
     /**
      * Конструктор.
