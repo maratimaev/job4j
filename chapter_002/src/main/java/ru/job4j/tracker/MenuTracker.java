@@ -152,12 +152,13 @@ public class MenuTracker {
             System.out.println("------------ Изменение поступившей заявки --------------");
             String id = input.ask("Введите id заявки : ");
             if (tracker.findById(id) == null) {
-                throw new ItemNotFoundException("Id not found");
+                System.out.println("Заявка с таким id не найдена");
+            } else {
+                String name = input.ask("Введите новое имя заявки : ");
+                String desc = input.ask("Введите новое описание заявки : ");
+                Item item = new Item(name, desc);
+                tracker.replace(id, item);
             }
-            String name = input.ask("Введите новое имя заявки : ");
-            String desc = input.ask("Введите новое описание заявки : ");
-            Item item = new Item(name, desc);
-            tracker.replace(id, item);
         }
     }
 
