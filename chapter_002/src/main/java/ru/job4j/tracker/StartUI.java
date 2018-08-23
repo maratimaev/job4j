@@ -1,7 +1,5 @@
 package ru.job4j.tracker;
 
-import java.util.*;
-
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @version $Id$
