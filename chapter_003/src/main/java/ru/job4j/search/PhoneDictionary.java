@@ -3,9 +3,18 @@ package ru.job4j.search;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class PhoneDictionary {
     private List<Person> persons = new ArrayList<Person>();
 
+    /**
+     * Метод добавляет запись в телефонный справочник
+     * @param person типа Person
+     */
     public void add(Person person) {
         this.persons.add(person);
     }

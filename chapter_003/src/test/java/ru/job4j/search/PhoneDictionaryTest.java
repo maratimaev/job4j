@@ -5,7 +5,16 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class PhoneDictionaryTest {
+
+    /**
+     * Метод проверяет корректность поиска по имени
+     */
     @Test
     public void whenFindByName() {
         PhoneDictionary phones = new PhoneDictionary();
