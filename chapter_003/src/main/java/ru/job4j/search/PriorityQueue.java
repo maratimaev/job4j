@@ -25,7 +25,7 @@ public class PriorityQueue {
             if (tasks.peekLast().equals(current) & (taskPriority > currentPriority)) {
                 index = tasks.lastIndexOf(current) + 1;
                 break;
-            }else if ((task.getPriority() < currentPriority)) {
+            } else if ((task.getPriority() < currentPriority)) {
                 index = tasks.lastIndexOf(current);
                 break;
             }
