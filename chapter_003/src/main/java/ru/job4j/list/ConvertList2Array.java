@@ -25,12 +25,13 @@ public class ConvertList2Array {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cells; j++) {
                 if ((++h) > listSize - 1) {
-                    array [i][j] = 0;
+                    break;
                 } else {
                     array[i][j] = list.get(h);
                 }
             }
         }
         return array;
+
     }
 }
