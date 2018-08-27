@@ -13,17 +13,9 @@ public class Item {
     /** Поле описание заявки */
 	private String description;
 
-    /**
-     * Конструктор.
-     */
 	public Item() {
 	}
 
-    /**
-     * Конструктор.
-     * @param name имя заявки
-     * @param description описание заявки
-     */
 	public Item(String name, String description) {
 		this.name = name;
 		this.description = description;

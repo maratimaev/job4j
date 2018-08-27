@@ -12,7 +12,7 @@ public class TrackerTest {
  		Item item = new Item("test1", "testDescription");
 		//Item item1 = new Item("test2", "testDescription2", 1232L);
  		tracker.add(item);
- 		assertThat(tracker.getAll()[0], is(item));
+ 		assertThat(tracker.getAll().get(0), is(item));
 	}
     /** Проверка поиска заявки по id */
 	@Test
@@ -32,7 +32,7 @@ public class TrackerTest {
         tracker.add(item1);
         Item item2 = new Item("test1", "testDescription1");
         tracker.add(item2);
-        Item result = (tracker.findByName("test1"))[1];
+        Item result = (tracker.findByName("test1")).get(1);
     	assertThat(result, is(item2));
 	}
     /** Проверка редактирования заявки */
@@ -57,7 +57,7 @@ public class TrackerTest {
 		Item third = new Item("test3", "testDescription3");
     	tracker.add(third);
 		tracker.delete(second.getId());
-    	assertThat((tracker.getAll()[1]).getName(), is("test3"));
+    	assertThat((tracker.getAll().get(1)).getName(), is("test3"));
 	}
 
 }

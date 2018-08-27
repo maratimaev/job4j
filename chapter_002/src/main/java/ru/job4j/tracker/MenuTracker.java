@@ -250,7 +250,7 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             String name = input.ask("Введите имя заявки : ");
-            Item[] items = tracker.findByName(name);
+            ArrayList<Item> items = tracker.findByName(name);
             for (Item item: items) {
                 if (item != null) {
                     System.out.printf(" Имя заявки: %s Описание заявки: %s ID заявки: %s%n",

@@ -9,10 +9,8 @@ import java.util.*;
  */
 
 public class Tracker {
-    /** Поле массив заявок */
-    private final Item[] items = new Item[100];
-    /** Поле порядковый номер заявки */
-    private int position;
+    /** Поле список заявок */
+    private final ArrayList<Item> items = new ArrayList<>();
     /** Поле случайно число для генерации id */
     private static final Random RN = new Random();
 
@@ -23,7 +21,7 @@ public class Tracker {
      */
     public Item add(Item item) {
         item.setId(this.generateId());
-        this.items[this.position++] = item;
+        this.items.add(item);
         return item;
     }
 
@@ -34,7 +32,7 @@ public class Tracker {
      */
     protected Item findById(String id) {
         Item result = null;
-        for (Item item : items) {
+        for (Item item : this.items) {
             if (item != null && item.getId().equals(id)) {
                 result = item;
                 break;
@@ -55,8 +53,8 @@ public class Tracker {
      * Метод возвращает массив заявок
      * @return заявки типа Item[]
      */
-    public Item[] getAll() {
-        return Arrays.copyOf(this.items, this.position);
+    public ArrayList<Item> getAll() {
+        return this.items;
     }
 
     /**
@@ -65,10 +63,11 @@ public class Tracker {
      * @param item типа Item
      */
     public void replace(String id, Item item) {
-        for (int i = 0; i < this.position; i++) {
-            if (this.items[i].getId().equals(id)) {
+        ListIterator<Item> current = this.items.listIterator();
+        while (current.hasNext()) {
+            if (current.next().getId().equals(id)) {
                 item.setId(id);
-                this.items[i] = item;
+                current.set(item);
                 break;
             }
         }
@@ -79,10 +78,10 @@ public class Tracker {
      * @param id типа String
      */
     public void delete(String id) {
-        for (int i = 0; i < this.position; i++) {
-            if (this.items[i].getId().equals(id)) {
-                System.arraycopy(this.items, i + 1, this.items, i, this.items.length - 1 - i);
-                this.position--;
+        ListIterator<Item> current = this.items.listIterator();
+        while (current.hasNext()) {
+            if (current.next().getId().equals(id)) {
+                current.remove();
                 break;
             }
         }
@@ -93,14 +92,16 @@ public class Tracker {
      * @param key типа String
      * @return заявки типа Item[]
      */
-    public Item[] findByName(String key) {
-        Item[] array = new Item[this.position];
-        int i = 0;
-        for (Item item : items) {
-            if (item != null && item.getName().equals(key)) {
-                array[i++] = item;
+    public ArrayList<Item> findByName(String key) {
+        ListIterator<Item> current = this.items.listIterator();
+        ArrayList<Item> result = new ArrayList<>();
+        Item it;
+        while (current.hasNext()) {
+            it = current.next();
+            if (it.getName().equals(key)) {
+                result.add(it);
             }
         }
-        return Arrays.copyOf(array, i);
+        return result;
     }
 }
