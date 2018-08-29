@@ -25,5 +25,34 @@ public class User {
     public int getId() {
         return id;
     }
-
+    /** Геттер возвращает имя пользователя
+     * @return типа String
+     */
+    public String getName() {
+        return name;
+    }
+    /** Геттер возвращает город пользователя
+     * @return типа String
+     */
+    public String getCity() {
+        return city;
+    }
+    /** Сеттер прописывает id пользователя
+    *  @param id типа int
+    */
+    public void setId(int id) {
+        this.id = id;
+    }
+    /** Сеттер прописывает имя пользователя
+     * @param name типа String
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    /** Сеттер прописывает город пользователя
+     * @param city типа String
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
 }
