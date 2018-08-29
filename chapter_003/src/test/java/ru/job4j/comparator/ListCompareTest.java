@@ -6,9 +6,17 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class ListCompareTest {
+    /**
+     * Тест проверяет сравнение 2х одинаковых строк
+     */
     @Test
-    public void whenStringsAreEqualThenZero () {
+    public void whenStringsAreEqualThenZero() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Ivanov",
@@ -17,8 +25,11 @@ public class ListCompareTest {
         assertThat(rst, is(0));
     }
 
+    /**
+     * Тест проверяет сравнение разных по длине строк
+     */
     @Test
-    public void whenLeftLessThanRightResultShouldBeNegative () {
+    public void whenLeftLessThanRightResultShouldBeNegative() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Ivanov",
@@ -27,8 +38,11 @@ public class ListCompareTest {
         assertThat(rst, lessThan(0));
     }
 
+    /**
+     * Тест проверяет сравнение разных по длине и содержанию строк
+     */
     @Test
-    public void whenLeftGreaterThanRightResultShouldBePositive () {
+    public void whenLeftGreaterThanRightResultShouldBePositive() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Petrov",
@@ -37,8 +51,11 @@ public class ListCompareTest {
         assertThat(rst, greaterThan(0));
     }
 
+    /**
+     * Тест проверяет сравнение одинаковых по длине с одной отличающейся буквой
+     */
     @Test
-    public void secondCharOfLeftGreaterThanRightShouldBePositive(){
+    public void secondCharOfLeftGreaterThanRightShouldBePositive() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Petrov",
@@ -47,8 +64,11 @@ public class ListCompareTest {
         assertThat(rst, greaterThan(0));
     }
 
+    /**
+     * Тест проверяет сравнение когда 1ая строка длинее второй
+     */
     @Test
-    public void secondCharOfLeftLessThanRightShouldBeNegative(){
+    public void secondCharOfLeftLessThanRightShouldBeNegative() {
         ListCompare compare = new ListCompare();
         int rst = compare.compare(
                 "Patrova",
