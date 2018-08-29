@@ -17,29 +17,33 @@ public class SortUser {
         return new TreeSet(list);
     }
 
-    Comparator<User> compareByNameLength = new Comparator<User>() {
-        @Override
-        public int compare(User o1, User o2) {
-            return Integer.compare(o1.getName().length(), o2.getName().length());
-        }
-    };
+
 
     public List<User> sortNameLength(List<User> list) {
-        Collections.sort(list, compareByNameLength);
+        Comparator<User> compareByNameLength = new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return o1.getName().length() - o2.getName().length();
+            }
+        };
+        list.sort(compareByNameLength);
         return list;
     }
 
-    Comparator<User> compareByNameLengthThenAge = new Comparator<User>() {
-        @Override
-        public int compare(User o1, User o2) {
-            int result = Integer.compare(o1.getName().length(), o2.getName().length());
-            result = result != 0 ? result : Integer.compare(o1.getAge(), o2.getAge());
-            return result;
-        }
-    };
-
     public List<User> sortByAllFields(List<User> list) {
-        Collections.sort(list, compareByNameLengthThenAge);
+        Comparator<User> compareByNames = new Comparator<User>() {
+            @Override
+            public int compare (User o1, User o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        };
+        Comparator<User> compareByAges = new Comparator<User>() {
+            @Override
+            public int compare (User o1, User o2) {
+                return o1.getAge() - o2.getAge();
+            }
+        };
+        list.sort(compareByNames.thenComparing(compareByAges));
         return list;
     }
 }

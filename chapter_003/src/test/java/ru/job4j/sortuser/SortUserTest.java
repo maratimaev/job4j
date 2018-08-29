@@ -77,9 +77,9 @@ public class SortUserTest {
         List<User> list = Arrays.asList(user1, user2, user3, user4);
 
         List<User> expect = new ArrayList<>();
-        expect.add(user3);
         expect.add(user4);
         expect.add(user1);
+        expect.add(user3);
         expect.add(user2);
 
         List<User> result = sortUser.sortByAllFields(list);
