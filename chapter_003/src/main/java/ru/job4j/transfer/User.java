@@ -7,19 +7,6 @@ import java.util.Objects;
 public class User {
     private String name;
     private String passport;
-//    private List<Account> accounts = new ArrayList<>();
-//
-//    public void addAccount(Account account) {
-//        this.accounts.add(account);
-//    }
-//
-//    public List<Account> getAccounts(){
-//        return this.accounts;
-//    }
-//
-//    public void removeAccount(Account account) {
-//        this.accounts.remove(account);
-//    }
 
     public String getName() {
         return name;
@@ -35,8 +22,8 @@ public class User {
         User other = (User) obj;
         if ((obj == null)
                 || (getClass() != obj.getClass())
-                || (this.name.compareToIgnoreCase(other.name) != 0)
-                || (this.passport.compareToIgnoreCase(other.passport) != 0)) {
+                || (!this.name.equals(other.name))
+                || (!this.passport.equals(other.passport))) {
             result = false;
         }
         return result;

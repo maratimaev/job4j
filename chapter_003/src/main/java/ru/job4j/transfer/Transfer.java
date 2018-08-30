@@ -19,8 +19,20 @@ public class Transfer {
     private User getUserByPassport(String passport) {
         User result = null;
         for (User current: this.userAccountsMap.keySet()) {
-            if (current.getPassport().compareToIgnoreCase(passport) == 0) {
+            if (current.getPassport().equals(passport)) {
                 result = current;
+            }
+        }
+        return result;
+    }
+
+    private Account getUserAccountByRequisite(User user, String requisite) {
+        Account result = null;
+        for (List<Account> list: this.userAccountsMap.values()) {
+            for (Account account: list) {
+                if (account.getRequisites().equals(requisite)) {
+                    result = account;
+                }
             }
         }
         return result;
@@ -53,11 +65,25 @@ public class Transfer {
         return result;
     }
 
+    private Account getActualAccount(User user, Account account) {
+        List<Account> list = this.userAccountsMap.get(user);
+        return list.get(list.indexOf(account));
+    }
+
     public boolean transferMoney (String srcPassport, String srcRequisite,
                                   String destPassport, String dstRequisite,
                                   double amount) {
         User srcUser = getUserByPassport(srcPassport);
         User destUser = getUserByPassport(destPassport);
+
+        Account srcAccount = getActualAccount(srcUser,)
+
+        for (int i = 0; i < this.userAccountsMap.get(srcUser).size(); i++) {
+            if(this.userAccountsMap.get(srcUser).get(i).getRequisites().compareToIgnoreCase(srcRequisite) == 0) {
+                double value = this.userAccountsMap.get(srcUser).get(i).getValue();
+                this.userAccountsMap.get(srcUser).get(i).setValue(value - amount);
+            }
+        }
 
         return false;
     }

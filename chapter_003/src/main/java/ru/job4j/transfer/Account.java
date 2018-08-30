@@ -1,18 +1,18 @@
 package ru.job4j.transfer;
 
 public class Account {
-    private int value;
-    private int requisites;
+    private double value;
+    private String requisites;
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public int getRequisites() {
+    public String getRequisites() {
         return requisites;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 }
