@@ -8,7 +8,9 @@ import java.util.Objects;
  * @since 0.1
  */
 public class BankUser {
+    /** Поле имя пользователя */
     private String name;
+    /** Поле пасспорт пользователя */
     private String passport;
 
     public BankUser(String name, String passport) {

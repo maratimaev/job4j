@@ -44,22 +44,33 @@ public class Transfer {
     }
     /**
      * Геттер HashMap пользователей с привязкой к счетам
-     * @param user типа BankUser
-     * @param requisite типа String
-     * @return Account
+     * @return HashMap<BankUser, ListArray<Account>>
      */
     public Map<BankUser, List<Account>> getUserAccountMap() {
         return userAccountMap;
     }
 
+    /**
+     * Метод для добавления пользователя
+     * @param user типа BankUser
+     */
     public void addUser(BankUser user) {
         this.userAccountMap.putIfAbsent(user, new ArrayList<>());
     }
 
+    /**
+     * Метод для поиска удаления пользователя
+     * @param user типа User
+     */
     public void deleteUser(BankUser user) {
         this.userAccountMap.remove(user);
     }
 
+    /**
+     * Метод для добавления счета пользователю
+     * @param passport типа String
+     * @param account типа Account
+     */
     public void addAccountToUser(String passport, Account account) {
         BankUser user = getUserByPassport(passport);
         if (user != null) {
@@ -67,6 +78,11 @@ public class Transfer {
         }
     }
 
+    /**
+     * Метод для удаления счета у пользователя
+     * @param passport типа String
+     * @param account типа Account
+     */
     public void deleteAccountFromUser(String passport, Account account) {
         BankUser user = getUserByPassport(passport);
         if (user != null) {
@@ -74,6 +90,11 @@ public class Transfer {
         }
     }
 
+    /**
+     * Метод для получения счетов пользователя
+     * @param passport типа String
+     * @return ArrayList<Account>
+     */
     public List<Account> getUserAccounts(String passport) {
         List<Account> result = null;
         BankUser user = getUserByPassport(passport);
@@ -83,6 +104,15 @@ public class Transfer {
         return result;
     }
 
+    /**
+     * Метод для перевода средств между счетами пользователей
+     * @param srcPassport типа String
+     * @param srcRequisite типа String
+     * @param destPassport типа String
+     * @param destRequisite типа String
+     * @param amount типа double
+     * @return boolean
+     */
     public boolean transferMoney(String srcPassport, String srcRequisite,
                                   String destPassport, String destRequisite,
                                   double amount) {

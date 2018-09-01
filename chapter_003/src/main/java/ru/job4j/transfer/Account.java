@@ -7,7 +7,9 @@ package ru.job4j.transfer;
  */
 public class Account {
 
+    /** Поле количество средств на счете */
     private double value;
+    /** Поле реквизит счета */
     private String requisites;
 
     public Account(double value, String requisites) {
