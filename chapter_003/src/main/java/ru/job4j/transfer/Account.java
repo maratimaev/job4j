@@ -1,8 +1,19 @@
 package ru.job4j.transfer;
 
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class Account {
+
     private double value;
     private String requisites;
+
+    public Account(double value, String requisites) {
+        this.value = value;
+        this.requisites = requisites;
+    }
 
     public double getValue() {
         return value;

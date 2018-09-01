@@ -1,12 +1,20 @@
 package ru.job4j.transfer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class User {
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
+public class BankUser {
     private String name;
     private String passport;
+
+    public BankUser(String name, String passport) {
+        this.name = name;
+        this.passport = passport;
+    }
 
     public String getName() {
         return name;
@@ -18,8 +26,8 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        boolean result =true;
-        User other = (User) obj;
+        boolean result = true;
+        BankUser other = (BankUser) obj;
         if ((obj == null)
                 || (getClass() != obj.getClass())
                 || (!this.name.equals(other.name))

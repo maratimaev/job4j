@@ -1,90 +1,104 @@
 package ru.job4j.transfer;
 
-import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
-
 import java.util.*;
 
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @version $Id$
+ * @since 0.1
+ */
 public class Transfer {
-    Map<User, List<Account>> userAccountsMap = new HashMap<>();
+    private Map<BankUser, List<Account>> userAccountMap = new HashMap<>();
 
-
-    public void addUser(User user) {
-        this.userAccountsMap.putIfAbsent(user, null);
+    /**
+     * Метод для поиска счета по реквизиту
+     * @param user типа BankUser
+     * @param requisite типа String
+     * @return Account
+     */
+    private Account getUserAccountByRequisite(BankUser user, String requisite) {
+        Account result = null;
+        for (Account current: this.userAccountMap.get(user)) {
+            if (current.getRequisites().equals(requisite)) {
+                result = current;
+                break;
+            }
+        }
+        return result;
     }
 
-    public void deleteUser(User user) {
-        this.userAccountsMap.remove(user);
-    }
-
-    private User getUserByPassport(String passport) {
-        User result = null;
-        for (User current: this.userAccountsMap.keySet()) {
+    /**
+     * Метод для поиска пользователя по паспорту
+     * @param passport типа String
+     * @return BankUser
+     */
+    private BankUser getUserByPassport(String passport) {
+        BankUser result = null;
+        for (BankUser current: this.userAccountMap.keySet()) {
             if (current.getPassport().equals(passport)) {
                 result = current;
+                break;
             }
         }
         return result;
     }
+    /**
+     * Геттер HashMap пользователей с привязкой к счетам
+     * @param user типа BankUser
+     * @param requisite типа String
+     * @return Account
+     */
+    public Map<BankUser, List<Account>> getUserAccountMap() {
+        return userAccountMap;
+    }
 
-    private Account getUserAccountByRequisite(User user, String requisite) {
-        Account result = null;
-        for (List<Account> list: this.userAccountsMap.values()) {
-            for (Account account: list) {
-                if (account.getRequisites().equals(requisite)) {
-                    result = account;
-                }
-            }
-        }
-        return result;
+    public void addUser(BankUser user) {
+        this.userAccountMap.putIfAbsent(user, new ArrayList<>());
+    }
+
+    public void deleteUser(BankUser user) {
+        this.userAccountMap.remove(user);
     }
 
     public void addAccountToUser(String passport, Account account) {
-        User user = getUserByPassport(passport);
+        BankUser user = getUserByPassport(passport);
         if (user != null) {
-            List<Account> list = this.userAccountsMap.get(user);
-            list.add(account);
-            this.userAccountsMap.put(user, list);
+            this.userAccountMap.get(user).add(account);
         }
     }
 
     public void deleteAccountFromUser(String passport, Account account) {
-        User user = getUserByPassport(passport);
+        BankUser user = getUserByPassport(passport);
         if (user != null) {
-            List<Account> list = this.userAccountsMap.get(user);
-            list.remove(account);
-            this.userAccountsMap.put(user, list);
+            this.userAccountMap.get(user).remove(account);
         }
     }
 
-    public List<Account> getUserAccounts (String passport) {
+    public List<Account> getUserAccounts(String passport) {
         List<Account> result = null;
-        User user = getUserByPassport(passport);
+        BankUser user = getUserByPassport(passport);
         if (user != null) {
-            result  = this.userAccountsMap.get(user);
+            result  = this.userAccountMap.get(user);
         }
         return result;
     }
 
-    private Account getActualAccount(User user, Account account) {
-        List<Account> list = this.userAccountsMap.get(user);
-        return list.get(list.indexOf(account));
-    }
-
-    public boolean transferMoney (String srcPassport, String srcRequisite,
-                                  String destPassport, String dstRequisite,
+    public boolean transferMoney(String srcPassport, String srcRequisite,
+                                  String destPassport, String destRequisite,
                                   double amount) {
-        User srcUser = getUserByPassport(srcPassport);
-        User destUser = getUserByPassport(destPassport);
+        boolean result = false;
 
-        Account srcAccount = getActualAccount(srcUser,)
+        Account srcAccount = getUserAccountByRequisite(getUserByPassport(srcPassport), srcRequisite);
+        Account destAccount = getUserAccountByRequisite(getUserByPassport(destPassport), destRequisite);
 
-        for (int i = 0; i < this.userAccountsMap.get(srcUser).size(); i++) {
-            if(this.userAccountsMap.get(srcUser).get(i).getRequisites().compareToIgnoreCase(srcRequisite) == 0) {
-                double value = this.userAccountsMap.get(srcUser).get(i).getValue();
-                this.userAccountsMap.get(srcUser).get(i).setValue(value - amount);
+        if (srcAccount != null || destAccount != null) {
+            if (srcAccount.getValue() > amount) {
+                srcAccount.setValue(srcAccount.getValue() - amount);
+                destAccount.setValue(destAccount.getValue() + amount);
+                result = true;
             }
         }
 
-        return false;
+        return result;
     }
 }

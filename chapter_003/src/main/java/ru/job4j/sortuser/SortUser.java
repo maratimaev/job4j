@@ -33,13 +33,13 @@ public class SortUser {
     public List<User> sortByAllFields(List<User> list) {
         Comparator<User> compareByNames = new Comparator<User>() {
             @Override
-            public int compare (User o1, User o2) {
+            public int compare(User o1, User o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         };
         Comparator<User> compareByAges = new Comparator<User>() {
             @Override
-            public int compare (User o1, User o2) {
+            public int compare(User o1, User o2) {
                 return o1.getAge() - o2.getAge();
             }
         };
