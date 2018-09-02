@@ -2,7 +2,6 @@ package ru.job4j.transfer;
 
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.hamcrest.core.Is.is;
@@ -19,10 +18,10 @@ public class TransferTest {
      */
     @Test
     public void addBankUserTest() {
-        Transfer transfer = new Transfer();
+        BankOperation bankOperation = new BankOperation();
         BankUser user = new BankUser("ivan", "1234");
-        transfer.addUser(user);
-        assertThat(transfer.getUserAccountMap().containsKey(user), is(true));
+        bankOperation.addUser(user);
+        assertThat(bankOperation.getMapOfUserAccounts().containsKey(user), is(true));
     }
 
     /**
@@ -30,11 +29,11 @@ public class TransferTest {
      */
     @Test
     public void deleteBankUserTest() {
-        Transfer transfer = new Transfer();
+        BankOperation bankOperation = new BankOperation();
         BankUser user1 = new BankUser("ivan", "1234");
-        transfer.addUser(user1);
-        transfer.deleteUser(user1);
-        assertThat(transfer.getUserAccountMap().containsKey(user1), is(false));
+        bankOperation.addUser(user1);
+        bankOperation.deleteUser(user1);
+        assertThat(bankOperation.getMapOfUserAccounts().containsKey(user1), is(false));
     }
 
     /**
@@ -42,49 +41,49 @@ public class TransferTest {
      */
     @Test
     public void addAccountToUserTest() {
-        Transfer transfer = new Transfer();
+        BankOperation bankOperation = new BankOperation();
         BankUser user1 = new BankUser("ivan", "1234");
-        transfer.addUser(user1);
+        bankOperation.addUser(user1);
 
-        transfer.addAccountToUser("1234", new Account(1000, "qwerty"));
-        transfer.addAccountToUser("1234", new Account(2000, "asdfg"));
-        assertThat(transfer.getUserAccountMap().get(user1).get(1).getRequisites(), is("asdfg"));
+        bankOperation.addAccountToUser("1234", new Account(1000, "qwerty"));
+        bankOperation.addAccountToUser("1234", new Account(2000, "asdfg"));
+        assertThat(bankOperation.getMapOfUserAccounts().get(user1).get(1).getRequisites(), is("asdfg"));
     }
     /**
      * Тест проверяет удаление счета у пользователя
      */
     @Test
     public void deleteAccountFromUserTest() {
-        Transfer transfer = new Transfer();
+        BankOperation bankOperation = new BankOperation();
         BankUser user1 = new BankUser("ivan", "1234");
-        transfer.addUser(user1);
+        bankOperation.addUser(user1);
 
         Account account1 = new Account(1000, "qwerty");
         Account account2 = new Account(2000, "asdfg");
-        transfer.addAccountToUser("1234", account1);
-        transfer.addAccountToUser("1234", account2);
+        bankOperation.addAccountToUser("1234", account1);
+        bankOperation.addAccountToUser("1234", account2);
 
-        transfer.deleteAccountFromUser("1234", account1);
-        assertThat(transfer.getUserAccountMap().get(user1).contains(account1), is(false));
+        bankOperation.deleteAccountFromUser("1234", account1);
+        assertThat(bankOperation.getMapOfUserAccounts().get(user1).contains(account1), is(false));
     }
     /**
      * Тест проверяет вывод счетов пользователя
      */
     @Test
     public void getUserAccountTest() {
-        Transfer transfer = new Transfer();
+        BankOperation bankOperation = new BankOperation();
         BankUser user1 = new BankUser("ivan", "1234");
-        transfer.addUser(user1);
+        bankOperation.addUser(user1);
 
         Account account1 = new Account(1000, "qwerty");
         Account account2 = new Account(2000, "asdfg");
-        transfer.addAccountToUser("1234", account1);
-        transfer.addAccountToUser("1234", account2);
+        bankOperation.addAccountToUser("1234", account1);
+        bankOperation.addAccountToUser("1234", account2);
 
         List<Account> expect = new ArrayList<>();
         expect.add(account1);
         expect.add(account2);
-        List<Account> result = transfer.getUserAccounts("1234");
+        List<Account> result = bankOperation.getUserAccounts("1234");
         assertThat(result, is(expect));
     }
 
@@ -93,7 +92,7 @@ public class TransferTest {
      */
     @Test
     public void transferMoneyTest() {
-        Transfer transfer = new Transfer();
+        BankOperation bankOperation = new BankOperation();
 
         BankUser userIvan = new BankUser("ivan", "200");
         BankUser userSasha = new BankUser("sasha", "300");
@@ -107,13 +106,13 @@ public class TransferTest {
         listAccountIvan.add(accountIvan2);
         listAccountSasha.add(accountSasha1);
 
-        transfer.getUserAccountMap().put(userIvan, listAccountIvan);
-        transfer.getUserAccountMap().put(userSasha, listAccountSasha);
+        bankOperation.getMapOfUserAccounts().put(userIvan, listAccountIvan);
+        bankOperation.getMapOfUserAccounts().put(userSasha, listAccountSasha);
 
-        boolean flag = transfer.transferMoney(userIvan.getPassport(), accountIvan2.getRequisites(),
+        boolean flag = bankOperation.transferMoney(userIvan.getPassport(), accountIvan2.getRequisites(),
                 userSasha.getPassport(), accountSasha1.getRequisites(),
                 100);
-        assertThat(transfer.getUserAccountMap().get(userIvan).get(1).getValue(), is((double) 1900));
-        assertThat(transfer.getUserAccountMap().get(userSasha).get(0).getValue(), is((double) 3100));
+        assertThat(bankOperation.getMapOfUserAccounts().get(userIvan).get(1).getValue(), is((double) 1900));
+        assertThat(bankOperation.getMapOfUserAccounts().get(userSasha).get(0).getValue(), is((double) 3100));
     }
 }

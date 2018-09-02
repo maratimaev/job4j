@@ -7,8 +7,8 @@ import java.util.*;
  * @version $Id$
  * @since 0.1
  */
-public class Transfer {
-    private Map<BankUser, List<Account>> userAccountMap = new HashMap<>();
+public class BankOperation {
+    private Map<BankUser, List<Account>> mapOfUserAccounts = new HashMap<>();
 
     /**
      * Метод для поиска счета по реквизиту
@@ -18,7 +18,7 @@ public class Transfer {
      */
     private Account getUserAccountByRequisite(BankUser user, String requisite) {
         Account result = null;
-        for (Account current: this.userAccountMap.get(user)) {
+        for (Account current: this.mapOfUserAccounts.get(user)) {
             if (current.getRequisites().equals(requisite)) {
                 result = current;
                 break;
@@ -34,7 +34,7 @@ public class Transfer {
      */
     private BankUser getUserByPassport(String passport) {
         BankUser result = null;
-        for (BankUser current: this.userAccountMap.keySet()) {
+        for (BankUser current: this.mapOfUserAccounts.keySet()) {
             if (current.getPassport().equals(passport)) {
                 result = current;
                 break;
@@ -46,8 +46,8 @@ public class Transfer {
      * Геттер HashMap пользователей с привязкой к счетам
      * @return HashMap<BankUser, ListArray<Account>>
      */
-    public Map<BankUser, List<Account>> getUserAccountMap() {
-        return userAccountMap;
+    public Map<BankUser, List<Account>> getMapOfUserAccounts() {
+        return mapOfUserAccounts;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Transfer {
      * @param user типа BankUser
      */
     public void addUser(BankUser user) {
-        this.userAccountMap.putIfAbsent(user, new ArrayList<>());
+        this.mapOfUserAccounts.putIfAbsent(user, new ArrayList<>());
     }
 
     /**
@@ -63,7 +63,7 @@ public class Transfer {
      * @param user типа User
      */
     public void deleteUser(BankUser user) {
-        this.userAccountMap.remove(user);
+        this.mapOfUserAccounts.remove(user);
     }
 
     /**
@@ -74,7 +74,7 @@ public class Transfer {
     public void addAccountToUser(String passport, Account account) {
         BankUser user = getUserByPassport(passport);
         if (user != null) {
-            this.userAccountMap.get(user).add(account);
+            this.mapOfUserAccounts.get(user).add(account);
         }
     }
 
@@ -86,7 +86,7 @@ public class Transfer {
     public void deleteAccountFromUser(String passport, Account account) {
         BankUser user = getUserByPassport(passport);
         if (user != null) {
-            this.userAccountMap.get(user).remove(account);
+            this.mapOfUserAccounts.get(user).remove(account);
         }
     }
 
@@ -99,7 +99,7 @@ public class Transfer {
         List<Account> result = null;
         BankUser user = getUserByPassport(passport);
         if (user != null) {
-            result  = this.userAccountMap.get(user);
+            result  = this.mapOfUserAccounts.get(user);
         }
         return result;
     }
@@ -117,18 +117,15 @@ public class Transfer {
                                   String destPassport, String destRequisite,
                                   double amount) {
         boolean result = false;
-
         Account srcAccount = getUserAccountByRequisite(getUserByPassport(srcPassport), srcRequisite);
         Account destAccount = getUserAccountByRequisite(getUserByPassport(destPassport), destRequisite);
-
-        if (srcAccount != null || destAccount != null) {
+        if (srcAccount != null && destAccount != null) {
             if (srcAccount.getValue() > amount) {
                 srcAccount.setValue(srcAccount.getValue() - amount);
                 destAccount.setValue(destAccount.getValue() + amount);
                 result = true;
             }
         }
-
         return result;
     }
 }
