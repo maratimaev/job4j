@@ -95,9 +95,8 @@ public class Tracker {
     public ArrayList<Item> findByName(String key) {
         ListIterator<Item> current = this.items.listIterator();
         ArrayList<Item> result = new ArrayList<>();
-        Item it;
         while (current.hasNext()) {
-            it = current.next();
+            Item it = current.next();
             if (it.getName().equals(key)) {
                 result.add(it);
             }
