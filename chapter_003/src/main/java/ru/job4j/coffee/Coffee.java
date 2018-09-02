@@ -1,6 +1,6 @@
 package ru.job4j.coffee;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -10,50 +10,22 @@ import java.util.ArrayList;
 public class Coffee {
     /**
      * Метод возвращает массив монет.
+     *
      * @param value типа int купюра
      * @param price типа int цена кофе
      * @return типа int[]
      */
     int[] changes(int value, int price) {
-        ArrayList<Integer> sdacha = new ArrayList<>();
-        Coin[] coins = new Coin[]{
-                new Coin(10),
-                new Coin(5),
-                new Coin(2),
-                new Coin(1)
-        };
+        int[] nominal = {10, 5, 2, 1};
+        int[] coins = new int[100];
+        int count = 0;
         int leftover = value - price;
-        for (int i = 0; i < coins.length; i++) {
-            coins[i].setNumber(leftover / coins[i].getNominal());
-            sdacha.addAll(this.queue(coins[i]));
-            leftover = leftover % coins[i].getNominal();
+        for (int i = 0; i < nominal.length; i++) {
+            for (int j = 0; j < leftover / nominal[i]; j++) {
+                coins[count++] = nominal[i];
+            }
+            leftover = leftover % nominal[i];
         }
-        return this.toIntArray(sdacha);
-    }
-
-    /**
-     * Метод возвращает список монет одного номинала.
-     * @param coin типа Coin
-     * @return типа ArrayList<Integer>
-     */
-    public ArrayList<Integer> queue(Coin coin) {
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = 0; i < coin.getNumber(); i++) {
-                list.add(coin.getNominal());
-        }
-        return list;
-    }
-
-    /**
-     * Метод преобразует ArrayList<Integer> в int[].
-     * @param integerList типа ArrayList<Integer>
-     * @return типа int[]
-     */
-    public int[] toIntArray(ArrayList<Integer> integerList) {
-        int[] intArray = new int[integerList.size()];
-        for (int i = 0; i < integerList.size(); i++) {
-            intArray[i] = integerList.get(i);
-        }
-        return intArray;
+        return Arrays.copyOf(coins, count);
     }
 }
