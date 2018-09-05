@@ -96,12 +96,7 @@ public class BankOperation {
      * @return ArrayList<Account>
      */
     public List<Account> getUserAccounts(String passport) {
-        List<Account> result = null;
-        BankUser user = getUserByPassport(passport);
-        if (user != null) {
-            result  = this.mapOfUserAccounts.get(user);
-        }
-        return result;
+            return this.mapOfUserAccounts.get(getUserByPassport(passport));
     }
 
     /**
