@@ -15,10 +15,10 @@ public class UserConvert {
      * @param list типа List<User>
      * @return HashMap<Integer, User>, где Integer это id пользователя
      */
-    public HashMap<Integer, User> process(List<User> list) {
-        HashMap<Integer, User> result = new HashMap<>();
+    public HashMap<Integer, UserC> process(List<UserC> list) {
+        HashMap<Integer, UserC> result = new HashMap<>();
 
-        for (User current : list) {
+        for (UserC current : list) {
             result.put(current.getId(), current);
         }
         return result;

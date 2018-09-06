@@ -20,11 +20,11 @@ public class Coffee {
         int[] coins = new int[100];
         int count = 0;
         int leftover = value - price;
-        for (int i = 0; i < nominal.length; i++) {
-            for (int j = 0; j < leftover / nominal[i]; j++) {
-                coins[count++] = nominal[i];
+        for (int iNominal : nominal) {
+            for (int j = 0; j < leftover / iNominal; j++) {
+                coins[count++] = iNominal;
             }
-            leftover = leftover % nominal[i];
+            leftover = leftover % iNominal;
         }
         return Arrays.copyOf(coins, count);
     }

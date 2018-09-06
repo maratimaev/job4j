@@ -8,7 +8,7 @@ import java.util.*;
  * @since 0.1
  */
 public class BankOperation {
-    private Map<BankUser, List<Account>> mapOfUserAccounts = new HashMap<>();
+    private final Map<BankUser, List<Account>> mapOfUserAccounts = new HashMap<>();
 
     /**
      * Метод для поиска счета по реквизиту

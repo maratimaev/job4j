@@ -9,38 +9,23 @@ import java.util.*;
  */
 public class SortUser {
     /**
-     * Метод конвертирует список объектов User в TreeSet
-     * @param list типа List<User>
-     * @return TreeSet<User>
+     * Метод конвертирует список объектов UserS в TreeSet
+     * @param list типа List<UserS>
+     * @return TreeSet<UserS>
      */
-    public Set<User> sort(List<User> list) {
-        return new<User> TreeSet(list);
+    public Set<UserS> sort(List<UserS> list) {
+        return new<UserS> TreeSet(list);
     }
 
-    public List<User> sortNameLength(List<User> list) {
-        Comparator<User> compareByNameLength = new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.getName().length() - o2.getName().length();
-            }
-        };
+    public List<UserS> sortNameLength(List<UserS> list) {
+        Comparator<UserS> compareByNameLength = Comparator.comparingInt(o -> o.getName().length());
         list.sort(compareByNameLength);
         return list;
     }
 
-    public List<User> sortByAllFields(List<User> list) {
-        Comparator<User> compareByName = new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        };
-        Comparator<User> compareByAge = new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.getAge() - o2.getAge();
-            }
-        };
+    public List<UserS> sortByAllFields(List<UserS> list) {
+        Comparator<UserS> compareByName = Comparator.comparing(UserS::getName);
+        Comparator<UserS> compareByAge = Comparator.comparingInt(UserS::getAge);
         list.sort(compareByName.thenComparing(compareByAge));
         return list;
     }

@@ -9,7 +9,7 @@ import java.util.List;
  * @since 0.1
  */
 public class PhoneDictionary {
-    private List<Person> persons = new ArrayList<Person>();
+    private List<Person> persons = new ArrayList<>();
 
     /**
      * Метод добавляет запись в телефонный справочник

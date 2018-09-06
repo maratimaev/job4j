@@ -109,10 +109,20 @@ public class TransferTest {
         bankOperation.getMapOfUserAccounts().put(userIvan, listAccountIvan);
         bankOperation.getMapOfUserAccounts().put(userSasha, listAccountSasha);
 
-        boolean flag = bankOperation.transferMoney(userIvan.getPassport(), accountIvan2.getRequisites(),
+        boolean f = bankOperation.transferMoney(userIvan.getPassport(), accountIvan2.getRequisites(),
                 userSasha.getPassport(), accountSasha1.getRequisites(),
                 100);
+        assertThat(f, is(true));
         assertThat(bankOperation.getMapOfUserAccounts().get(userIvan).get(1).getValue(), is((double) 1900));
         assertThat(bankOperation.getMapOfUserAccounts().get(userSasha).get(0).getValue(), is((double) 3100));
+    }
+    /**
+     * Тест проверяет удаление счета у пользователя
+     */
+    @Test
+    public void getterAndSetterTest() {
+        BankUser user = new BankUser("ivan", "1234");
+        assertThat(user.getPassport(), is("1234"));
+        assertThat(user.getName(), is("ivan"));
     }
 }

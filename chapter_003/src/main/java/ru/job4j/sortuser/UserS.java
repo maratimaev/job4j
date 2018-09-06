@@ -5,13 +5,13 @@ package ru.job4j.sortuser;
  * @version $Id$
  * @since 0.1
  */
-public class User implements Comparable {
+public class UserS implements Comparable {
     /** Поле имя пользователя */
     private String name;
     /** Поле возраст пользователя */
     private int age;
 
-    public User(String name, int age) {
+    public UserS(String name, int age) {
         this.name = name;
         this.age = age;
     }
@@ -31,7 +31,7 @@ public class User implements Comparable {
      */
     @Override
     public int compareTo(Object o) {
-        User compare = (User) o;
+        UserS compare = (UserS) o;
         return Integer.compare(this.age, compare.getAge());
     }
 }

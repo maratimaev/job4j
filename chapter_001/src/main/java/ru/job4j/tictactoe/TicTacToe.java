@@ -22,20 +22,20 @@ public class TicTacToe extends Application {
     private final Figure3T[][] cells = new Figure3T[size][size];
     private final Logic3T logic = new Logic3T(cells);
 
-    private Figure3T buildRectangle(int x, int y, int size) {
+    private Figure3T buildRectangle(int x, int y) {
         Figure3T rect = new Figure3T();
-        rect.setX(x * size);
-        rect.setY(y * size);
-        rect.setHeight(size);
-        rect.setWidth(size);
+        rect.setX(x * 50);
+        rect.setY(y * 50);
+        rect.setHeight(50);
+        rect.setWidth(50);
         rect.setFill(Color.WHITE);
         rect.setStroke(Color.BLACK);
         return rect;
     }
 
-    private Group buildMarkO(double x, double y, int size) {
+    private Group buildMarkO(double x, double y) {
         Group group = new Group();
-        int radius = size / 2;
+        int radius = 50 / 2;
         Circle circle = new Circle(x + radius, y + radius, radius - 10);
         circle.setStroke(Color.BLACK);
         circle.setFill(Color.WHITE);
@@ -67,16 +67,16 @@ public class TicTacToe extends Application {
         }
     }
 
-    private Group buildMarkX(double x, double y, int size) {
+    private Group buildMarkX(double x, double y) {
         Group group = new Group();
         group.getChildren().addAll(
                 new Line(
                         x + 10, y  + 10,
-                        x + size - 10, y + size - 10
+                        x + 50 - 10, y + 50 - 10
                 ),
                 new Line(
-                        x + size - 10, y + 10,
-                        x + 10, y + size - 10
+                        x + 50 - 10, y + 10,
+                        x + 10, y + 50 - 10
                 )
         );
         return group;
@@ -89,12 +89,12 @@ public class TicTacToe extends Application {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     rect.take(true);
                     panel.getChildren().add(
-                            this.buildMarkX(rect.getX(), rect.getY(), 50)
+                            this.buildMarkX(rect.getX(), rect.getY())
                     );
                 } else {
                     rect.take(false);
                     panel.getChildren().add(
-                            this.buildMarkO(rect.getX(), rect.getY(), 50)
+                            this.buildMarkO(rect.getX(), rect.getY())
                     );
                 }
                 this.checkWinner();
@@ -107,7 +107,7 @@ public class TicTacToe extends Application {
         Group panel = new Group();
         for (int y = 0; y != this.size; y++) {
             for (int x = 0; x != this.size; x++) {
-                Figure3T rect = this.buildRectangle(x, y, 50);
+                Figure3T rect = this.buildRectangle(x, y);
                 this.cells[y][x] = rect;
                 panel.getChildren().add(rect);
                 rect.setOnMouseClicked(this.buildMouseEvent(panel));
