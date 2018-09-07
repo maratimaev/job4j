@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -26,7 +27,7 @@ public class FunctionDiapason {
     private List<Double> diapason(int start, int end, Function function) {
         List<Double> list = new ArrayList<>();
         for (int i = start; i <= end; i++) {
-            list.add(function.func(i));
+            list.add((Double) function.apply(i));
         }
         return list;
     }
@@ -38,7 +39,7 @@ public class FunctionDiapason {
      * @param end типа int конец дипазона
      */
     public void calcLineaFunc(double a, double b, int start, int end) {
-        Function f = (count) -> a * count + b;
+        Function<Integer, Double> f = (count) -> a * count + b;
         this.listValue = diapason(start, end, f);
 
     }
@@ -51,7 +52,7 @@ public class FunctionDiapason {
      * @param end типа int конец дипазона
      */
     public void calcQuadroFunc(double a, double b, double c, int start, int end) {
-        Function f = (count) -> a * count * count + b * count + c;
+        Function<Integer, Double> f = (count) -> a * count * count + b * count + c;
         this.listValue = diapason(start, end, f);
     }
     /**
@@ -60,7 +61,7 @@ public class FunctionDiapason {
      * @param end типа int конец дипазона
      */
     public void calcLogFunc(int start, int end) {
-        Function f = (count) -> (new BigDecimal(Math.log(count)).setScale(1, RoundingMode.HALF_EVEN).doubleValue());
+        Function<Integer, Double> f = (count) -> (new BigDecimal(Math.log(count)).setScale(1, RoundingMode.HALF_EVEN).doubleValue());
         this.listValue = diapason(start, end, f);
     }
 }
