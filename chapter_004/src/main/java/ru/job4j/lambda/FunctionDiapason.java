@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @version $Id$
