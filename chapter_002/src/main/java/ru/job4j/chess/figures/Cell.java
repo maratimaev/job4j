@@ -4,8 +4,7 @@ package ru.job4j.chess.figures;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @version $Id$
  * @since 0.1
- */
-/** Поле клеток доски
+ * Поле клеток доски
  *  для сопоставления отразить по горизонтали и повернуть влево
  */
 public enum Cell {

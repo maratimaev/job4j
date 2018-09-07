@@ -38,7 +38,7 @@ public class StartUI {
     }
     /**
      * Запуск программы.
-     * @param args
+     * @param args типа String[]
      */
     public static void main(String[] args) {
         new StartUI(new ValidateInput(new ConsoleInput()), new Tracker()).init();

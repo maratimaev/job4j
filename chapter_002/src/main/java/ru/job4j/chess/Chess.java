@@ -16,6 +16,8 @@ import ru.job4j.chess.figures.*;
 import ru.job4j.chess.figures.black.*;
 import ru.job4j.chess.figures.white.*;
 
+import java.util.Objects;
+
 /**
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
@@ -47,7 +49,7 @@ public class Chess extends Application {
         rect.setY(y);
         rect.setHeight(size);
         rect.setWidth(size);
-        Image img = new Image(this.getClass().getClassLoader().getResource(image).toString());
+        Image img = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResource(image)).toString());
         rect.setFill(new ImagePattern(img));
         final Rectangle momento = new Rectangle(x, y);
         rect.setOnDragDetected(

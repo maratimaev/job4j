@@ -7,7 +7,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import org.junit.After;
 import org.junit.Before;
-import java.util.StringJoiner;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)

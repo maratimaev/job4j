@@ -13,9 +13,6 @@ public class Item {
     /** Поле описание заявки */
 	private String description;
 
-	public Item() {
-	}
-
 	public Item(String name, String description) {
 		this.name = name;
 		this.description = description;

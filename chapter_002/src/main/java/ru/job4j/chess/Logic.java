@@ -32,9 +32,9 @@ public class Logic {
         try {
             int index = this.findBy(source);
             Cell[] steps = this.figures[index].way(source, dest);
-            for (int i = 0; i < steps.length; i++) {
+            for (Cell step : steps) {
                 for (Figure figure : figures) {
-                    if (figure.position().equals(steps[i])) {
+                    if (figure.position().equals(step)) {
                         throw new OccupiedWayException("Препятствие");
                     }
                 }

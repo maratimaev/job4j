@@ -17,7 +17,6 @@ public class QueenWhite implements Figure {
 
     /**
      * Метод возвращает позицию фигуры
-     * @return Cell
      */
     public QueenWhite(final Cell position) {
         this.position = position;

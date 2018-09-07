@@ -2,7 +2,6 @@ package ru.job4j.chess;
 
 import org.junit.Test;
 import ru.job4j.chess.figures.*;
-import ru.job4j.chess.figures.ImposibleMoveException;
 import ru.job4j.chess.figures.black.*;
 
 import static org.hamcrest.core.Is.is;
