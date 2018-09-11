@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 
@@ -25,10 +26,10 @@ public class FunctionDiapason {
      * @param function лямбда функция
      * @return типа List<Double>
      */
-    private List<Double> diapason(int start, int end, Function function) {
+    private List<Double> diapason(int start, int end, Function<Integer, Double> function, Consumer<Double> repeat) {
         List<Double> list = new ArrayList<>();
         for (int i = start; i <= end; i++) {
-            list.add((Double) function.apply(i));
+            repeat.accept(function.apply(i));
         }
         return list;
     }
@@ -40,9 +41,9 @@ public class FunctionDiapason {
      * @param end типа int конец дипазона
      */
     public void calcLineaFunc(double a, double b, int start, int end) {
-        Function<Integer, Double> f = (count) -> a * count + b;
-        this.listValue = diapason(start, end, f);
-
+        this.listValue = diapason(start, end,
+                count -> a * count + b,
+                result -> this.listValue.add(result));
     }
     /**
      * Метод вычисляет квадратичную функцию
@@ -53,8 +54,7 @@ public class FunctionDiapason {
      * @param end типа int конец дипазона
      */
     public void calcQuadroFunc(double a, double b, double c, int start, int end) {
-        Function<Integer, Double> f = (count) -> a * count * count + b * count + c;
-        this.listValue = diapason(start, end, f);
+        this.listValue = diapason(start, end, count -> a * count * count + b * count + c, result -> this.listValue.add(result));
     }
     /**
      * Метод вычисляет логарифмическую функцию с округлением до 1 знака
@@ -62,7 +62,8 @@ public class FunctionDiapason {
      * @param end типа int конец дипазона
      */
     public void calcLogFunc(int start, int end) {
-        Function<Integer, Double> f = (count) -> (new BigDecimal(Math.log(count)).setScale(1, RoundingMode.HALF_EVEN).doubleValue());
-        this.listValue = diapason(start, end, f);
+        this.listValue = diapason(start, end,
+                count -> (new BigDecimal(Math.log(count)).setScale(1, RoundingMode.HALF_EVEN).doubleValue()),
+                result -> this.listValue.add(result));
     }
 }

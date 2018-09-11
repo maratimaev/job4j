@@ -14,7 +14,7 @@ class ReverseDepartments implements Comparator<String> {
      * @param o2 типа String
      * @return int
      */
-    public int compare (String o1, String o2) {
+    public int compare(String o1, String o2) {
         return o2.compareTo(o1);
     }
 }
