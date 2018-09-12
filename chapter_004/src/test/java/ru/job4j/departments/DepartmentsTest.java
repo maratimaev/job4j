@@ -36,8 +36,8 @@ public class DepartmentsTest {
                 "K2\\SK1\\SSK1",
                 "K2\\SK1\\SSK2"
         };
-        Departments departments = new Departments(new TreeSet<>());
-        assertThat(departments.sort(source), is(sorted));
+        Departments departments = new Departments();
+        assertThat(departments.sort(source, new TreeSet<>()), is(sorted));
     }
     /**
      * Тест проверяет сортировку департаментов в обратном порядке
@@ -64,8 +64,8 @@ public class DepartmentsTest {
                 "K1\\SK1",
                 "K1"
         };
-        Departments departments = new Departments(new TreeSet<>(new ReverseDepartments()));
-        assertThat(departments.sort(source), is(sorted));
+        Departments departments = new Departments();
+        assertThat(departments.sort(source, new TreeSet<>(new ReverseDepartments())), is(sorted));
     }
     /**
      * Тест проверяет сортировку пустого списка
@@ -74,7 +74,7 @@ public class DepartmentsTest {
     public void sortEmptyDepartmentsTest() {
         String[] source = {};
         String[] sorted = {};
-        Departments departments = new Departments(new TreeSet<>());
-        assertThat(departments.sort(source), is(sorted));
+        Departments departments = new Departments();
+        assertThat(departments.sort(source, new TreeSet<>()), is(sorted));
     }
 }

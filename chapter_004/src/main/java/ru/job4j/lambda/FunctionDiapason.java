@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 
@@ -26,10 +25,10 @@ public class FunctionDiapason {
      * @param function лямбда функция
      * @return типа List<Double>
      */
-    private List<Double> diapason(int start, int end, Function<Integer, Double> function, Consumer<Double> repeat) {
+    private List<Double> diapason(int start, int end, Function<Integer, Double> function) {
         List<Double> list = new ArrayList<>();
         for (int i = start; i <= end; i++) {
-            repeat.accept(function.apply(i));
+            list.add(function.apply(i));
         }
         return list;
     }
@@ -42,8 +41,7 @@ public class FunctionDiapason {
      */
     public void calcLineaFunc(double a, double b, int start, int end) {
         this.listValue = diapason(start, end,
-                count -> a * count + b,
-                result -> this.listValue.add(result));
+                count -> a * count + b);
     }
     /**
      * Метод вычисляет квадратичную функцию
@@ -54,7 +52,7 @@ public class FunctionDiapason {
      * @param end типа int конец дипазона
      */
     public void calcQuadroFunc(double a, double b, double c, int start, int end) {
-        this.listValue = diapason(start, end, count -> a * count * count + b * count + c, result -> this.listValue.add(result));
+        this.listValue = diapason(start, end, count -> a * count * count + b * count + c);
     }
     /**
      * Метод вычисляет логарифмическую функцию с округлением до 1 знака
@@ -63,7 +61,6 @@ public class FunctionDiapason {
      */
     public void calcLogFunc(int start, int end) {
         this.listValue = diapason(start, end,
-                count -> (new BigDecimal(Math.log(count)).setScale(1, RoundingMode.HALF_EVEN).doubleValue()),
-                result -> this.listValue.add(result));
+                count -> (new BigDecimal(Math.log(count)).setScale(1, RoundingMode.HALF_EVEN).doubleValue()));
     }
 }
