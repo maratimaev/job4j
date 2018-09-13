@@ -1,7 +1,6 @@
 package ru.job4j.departments;
 
 import org.junit.Test;
-import java.util.TreeSet;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,7 +36,7 @@ public class DepartmentsTest {
                 "K2\\SK1\\SSK2"
         };
         Departments departments = new Departments();
-        assertThat(departments.sort(source, new TreeSet<>()), is(sorted));
+        assertThat(departments.sortInAscOrder(source), is(sorted));
     }
     /**
      * Тест проверяет сортировку департаментов в обратном порядке
@@ -65,7 +64,7 @@ public class DepartmentsTest {
                 "K1"
         };
         Departments departments = new Departments();
-        assertThat(departments.sort(source, new TreeSet<>(new ReverseDepartments())), is(sorted));
+        assertThat(departments.sortInDescOrder(source), is(sorted));
     }
     /**
      * Тест проверяет сортировку пустого списка
@@ -75,6 +74,6 @@ public class DepartmentsTest {
         String[] source = {};
         String[] sorted = {};
         Departments departments = new Departments();
-        assertThat(departments.sort(source, new TreeSet<>()), is(sorted));
+        assertThat(departments.sortInDescOrder(source), is(sorted));
     }
 }

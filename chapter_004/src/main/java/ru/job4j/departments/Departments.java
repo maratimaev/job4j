@@ -1,7 +1,6 @@
 package ru.job4j.departments;
 
-import sun.reflect.generics.tree.Tree;
-
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,7 +17,8 @@ public class Departments {
      * @param strArray типа String[]
      * @return отсортированный массив, с добавлением отсутствующих подразделений String[]
      */
-    public String[] sort(String[] strArray, TreeSet<String> result) {
+    public String[] parse(String[] strArray) {
+        Set<String> result = new TreeSet<>();
         for (String str : strArray) {
             String[] splited = str.split("\\\\");
             StringBuilder k = new StringBuilder();
@@ -28,5 +28,22 @@ public class Departments {
             }
         }
         return result.toArray(new String[0]);
+    }
+
+    public String[] sortInAscOrder(String[] departments) {
+        return parse(departments);
+    }
+
+    public String[] sortInDescOrder(String[] departments) {
+        String[] result = parse(departments);
+        Arrays.sort(result, new ReversDepsOrderComparator());
+        return result;
+    }
+
+    private class ReversDepsOrderComparator implements Comparator<String> {
+        @Override
+        public int compare(String o1, String o2) {
+            return o2.compareTo(o1);
+        }
     }
 }
