@@ -1,7 +1,7 @@
 package ru.job4j.list;
 
 import org.junit.Test;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import static org.hamcrest.core.Is.is;
@@ -19,10 +19,20 @@ public class ConvertListTest {
     @Test
     public void whenListOfArrayThenList() {
         ConvertList convertList = new ConvertList();
-        ArrayList<int[]> list = new ArrayList();
-        list.add(new int[]{1, 2});
-        list.add(new int[]{3, 4, 5, 6});
+        List<int[]> list = Arrays.asList(new int[]{1, 2}, new int[]{3, 4, 5, 6});
         List<Integer> result = convertList.convert(list);
+        List<Integer> expect = Arrays.asList(1, 2, 3, 4, 5, 6);
+        assertThat(result, is(expect));
+    }
+
+    /**
+     * Тест проверяет корректность преобразования списка массивов в список с помощью Stream API
+     */
+    @Test
+    public void convertList() {
+        ConvertList convertList = new ConvertList();
+        List<int[]> list = Arrays.asList(new int[]{1, 2}, new int[]{3, 4, 5, 6});
+        List<Integer> result = convertList.convertStream(list);
         List<Integer> expect = Arrays.asList(1, 2, 3, 4, 5, 6);
         assertThat(result, is(expect));
     }

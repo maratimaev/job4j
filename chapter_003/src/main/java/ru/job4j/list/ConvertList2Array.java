@@ -2,6 +2,7 @@ package ru.job4j.list;
 
 import static java.lang.Math.*;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -32,6 +33,5 @@ public class ConvertList2Array {
             }
         }
         return array;
-
     }
 }
