@@ -28,8 +28,8 @@ public class StartUI {
      * Основной метод работы с меню
      */
     public void init() {
-        MenuTracker menu = new MenuTracker(this.input, this.tracker);
-        menu.fillActions(this);
+        MenuTracker menu = new MenuTracker(this.input, this.tracker, this);
+        menu.fillActions();
         menu.setRange();
         do {
             menu.show();
@@ -41,6 +41,6 @@ public class StartUI {
      * @param args типа String[]
      */
     public static void main(String[] args) {
-        new StartUI(new ValidateInput(new ConsoleInput()), new Tracker()).init();
+        new StartUI(new ValidateInput(new ConsoleInput()), Tracker.getInstance()).init();
     }
 }

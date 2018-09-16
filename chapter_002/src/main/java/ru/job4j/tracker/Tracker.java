@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.*;
 
 /**
@@ -13,6 +15,30 @@ public class Tracker {
     private final ArrayList<Item> items = new ArrayList<>();
     /** Поле случайно число для генерации id */
     private static final Random RN = new Random();
+    /** Поле экземпляр класса tracker для синглетона*/
+    private static Tracker uniqueTracker;
+
+    private Tracker() {
+    }
+
+    /**
+     * Метод возвращяет синглетон tracker
+     * @return экземпляр класса tracker
+     */
+    public static Tracker getInstance() {
+        if (uniqueTracker == null) {
+            uniqueTracker = new Tracker();
+        }
+        return uniqueTracker;
+    }
+
+    /**
+     * Метод удаляет синглетон tracker
+     */
+    @Test
+    public static void resetTracker() {
+        uniqueTracker = null;
+    }
 
     /**
      * Метод добавляет заявку

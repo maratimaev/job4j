@@ -8,7 +8,8 @@ public class TrackerTest {
     /** Проверка добавления заявки */
 	@Test
 	public void whenAddNewItemThenTrackerHasSameItem() {
- 		Tracker tracker = new Tracker();
+ 		Tracker.resetTracker();
+		Tracker tracker = Tracker.getInstance();
  		Item item = new Item("test1", "testDescription");
 		//Item item1 = new Item("test2", "testDescription2", 1232L);
  		tracker.add(item);
@@ -17,7 +18,8 @@ public class TrackerTest {
     /** Проверка поиска заявки по id */
 	@Test
 	public void whenFindById() {
-		Tracker tracker = new Tracker();
+        Tracker.resetTracker();
+	    Tracker tracker = Tracker.getInstance();
     	Item item = new Item("test1", "testDescription");
 		tracker.add(item);
     	assertThat(tracker.findById(item.getId()), is(item));
@@ -25,7 +27,8 @@ public class TrackerTest {
     /** Проверка поиска заявок по имени */
 	@Test
 	public void whenFindByName() {
-		Tracker tracker = new Tracker();
+        Tracker.resetTracker();
+	    Tracker tracker = Tracker.getInstance();
     	Item item = new Item("test1", "testDescription");
 		tracker.add(item);
         Item item1 = new Item("test2", "testDescription2");
@@ -38,7 +41,8 @@ public class TrackerTest {
     /** Проверка редактирования заявки */
 	@Test
 	public void whenReplaceNameThenReturnNewName() {
-    	Tracker tracker = new Tracker();
+        Tracker.resetTracker();
+	    Tracker tracker = Tracker.getInstance();
     	Item previous = new Item("test1", "testDescription");
     	tracker.add(previous);
     	Item next = new Item("test2", "testDescription2");
@@ -49,7 +53,8 @@ public class TrackerTest {
     /** Проверка удаления заявки */
 	@Test
 	public void whenDelete() {
-    	Tracker tracker = new Tracker();
+        Tracker.resetTracker();
+	    Tracker tracker = Tracker.getInstance();
     	Item first = new Item("test1", "testDescription");
     	tracker.add(first);
     	Item second = new Item("test2", "testDescription2");

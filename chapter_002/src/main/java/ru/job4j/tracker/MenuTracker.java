@@ -9,6 +9,7 @@ import  java.util.*;
 public class MenuTracker {
     private Input input;
     private Tracker tracker;
+    private StartUI ui;
     /** Поле список возможных действий пользователя */
     private List<UserAction> actions = new ArrayList<>();
     /** Поле список номеров пунктов */
@@ -19,9 +20,10 @@ public class MenuTracker {
      * @param input   объект типа Input
      * @param tracker объект типа Tracker
      */
-    public MenuTracker(Input input, Tracker tracker) {
+    public MenuTracker(Input input, Tracker tracker, StartUI ui) {
         this.input = input;
         this.tracker = tracker;
+        this.ui = ui;
     }
 
     /**
@@ -36,15 +38,19 @@ public class MenuTracker {
     /**
      * Метод заполняет массив.
      */
-    public void fillActions(StartUI ui) {
+    public void fillActions() {
         this.actions.add(this.new AddItem(0, "Добавление новой заявки"));
         this.actions.add(this.new ShowItems(1, "Список всех заявок"));
         this.actions.add(this.new EditItem(2, "Изменение заявки"));
         this.actions.add(this.new DeleteItem(3, "Удаление заявки"));
         this.actions.add(this.new FindItemById(4, "Поиск заявки по ID"));
         this.actions.add(this.new FindItemsByName(5, "Поиск заявки по имени"));
-        this.actions.add(this.new ExitProgram(6, "Выход", ui));
+        this.actions.add(this.new ExitProgram(6, "Выход"));
     }
+
+//    public void fillActionsL(){
+//
+//    }
 
     /**
      * Метод в зависимости от указанного ключа, выполняет соотвествующие действие.
@@ -258,16 +264,13 @@ public class MenuTracker {
      * Внутренний класс выход из программы
      */
     public class ExitProgram extends BaseAction {
-        private final StartUI ui;
-
         /**
          * Конструктор
          * @param menuKey типа int
          * @param menuString типа String
          */
-        public ExitProgram(int menuKey, String menuString, StartUI ui) {
+        public ExitProgram(int menuKey, String menuString) {
             super(menuKey, menuString);
-            this.ui = ui;
         }
 
          /**
@@ -278,7 +281,7 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("Выбран выход из программы. До свидания! -=^_^=-");
-            this.ui.setWorking(false);
+            MenuTracker.this.ui.setWorking(false);
         }
     }
 }
