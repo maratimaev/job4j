@@ -44,24 +44,22 @@ public class DepartmentsTest {
     @Test
     public void sortReverseDepartmentsTest() {
         String[] source = {
-                "K1\\SK1",
                 "K2\\SK1\\SSK1",
                 "K1\\SK1\\SSK1",
                 "K1\\SK1\\SSK2",
-                "K2",
                 "K1\\SK2",
                 "K2\\SK1\\SSK2"
         };
         String[] sorted = {
-                "K2\\SK1\\SSK2",
-                "K2\\SK1\\SSK1",
-                "K2\\SK1",
                 "K2",
-                "K1\\SK2",
-                "K1\\SK1\\SSK2",
-                "K1\\SK1\\SSK1",
+                "K2\\SK1",
+                "K2\\SK1\\SSK1",
+                "K2\\SK1\\SSK2",
+                "K1",
                 "K1\\SK1",
-                "K1"
+                "K1\\SK1\\SSK1",
+                "K1\\SK1\\SSK2",
+                "K1\\SK2"
         };
         Departments departments = new Departments();
         assertThat(departments.sortInDescOrder(source), is(sorted));
