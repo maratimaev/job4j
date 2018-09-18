@@ -22,7 +22,7 @@ public class TrackerTest {
 	    Tracker tracker = Tracker.getInstance();
     	Item item = new Item("test1", "testDescription");
 		tracker.add(item);
-    	assertThat(tracker.findById(item.getId()), is(item));
+    	assertThat(tracker.findById(item.getId(), String::equals), is(item));
 	}
     /** Проверка поиска заявок по имени */
 	@Test
@@ -35,7 +35,7 @@ public class TrackerTest {
         tracker.add(item1);
         Item item2 = new Item("test1", "testDescription1");
         tracker.add(item2);
-        Item result = (tracker.findByName("test1")).get(1);
+        Item result = (tracker.findByName("test1", String::equals)).get(1);
     	assertThat(result, is(item2));
 	}
     /** Проверка редактирования заявки */
@@ -47,8 +47,8 @@ public class TrackerTest {
     	tracker.add(previous);
     	Item next = new Item("test2", "testDescription2");
     	next.setId(previous.getId());
-    	tracker.replace(previous.getId(), next);
-    	assertThat(tracker.findById(previous.getId()).getName(), is("test2"));
+    	tracker.replace(previous.getId(), next, String::equals);
+    	assertThat(tracker.findById(previous.getId(), String::equals).getName(), is("test2"));
 	}
     /** Проверка удаления заявки */
 	@Test
@@ -61,7 +61,7 @@ public class TrackerTest {
     	tracker.add(second);
 		Item third = new Item("test3", "testDescription3");
     	tracker.add(third);
-		tracker.delete(second.getId());
+		tracker.delete(second.getId(), String::equals);
     	assertThat((tracker.getAll().get(1)).getName(), is("test3"));
 	}
 

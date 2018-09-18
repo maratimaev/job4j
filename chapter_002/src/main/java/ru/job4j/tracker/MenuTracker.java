@@ -149,13 +149,13 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Изменение поступившей заявки --------------");
             String id = input.ask("Введите id заявки : ");
-            if (tracker.findById(id) == null) {
+            if (tracker.findById(id, String::equals) == null) {
                 System.out.println("Заявка с таким id не найдена");
             } else {
                 String name = input.ask("Введите новое имя заявки : ");
                 String desc = input.ask("Введите новое описание заявки : ");
                 Item item = new Item(name, desc);
-                tracker.replace(id, item);
+                tracker.replace(id, item, String::equals);
             }
         }
     }
@@ -182,13 +182,13 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Удаление заявки --------------");
             String id = input.ask("Введите id заявки : ");
-            Item item = tracker.findById(id);
+            Item item = tracker.findById(id, String::equals);
             if (item == null) {
                 System.out.println("Заявка с таким id не найдена");
             } else {
                 String sure = input.ask("Удалить заявку " + item.getName() + " " + item.getDescription() + " ? (yes/no) ");
                 if (sure.equals("yes")) {
-                    tracker.delete(id);
+                    tracker.delete(id, String::equals);
                 }
             }
         }
@@ -216,7 +216,7 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Введите id заявки : ");
-            Item item = tracker.findById(id);
+            Item item = tracker.findById(id, String::equals);
             if (item == null) {
                 System.out.println("Заявка с таким id не найдена");
             } else {
@@ -248,7 +248,7 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             String name = input.ask("Введите имя заявки : ");
-            ArrayList<Item> items = tracker.findByName(name);
+            ArrayList<Item> items = tracker.findByName(name, String::equals);
             for (Item item: items) {
                 if (item != null) {
                     System.out.printf(" Имя заявки: %s Описание заявки: %s ID заявки: %s%n",

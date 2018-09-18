@@ -3,6 +3,8 @@ package ru.job4j.tracker;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -12,7 +14,7 @@ import java.util.*;
 
 public class Tracker {
     /** Поле список заявок */
-    private final ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Item> items = new ArrayList<>();
     /** Поле случайно число для генерации id */
     private static final Random RN = new Random();
     /** Поле экземпляр класса tracker для синглетона*/
@@ -56,15 +58,12 @@ public class Tracker {
      * @param id типа String
      * @return заявку типа Item
      */
-    protected Item findById(String id) {
-        Item result = null;
-        for (Item item : this.items) {
-            if (item != null && item.getId().equals(id)) {
-                result = item;
-                break;
-            }
-        }
-        return result;
+    protected Item findById(String id, BiPredicate<String, String> isEquals) {
+        return this.items.stream()
+                .filter(Objects::nonNull)
+                .filter(item -> isEquals.test(item.getId(), id))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -88,29 +87,26 @@ public class Tracker {
      * @param id типа String
      * @param item типа Item
      */
-    public void replace(String id, Item item) {
-        ListIterator<Item> current = this.items.listIterator();
-        while (current.hasNext()) {
-            if (current.next().getId().equals(id)) {
-                item.setId(id);
-                current.set(item);
-                break;
-            }
-        }
+    public void replace(String id, Item item, BiPredicate<String, String> isEquals) {
+        this.items = (ArrayList<Item>) this.items.stream()
+                .map(i -> {
+                    if (isEquals.test(i.getId(), id)) {
+                        item.setId(id);
+                        return item;
+                    } else {
+                        return i;
+                    }
+                }).collect(Collectors.toList());
     }
 
     /**
      * Метод удаляет заявку
      * @param id типа String
      */
-    public void delete(String id) {
-        ListIterator<Item> current = this.items.listIterator();
-        while (current.hasNext()) {
-            if (current.next().getId().equals(id)) {
-                current.remove();
-                break;
-            }
-        }
+    public void delete(String id, BiPredicate<String, String> isEquals) {
+        this.items = (ArrayList<Item>) this.items.stream()
+                .filter(item -> !isEquals.test(item.getId(), id))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -118,15 +114,9 @@ public class Tracker {
      * @param key типа String
      * @return заявки типа Item[]
      */
-    public ArrayList<Item> findByName(String key) {
-        ListIterator<Item> current = this.items.listIterator();
-        ArrayList<Item> result = new ArrayList<>();
-        while (current.hasNext()) {
-            Item it = current.next();
-            if (it.getName().equals(key)) {
-                result.add(it);
-            }
-        }
-        return result;
+    public ArrayList<Item> findByName(String key, BiPredicate<String, String> isEquals) {
+        return (ArrayList<Item>) this.items.stream()
+                .filter(item -> isEquals.test(item.getName(), key))
+                .collect(Collectors.toList());
     }
 }
