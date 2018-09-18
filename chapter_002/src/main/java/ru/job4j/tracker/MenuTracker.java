@@ -12,8 +12,9 @@ public class MenuTracker {
     private StartUI ui;
     /** Поле список возможных действий пользователя */
     private List<UserAction> actions = new ArrayList<>();
+
     /** Поле список номеров пунктов */
-    List<Integer> range = new ArrayList<>();
+    private List<Integer> range = new ArrayList<>();
 
     /**
      * Конструктор.
@@ -30,10 +31,13 @@ public class MenuTracker {
      * Метод заполняет список номерами пунктов.
      */
     public void setRange() {
-        for (UserAction action: actions) {
-            range.add(action.key());
-        }
+        this.actions.forEach(userAction -> this.range.add(userAction.key()));
     }
+
+    public List<Integer> getRange() {
+        return this.range;
+    }
+
 
     /**
      * Метод заполняет массив.
@@ -46,11 +50,8 @@ public class MenuTracker {
         this.actions.add(this.new FindItemById(4, "Поиск заявки по ID"));
         this.actions.add(this.new FindItemsByName(5, "Поиск заявки по имени"));
         this.actions.add(this.new ExitProgram(6, "Выход"));
+        setRange();
     }
-
-//    public void fillActionsL(){
-//
-//    }
 
     /**
      * Метод в зависимости от указанного ключа, выполняет соотвествующие действие.
