@@ -27,7 +27,7 @@ public class MatrixIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        return !((this.indexCell + 1 >= this.values[this.indexRow].length) & (this.indexRow + 1 >= this.values.length));
+        return this.values.length != 0 && !((this.indexCell + 1 >= this.values[this.indexRow].length) & (this.indexRow + 1 >= this.values.length));
     }
 
     /**
@@ -36,7 +36,7 @@ public class MatrixIterator implements Iterator {
      */
     @Override
     public Object next() throws NoSuchElementException {
-        if (this.indexRow >= this.values.length) {
+        if (!this.hasNext()) {
             throw new NoSuchElementException("No next element");
         }
 

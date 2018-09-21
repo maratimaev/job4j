@@ -2,7 +2,6 @@ package ru.job4j.iterator;
 
 import org.junit.Before;
 import org.junit.Test;
-import ru.job4j.MatrixIterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -75,9 +74,19 @@ public class MatrixIteratorTest {
      * Тест проверяет корректность создания Exception при невозможности обратиться к следующему элементу
      */
     @Test(expected = NoSuchElementException.class)
-    public void shoulThrowNoSuchElementException() {
+    public void shoulThrowNoSuchElementExceptionOnEmptyArray() {
         it = new MatrixIterator(new int[][]{});
         it.next();
     }
 
+    @Test(expected = NoSuchElementException.class)
+    public void shoulThrowNoSuchElementException() {
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(3));
+        assertThat(it.next(), is(4));
+        assertThat(it.next(), is(5));
+        assertThat(it.next(), is(6));
+        it.next();
+    }
 }
