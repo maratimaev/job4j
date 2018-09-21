@@ -17,20 +17,24 @@ public class JaggedArrayIteratorTest {
     private Iterator<Integer> it;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         it = new MatrixIterator(new int[][]{{1}, {3, 4}, {7}});
     }
-
+    /**
+     * Тест проверяет перебор массива без обращения к методу hasNext()
+     */
     @Test
-    public void testsThatNextMethodDoesntDependsOnPriorHasNextInvocation () {
+    public void testsThatNextMethodDoesntDependsOnPriorHasNextInvocation() {
         assertThat(it.next(), is(1));
         assertThat(it.next(), is(3));
         assertThat(it.next(), is(4));
         assertThat(it.next(), is(7));
     }
-
+    /**
+     * Тест проверяет влияние hasNext() на перебор массива
+     */
     @Test
-    public void sequentialHasNextInvocationDoesntAffectRetrievalOrder () {
+    public void sequentialHasNextInvocationDoesntAffectRetrievalOrder() {
         assertThat(it.hasNext(), is(true));
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(1));
@@ -38,9 +42,11 @@ public class JaggedArrayIteratorTest {
         assertThat(it.next(), is(4));
         assertThat(it.next(), is(7));
     }
-
+    /**
+     * Тест проверяет возвращение всех элементов в массиве
+     */
     @Test
-    public void hasNextNextSequentialInvocation () {
+    public void hasNextNextSequentialInvocation() {
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(1));
         assertThat(it.hasNext(), is(true));
@@ -51,5 +57,4 @@ public class JaggedArrayIteratorTest {
         assertThat(it.next(), is(7));
         assertThat(it.hasNext(), is(false));
     }
-
 }
