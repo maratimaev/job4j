@@ -22,6 +22,9 @@ public class EvenIteratorTest {
         it = new EvenNumbersIterator(new int[]{1, 2, 3, 4, 5, 6, 7});
     }
 
+    /**
+     * Тест проверяет корректность создания Exception при невозможности обратиться к следующему элементу
+     */
     @Test(expected = NoSuchElementException.class)
     public void shouldReturnEvenNumbersSequentially() {
         assertThat(it.hasNext(), is(true));
@@ -34,6 +37,9 @@ public class EvenIteratorTest {
         it.next();
     }
 
+    /**
+     * Тест проверяет влияние hasNext() на перебор массива
+     */
     @Test
     public void sequentialHasNextInvocationDoesntAffectRetrievalOrder() {
         assertThat(it.hasNext(), is(true));
@@ -43,12 +49,18 @@ public class EvenIteratorTest {
         assertThat(it.next(), is(6));
     }
 
+    /**
+     * Тест проверяет возврат false метода hasNext()
+     */
     @Test
     public void  shouldReturnFalseIfNoAnyEvenNumbers() {
         it = new EvenNumbersIterator(new int[]{1});
         assertThat(it.hasNext(), is(false));
     }
 
+    /**
+     * Тест проверяет работу итератора если все элементы массива четные
+     */
     @Test
     public void allNumbersAreEven()  {
         it = new EvenNumbersIterator(new int[]{2, 4, 6, 8});
