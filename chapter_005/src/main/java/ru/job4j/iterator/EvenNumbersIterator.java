@@ -11,8 +11,10 @@ import java.util.NoSuchElementException;
 public class EvenNumbersIterator implements Iterator {
     /* Входной массив */
     private final int[] values;
-    /* Индекс одномерного массива */
+    /* Индекс текущего элемента массива */
     private int index = -1;
+    /* Индекс следующего четного элемента массива */
+    private int nextIndex = -1;
 
     public EvenNumbersIterator(int[] values) {
         this.values = values;
@@ -24,7 +26,10 @@ public class EvenNumbersIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        return evenNextIndex() < values.length;
+        if (this.nextIndex <= this.index) {
+            this.nextIndex = this.evenNextIndex();
+        }
+        return this.nextIndex < this.values.length;
     }
 
     /**
@@ -32,9 +37,9 @@ public class EvenNumbersIterator implements Iterator {
      * @return индекс элемента массива типа int
      */
     private int evenNextIndex() {
-        int i = index;
-        while (++i < values.length) {
-            if (values[i] % 2 == 0) {
+        int i = this.index;
+        while (++i < this.values.length) {
+            if (this.values[i] % 2 == 0) {
                 break;
             }
         }
@@ -47,10 +52,12 @@ public class EvenNumbersIterator implements Iterator {
      */
     @Override
     public Object next() throws NoSuchElementException {
-        index = evenNextIndex();
-        if (index >= values.length) {
+        if (this.hasNext()) {
+            this.index = this.nextIndex;
+        }
+        if (this.nextIndex >= this.values.length) {
             throw new NoSuchElementException("No even element");
         }
-        return values[index];
+        return this.values[this.index];
     }
 }
