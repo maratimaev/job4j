@@ -52,7 +52,7 @@ public class Departments {
                 result = Character.compare(o2.charAt(i), o1.charAt(i)) * turn;
                 if (result != 0) {
                     break;
-                };
+                }
             }
             if (result == 0) {
                 result = o1.length() - o2.length();
