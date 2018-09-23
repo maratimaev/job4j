@@ -43,12 +43,21 @@ public class Departments {
     private class ReversDepsOrderComparator implements Comparator<String> {
         @Override
         public int compare(String o1, String o2) {
-            int result = o2.split("\\\\")[0].compareTo(o1.split("\\\\")[0]);
-            if (result == 0) {
-                return o1.compareTo(o2);
-            } else {
-                return result;
+            int result = 0;
+            int turn = 1;
+            for (int i = 0; i < Math.min(o1.length(), o2.length()); i++) {
+                if (o1.charAt(i) == '\\') {
+                    turn = -1;
+                }
+                result = Character.compare(o2.charAt(i), o1.charAt(i)) * turn;
+                if (result != 0) {
+                    break;
+                };
             }
+            if (result == 0) {
+                result = o1.length() - o2.length();
+            }
+            return result;
         }
     }
 }
