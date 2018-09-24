@@ -8,23 +8,23 @@ import java.util.NoSuchElementException;
  * @since 23.09.2018
  */
 public class SimpleArray<T> implements Iterable{
-    Object[] objects;
-    int index = 0;
+    private Object[] objects;
+    private int index = 0;
 
     public SimpleArray(int size) {
         this.objects = new Object[size];
     }
 
     public void add(T model) throws ArrayIndexOutOfBoundsException {
-        if (index + 1 > objects.length) {
+        if (this.index + 1 > objects.length) {
             throw new ArrayIndexOutOfBoundsException("Too many elements");
         }
-        this.objects[index++] = model;
+        this.objects[this.index++] = model;
     }
 
     public boolean set(int position, T model) {
         boolean result = false;
-        if (index - position >= 0) {
+        if (this.index - position >= 0) {
             this.objects[position] = model;
             result = true;
         }
@@ -33,9 +33,9 @@ public class SimpleArray<T> implements Iterable{
 
     public boolean delete(int position) {
         boolean result = false;
-        if (index - position >= 0) {
-            System.arraycopy(this.objects, position + 1, this.objects, position, index - position);
-            index--;
+        if (this.index - position >= 0) {
+            System.arraycopy(this.objects, position + 1, this.objects, position, this.index - position);
+            this.index--;
             result = true;
         }
         return result;
@@ -43,7 +43,7 @@ public class SimpleArray<T> implements Iterable{
 
     public T get(int position) {
         T result = null;
-        if (index - position >= 0) {
+        if (this.index - position >= 0) {
             result = (T) this.objects[position];
         }
         return result;
@@ -55,7 +55,6 @@ public class SimpleArray<T> implements Iterable{
             int pos = -1;
             @Override
             public boolean hasNext() {
-
                 return pos + 1 < SimpleArray.this.index;
             }
 
