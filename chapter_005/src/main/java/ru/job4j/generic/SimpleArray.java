@@ -7,14 +7,20 @@ import java.util.NoSuchElementException;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 23.09.2018
  */
-public class SimpleArray<T> implements Iterable{
+public class SimpleArray<T> implements Iterable {
     private Object[] objects;
     private int index = 0;
 
+    /** Конструктор
+     * @param size размер коллекции
+     */
     public SimpleArray(int size) {
         this.objects = new Object[size];
     }
 
+    /** Добавить элемент в коллекцию
+     * @param model элемент типа Т
+     */
     public void add(T model) throws ArrayIndexOutOfBoundsException {
         if (this.index + 1 > objects.length) {
             throw new ArrayIndexOutOfBoundsException("Too many elements");
@@ -22,6 +28,11 @@ public class SimpleArray<T> implements Iterable{
         this.objects[this.index++] = model;
     }
 
+    /** Заменить элемент в коллекции
+     * @param position позиция элемента коллекции типа int
+     * @param model элемент типа T
+     * @return типа boolean
+     */
     public boolean set(int position, T model) {
         boolean result = false;
         if (this.index - position > 0) {
@@ -31,6 +42,10 @@ public class SimpleArray<T> implements Iterable{
         return result;
     }
 
+    /** Удалить элемент из коллкции
+     * @param position позиция элемента коллекции типа int
+     * @return типа boolean
+     */
     public boolean delete(int position) {
         boolean result = false;
         if (this.index - position > 0) {
@@ -43,6 +58,10 @@ public class SimpleArray<T> implements Iterable{
         return result;
     }
 
+    /** Получить элемент коллекции
+     * @param position позиция элемента коллекции типа int
+     * @return элемент коллекции типа Т
+     */
     public T get(int position) throws NoSuchElementException {
         if (this.index - position <= 0) {
             throw new NoSuchElementException("No element");
@@ -61,7 +80,7 @@ public class SimpleArray<T> implements Iterable{
 
             @Override
             public T next() throws NoSuchElementException {
-                T result = null;
+                T result;
                 if (!hasNext()) {
                     throw new NoSuchElementException("No next element");
                 }

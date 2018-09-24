@@ -1,6 +1,5 @@
 package ru.job4j.generic;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,69 +9,81 @@ import java.util.NoSuchElementException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 
-public class SimpleArrayTest<K> {
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @since 24.09.2018
+ */
+public class SimpleArrayTest {
+    public SimpleArray<String> saV;
 
-    public SimpleArray<K> saT;
     @Before
     public void setUp() {
-        saT = new SimpleArray<K>(2);
+        saV = new SimpleArray<>(2);
     }
 
+    /**
+     *  Тест добавления элементов в коллекцию
+     */
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void whenAddElementTest() {
+        saV.add("www");
+        saV.add("aaa");
+        assertThat(saV.get(1), is("aaa"));
+        saV.add("sss");
+    }
+
+    /**
+     *  Тест замены элемента в коллекции
+     */
     @Test
-    public void IntegerTest() {
-        Integer a = 5;
-        Integer b = 7;
-        whenAddElementTest(a, b);
+    public void whenSetElementTest() {
+        saV.add("www");
+        saV.add("aaa");
+        assertThat(saV.set(0, "sss"), is(true));
+        assertThat(saV.get(0), is("sss"));
     }
 
-    @Test (expected = ArrayIndexOutOfBoundsException.class)
-    public void whenAddElementTest(K a, K b) {
-        saT.add(a);
-        saT.add(b);
-        assertThat(saT.get(1), is(b));
-        saT.add(a);
-    }
-
+    /**
+     *  Тест удаления элемента из коллекции
+     */
     @Test
-    public void whenSetElementTest(T a, T b, T c) {
-        saT.add(a);
-        saT.add(b);
-        saT.set(0, c);
-        assertThat(saT.get(0), is(c));
+    public void whenDeleteElementTest() {
+        saV.add("www");
+        saV.add("aaa");
+        assertThat(saV.delete(0), is(true));
+        assertThat(saV.get(0), is("aaa"));
     }
 
-    @Test
-    public void whenDeleteElementTest(T a, T b) {
-        saT.add(a);
-        saT.add(b);
-        saT.delete(0);
-        assertThat(saT.get(0), is(b));
+    /**
+     *  Тест получения элемента коллекции
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void whenGetThenTest() {
+        saV.add("www");
+        saV.add("aaa");
+        assertThat(saV.get(0), is("www"));
+        assertThat(saV.get(1), is("aaa"));
+        saV.get(2);
     }
 
-    @Test (expected = NoSuchElementException.class)
-    public void whenGetThenTest(T a, T b) {
-        saT.add(a);
-        saT.add(b);
-        assertThat(saT.get(0), is(a));
-        assertThat(saT.get(1), is(b));
-        saT.get(2);
-    }
+    /**
+     *  Тест работы итератора
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void whenIterateThenTest() {
+        saV.add("www");
+        saV.add("aaa");
+        assertThat(saV.get(0), is("www"));
+        assertThat(saV.get(1), is("aaa"));
 
-    @Test (expected = NoSuchElementException.class)
-    public void whenIterateThenTest(T a, T b) {
-        saT.add(a);
-        saT.add(b);
-        assertThat(saT.get(0), is(a));
-        assertThat(saT.get(1), is(b));
-
-        Iterator<T> it = saT.iterator();
+        Iterator it = saV.iterator();
         assertThat(it.hasNext(), Matchers.is(true));
-        assertThat(it.next(), Matchers.is(a));
+        assertThat(it.next(), Matchers.is("www"));
         assertThat(it.hasNext(), Matchers.is(true));
-        assertThat(it.next(), Matchers.is(b));
+        assertThat(it.next(), Matchers.is("aaa"));
         assertThat(it.hasNext(), Matchers.is(false));
         it.next();
     }
 }
+
