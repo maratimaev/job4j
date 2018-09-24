@@ -24,7 +24,7 @@ public class SimpleArray<T> implements Iterable{
 
     public boolean set(int position, T model) {
         boolean result = false;
-        if (this.index - position >= 0) {
+        if (this.index - position > 0) {
             this.objects[position] = model;
             result = true;
         }
@@ -33,20 +33,21 @@ public class SimpleArray<T> implements Iterable{
 
     public boolean delete(int position) {
         boolean result = false;
-        if (this.index - position >= 0) {
-            System.arraycopy(this.objects, position + 1, this.objects, position, this.index - position);
-            this.index--;
+        if (this.index - position > 0) {
+            Object[] del = new Object[index];
+            System.arraycopy(this.objects, position + 1, del, position, this.index - position - 1);
+            this.objects = del;
+            index--;
             result = true;
         }
         return result;
     }
 
-    public T get(int position) {
-        T result = null;
-        if (this.index - position >= 0) {
-            result = (T) this.objects[position];
+    public T get(int position) throws NoSuchElementException {
+        if (this.index - position <= 0) {
+            throw new NoSuchElementException("No element");
         }
-        return result;
+        return (T) this.objects[position];
     }
 
     @Override
