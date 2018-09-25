@@ -5,7 +5,7 @@ package ru.job4j.container;
  * @since 25.09.2018
  */
 public class User extends Base {
-    protected User(String id) {
+    public User(String id) {
         super(id);
     }
 }

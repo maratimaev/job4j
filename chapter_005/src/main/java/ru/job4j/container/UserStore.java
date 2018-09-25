@@ -2,29 +2,28 @@ package ru.job4j.container;
 
 import ru.job4j.generic.SimpleArray;
 
-import java.util.Iterator;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 25.09.2018
  */
-public class UserStore implements Store{
-    SimpleArray<Base> sa;
+public class UserStore extends AbstractStore<User> {
+    SimpleArray<User> sa;
 
     public UserStore(int size) {
         this.sa = new SimpleArray<>(size);
 
     }
 
-    @Override
-    public void add(Base model) {
-        this.sa.add(model);
-    }
+//    @Override
+//    public void add(User model) {
+//        this.sa.add(model);
+//    }
 
     @Override
-    public boolean replace(String id, Base model) {
+    public boolean replace(String id, User model) {
         boolean result = false;
-        Base mdl = findById(id);
+        User mdl = findById(id);
         if ( mdl != null) {
             result = this.sa.set(this.sa.indexOf(mdl), model);
         }
@@ -34,7 +33,7 @@ public class UserStore implements Store{
     @Override
     public boolean delete(String id) {
         boolean result = false;
-        Base model = findById(id);
+        User model = findById(id);
         if ( model != null) {
             result = this.sa.delete(this.sa.indexOf(model));
         }
@@ -42,11 +41,9 @@ public class UserStore implements Store{
     }
 
     @Override
-    public Base findById(String id) {
-        Base result = null;
-        Iterator<Base> it = this.sa.iterator();
-        while(it.hasNext()) {
-            Base b = it.next();
+    public User findById(String id) {
+        User result = null;
+        for (User b : (Iterable<User>) this.sa) {
             if (b.getId().compareTo(id) == 0) {
                 result = b;
                 break;
