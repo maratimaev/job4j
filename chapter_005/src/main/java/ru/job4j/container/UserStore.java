@@ -23,15 +23,22 @@ public class UserStore implements Store{
 
     @Override
     public boolean replace(String id, Base model) {
-        this.sa.set(0,model);
-        return false;
+        boolean result = false;
+        Base mdl = findById(id);
+        if ( mdl != null) {
+            result = this.sa.set(this.sa.indexOf(mdl), model);
+        }
+        return result;
     }
 
     @Override
     public boolean delete(String id) {
-
-        this.sa.delete()
-        return false;
+        boolean result = false;
+        Base model = findById(id);
+        if ( model != null) {
+            result = this.sa.delete(this.sa.indexOf(model));
+        }
+        return result;
     }
 
     @Override
@@ -42,7 +49,6 @@ public class UserStore implements Store{
             Base b = it.next();
             if (b.getId().compareTo(id) == 0) {
                 result = b;
-
                 break;
             }
         }

@@ -1,7 +1,10 @@
 package ru.job4j.generic;
 
+import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -54,6 +57,23 @@ public class SimpleArray<T> implements Iterable {
             this.objects = del;
             index--;
             result = true;
+        }
+        return result;
+    }
+
+    /** Получить индекс элемента в коллекции
+     * @param model элемент коллекции
+     * @return индекс элемента в коллекции типа int
+     */
+    public int indexOf(T model) {
+        int result = -1;
+        int i = 0;
+        for (Object object : this.objects){
+            if (object.equals(model)) {
+                result = i;
+                break;
+            }
+            i++;
         }
         return result;
     }

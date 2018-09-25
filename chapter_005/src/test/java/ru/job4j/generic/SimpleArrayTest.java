@@ -85,5 +85,15 @@ public class SimpleArrayTest {
         assertThat(it.hasNext(), Matchers.is(false));
         it.next();
     }
+
+    /**
+     * Тест получения индекса элемента
+     */
+    @Test
+    public void indexOf() {
+        saV.add("www");
+        saV.add("aaa");
+        assertThat(saV.indexOf("aaa"), is(1));
+    }
 }
 
