@@ -62,6 +62,7 @@ public class SimpleArray<T> implements Iterable {
      * @param position позиция элемента коллекции типа int
      * @return элемент коллекции типа Т
      */
+    @SuppressWarnings("unchecked")
     public T get(int position) throws NoSuchElementException {
         if (this.index - position <= 0) {
             throw new NoSuchElementException("No element");
@@ -78,14 +79,13 @@ public class SimpleArray<T> implements Iterable {
                 return pos + 1 < SimpleArray.this.index;
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public T next() throws NoSuchElementException {
-                T result;
                 if (!hasNext()) {
                     throw new NoSuchElementException("No next element");
                 }
-                result = (T) SimpleArray.this.objects[++pos];
-                return result;
+                return (T) SimpleArray.this.objects[++pos];
             }
         };
     }
