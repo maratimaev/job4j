@@ -2,6 +2,8 @@ package ru.job4j.container;
 
 import ru.job4j.generic.SimpleArray;
 
+import java.util.Iterator;
+
 /** Реализация интерфейса Store
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 25.09.2018
@@ -33,9 +35,15 @@ public abstract class AbstractStore<E extends Base> implements Store<E> {
     @Override
     public boolean replace(String id, E model) {
         boolean result = false;
-        E mdl = findById(id);
-        if (mdl != null) {
-            result = this.simpleArray.set(this.simpleArray.indexOf(mdl), model);
+        Iterator<E> itr = this.simpleArray.iterator();
+        int count = 0;
+        while (itr.hasNext()) {
+            E e = itr.next();
+            if (id.equals(e.getId())) {
+                result = this.simpleArray.set(count, model);
+                break;
+            }
+            count++;
         }
         return result;
     }
@@ -47,9 +55,15 @@ public abstract class AbstractStore<E extends Base> implements Store<E> {
     @Override
     public boolean delete(String id) {
         boolean result = false;
-        E model = findById(id);
-        if (model != null) {
-            result = this.simpleArray.delete(this.simpleArray.indexOf(model));
+        Iterator<E> itr = this.simpleArray.iterator();
+        int count = 0;
+        while (itr.hasNext()) {
+            E e = itr.next();
+            if (id.equals(e.getId())) {
+                result = this.simpleArray.delete(count);
+                break;
+            }
+            count++;
         }
         return result;
     }
@@ -62,9 +76,9 @@ public abstract class AbstractStore<E extends Base> implements Store<E> {
     @SuppressWarnings("unchecked")
     public E findById(String id) {
         E result = null;
-        for (E b : (Iterable<E>) this.simpleArray) {
-            if (b.getId().compareTo(id) == 0) {
-                result = b;
+        for (E e : (Iterable<E>) this.simpleArray) {
+            if (id.equals(e.getId())) {
+                result = e;
                 break;
             }
         }
