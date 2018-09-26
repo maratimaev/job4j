@@ -1,7 +1,6 @@
 package ru.job4j.container;
 
-/**
- *
+/** Родительский тип объектов для хранения в Store
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 25.09.2018
  */

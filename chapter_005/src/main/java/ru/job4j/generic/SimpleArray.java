@@ -1,10 +1,7 @@
 package ru.job4j.generic;
 
-import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -68,7 +65,7 @@ public class SimpleArray<T> implements Iterable {
     public int indexOf(T model) {
         int result = -1;
         int i = 0;
-        for (Object object : this.objects){
+        for (Object object : this.objects) {
             if (object.equals(model)) {
                 result = i;
                 break;
