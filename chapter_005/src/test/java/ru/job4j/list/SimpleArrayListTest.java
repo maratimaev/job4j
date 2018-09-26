@@ -29,4 +29,9 @@ public class SimpleArrayListTest {
     public void whenAddThreeElementsThenUseGetSizeResultThree() {
         assertThat(list.getSize(), is(3));
     }
+
+    @Test
+    public void whenDeleteFirstElementThenGetHisData() {
+        assertThat(list.delete(), is(2));
+    }
 }

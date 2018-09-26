@@ -22,7 +22,10 @@ public class SimpleArrayList<E> {
      * Реализовать метод удаления первого элемент в списке.
      */
     public E delete() {
-        return null;
+        Node<E> result = this.first;
+        result = result.next;
+        result.next = null;
+        return result.data;
     }
 
     /**
