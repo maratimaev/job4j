@@ -32,6 +32,6 @@ public class SimpleArrayListTest {
 
     @Test
     public void whenDeleteFirstElementThenGetHisData() {
-        assertThat(list.delete(), is(2));
+        assertThat(list.delete(), is(1));
     }
 }

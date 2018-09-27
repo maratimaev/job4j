@@ -23,8 +23,12 @@ public class SimpleArrayList<E> {
      */
     public E delete() {
         Node<E> result = this.first;
-        result = result.next;
-        result.next = null;
+        Node<E> prev = this.first;
+        while (result.next != null) {
+            prev = result;
+            result = result.next;
+        }
+        prev.next = null;
         return result.data;
     }
 
