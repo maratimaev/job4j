@@ -12,26 +12,36 @@ public class ObjArrayList <E> implements Iterable{
     /**
      * Массив объектов
      */
-    Object[] container;
+    private Object[] container;
     /**
      * Размер массива Object
      */
-    int memSize = 1;
+    private int memSize = 1;
     /**
      * Размер динамического массива
      */
-    int listSize = 0;
+    private int listSize;
     /**
      * Счетчик изменений в массиве
      */
-    int modCount = 0;
+    private int modCount;
     /**
      * Количество изменений на момент создания итератора
      */
-    int expectedModCount;
+    private int expectedModCount;
 
     public ObjArrayList() {
-        this.container = new Object[memSize];
+        this.container = new Object[this.memSize];
+    }
+
+    /**
+     * Увеличение размера массива
+     */
+    private void extendArray() {
+        this.memSize *= 2;
+        Object[] cont = new Object[this.memSize];
+        System.arraycopy(this.container, 0, cont, 0, this.listSize);
+        this.container = cont;
     }
 
     /** Добавление элемента в массив
@@ -39,10 +49,7 @@ public class ObjArrayList <E> implements Iterable{
      */
     public void add(E value) {
         if (this.listSize >= this.memSize) {
-            this.memSize *= 2;
-            Object[] cont = new Object[this.memSize];
-            System.arraycopy(this.container, 0, cont, 0, this.listSize);
-            this.container = cont;
+            this.extendArray();
         }
         this.container[this.listSize++] = value;
         this.modCount++;
@@ -77,10 +84,7 @@ public class ObjArrayList <E> implements Iterable{
 
             @SuppressWarnings("unchecked")
             @Override
-            public E next() throws NoSuchElementException, ConcurrentModificationException {
-                if (ObjArrayList.this.expectedModCount != ObjArrayList.this.modCount) {
-                    throw new ConcurrentModificationException();
-                }
+            public E next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException("No next element");
                 }
