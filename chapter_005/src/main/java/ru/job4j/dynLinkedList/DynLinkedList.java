@@ -44,7 +44,7 @@ public class DynLinkedList<E> implements Iterable<E>{
      */
     public E delete(int index) {
         E result = null;
-        if (index < this.size) {
+        if ((this.size > index) & (index >= 0)) {
             Node<E> node = this.first;
             Node<E> prev = node;
             for (int i = this.size - index - 1; i > 0; i--) {
@@ -69,7 +69,7 @@ public class DynLinkedList<E> implements Iterable<E>{
      */
     public E get(int index) {
         E result = null;
-        if (index < this.size) {
+        if ((this.size > index) & (index >= 0)) {
             Node<E> node = this.first;
             for (int i = this.size - 1; i > index; i--) {
                 node = node.next;

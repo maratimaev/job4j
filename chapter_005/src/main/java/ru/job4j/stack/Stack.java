@@ -3,13 +3,13 @@ package ru.job4j.stack;
 import ru.job4j.dynLinkedList.DynLinkedList;
 
 public class Stack<T> {
-    private DynLinkedList<T> dynLinkedList;
+    private DynLinkedList<T> dynLinkedList = new DynLinkedList<>();
 
     public void push(T value) {
-        this.dynLinkedList.add(value);
+        dynLinkedList.add(value);
     }
 
     public T poll() {
-        return this.dynLinkedList.delete(0);
+        return dynLinkedList.delete(dynLinkedList.getSize() - 1);
     }
 }
