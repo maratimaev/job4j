@@ -45,7 +45,7 @@ public class DynLinkedListTest {
      */
     @Test
     public void whenDeleteFirstElementThenGetHisData() {
-        assertThat(list.delete(), is(1));
+        assertThat(list.delete(1), is(2));
     }
 
     /**

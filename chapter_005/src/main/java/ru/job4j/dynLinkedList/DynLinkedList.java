@@ -39,16 +39,16 @@ public class DynLinkedList<E> implements Iterable<E>{
     }
 
     /** Удаление элемента из списка
+     * @param index индекс элемента типа int
      * @return элемент типа Е
      */
-    public E delete() {
+    public E delete(int index) {
         Node<E> result = this.first;
         Node<E> prev = this.first;
-        while (result.next != null) {
-            prev = result;
+        for (int i = 0; i < index; i++) {
             result = result.next;
         }
-        prev.next = null;
+        prev.next = result.next;
         this.modCount++;
         return result.data;
     }
