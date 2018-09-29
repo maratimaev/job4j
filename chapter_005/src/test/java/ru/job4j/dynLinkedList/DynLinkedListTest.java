@@ -7,6 +7,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -29,7 +30,10 @@ public class DynLinkedListTest {
      */
     @Test
     public void whenAddThreeElementsThenUseGetOneResultTwo() {
+        assertThat(list.get(0), is(1));
         assertThat(list.get(1), is(2));
+        assertThat(list.get(2), is(3));
+        assertThat(list.get(3), is(nullValue()));
     }
 
     /**
@@ -44,8 +48,14 @@ public class DynLinkedListTest {
      *  Проверка удаления элемента
      */
     @Test
-    public void whenDeleteFirstElementThenGetHisData() {
+    public void whenDeleteElementByIndexThenGetHisData() {
+        list.add(4);
+        list.add(5);
         assertThat(list.delete(1), is(2));
+        assertThat(list.delete(0), is(1));
+        assertThat(list.delete(2), is(5));
+        assertThat(list.delete(1), is(4));
+        assertThat(list.delete(0), is(3));
     }
 
     /**

@@ -43,14 +43,24 @@ public class DynLinkedList<E> implements Iterable<E>{
      * @return элемент типа Е
      */
     public E delete(int index) {
-        Node<E> result = this.first;
-        Node<E> prev = this.first;
-        for (int i = 0; i < index; i++) {
-            result = result.next;
+        E result = null;
+        if (index < this.size) {
+            Node<E> node = this.first;
+            Node<E> prev = node;
+            for (int i = this.size - index - 1; i > 0; i--) {
+                prev = node;
+                node = node.next;
+            }
+            if (node.equals(prev)) {
+                this.first = node.next;
+            } else {
+                prev.next = node.next;
+            }
+            result = node.data;
+            this.modCount++;
+            this.size--;
         }
-        prev.next = result.next;
-        this.modCount++;
-        return result.data;
+        return result;
     }
 
     /** Получение элемента из списка
@@ -58,11 +68,15 @@ public class DynLinkedList<E> implements Iterable<E>{
      * @return элемент типа Е
      */
     public E get(int index) {
-        Node<E> result = this.first;
-        for (int i = 0; i < index; i++) {
-            result = result.next;
+        E result = null;
+        if (index < this.size) {
+            Node<E> node = this.first;
+            for (int i = this.size - 1; i > index; i--) {
+                node = node.next;
+            }
+            result = node.data;
         }
-        return result.data;
+        return result;
     }
 
     /** Получение размера списка
