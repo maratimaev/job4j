@@ -5,9 +5,12 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-
-public class StackTest {
-    Stack<String> stack = new Stack<>();
+/**
+ * @author Marat Imaev (mailto:imaevmarat@outlook.com)
+ * @since 28.09.2018
+ */
+public class SimpleStackTest {
+    SimpleStack<String> stack = new SimpleStack<>();
 
     @Test
     public void whenPushElementsThenPollThem() {
