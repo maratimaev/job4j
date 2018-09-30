@@ -1,4 +1,4 @@
-package ru.job4j.objArrayList;
+package ru.job4j.objarraylist;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 27.09.2018
  */
-public class ObjArrayList <E> implements Iterable{
+public class ObjArrayList<E> implements Iterable {
     /**
      * Массив объектов
      */

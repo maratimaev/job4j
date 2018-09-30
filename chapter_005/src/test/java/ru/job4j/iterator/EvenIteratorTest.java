@@ -1,6 +1,5 @@
 package ru.job4j.iterator;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.junit.Before;
@@ -15,7 +14,7 @@ import static org.hamcrest.Matchers.is;
  */
 public class EvenIteratorTest {
 
-    private Iterator<Integer> it;
+    private EvenNumbersIterator it;
 
     @Before
     public void setUp() {

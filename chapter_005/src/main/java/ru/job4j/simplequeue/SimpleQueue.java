@@ -1,6 +1,6 @@
-package ru.job4j.queue;
+package ru.job4j.simplequeue;
 
-import ru.job4j.stack.SimpleStack;
+import ru.job4j.simplestack.SimpleStack;
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 28.09.2018
@@ -29,7 +29,7 @@ public class SimpleQueue<T> {
         T data = simpleStack1.poll();
         while (data != null) {
             simpleStack2.push(data);
-            data =simpleStack1.poll();
+            data = simpleStack1.poll();
         }
         return simpleStack2.poll();
     }

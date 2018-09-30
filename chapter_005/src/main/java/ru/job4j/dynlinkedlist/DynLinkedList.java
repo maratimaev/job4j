@@ -1,4 +1,4 @@
-package ru.job4j.dynLinkedList;
+package ru.job4j.dynlinkedlist;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 28.09.2018
  */
-public class DynLinkedList<E> implements Iterable<E>{
+public class DynLinkedList<E> implements Iterable<E> {
 
     /**
      * Первый элемент в списке

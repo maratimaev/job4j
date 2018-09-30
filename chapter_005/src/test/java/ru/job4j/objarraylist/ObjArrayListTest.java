@@ -1,4 +1,4 @@
-package ru.job4j.objArrayList;
+package ru.job4j.objarraylist;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -15,12 +15,12 @@ import static org.hamcrest.core.IsNull.nullValue;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 27.09.2018
  */
-public class objArrayListTest {
+public class ObjArrayListTest {
 
-    ObjArrayList<String> strArrayList;
+    private ObjArrayList<String> strArrayList;
 
     @Before
-    public void SetUp() {
+    public void setUp() {
         strArrayList = new ObjArrayList<>();
     }
 
