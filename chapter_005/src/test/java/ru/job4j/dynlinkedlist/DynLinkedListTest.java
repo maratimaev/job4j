@@ -48,14 +48,15 @@ public class DynLinkedListTest {
      *  Проверка удаления элемента
      */
     @Test
-    public void whenDeleteElementByIndexThenGetHisData() {
+    public void whenDeleteElementThenReturnHisData() {
         list.add(4);
         list.add(5);
-        assertThat(list.delete(1), is(2));
         assertThat(list.delete(0), is(1));
-        assertThat(list.delete(2), is(5));
-        assertThat(list.delete(1), is(4));
-        assertThat(list.delete(0), is(3));
+        assertThat(list.delete(3), is(5));
+        assertThat(list.delete(1), is(3));
+        assertThat(list.delete(0), is(2));
+        assertThat(list.delete(0), is(4));
+        assertThat(list.delete(5), is(nullValue()));
     }
 
     /**
@@ -66,11 +67,11 @@ public class DynLinkedListTest {
         Iterator iterator = list.iterator();
 
         assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next(), is(3));
+        assertThat(iterator.next(), is(1));
         assertThat(iterator.hasNext(), is(true));
         assertThat(iterator.next(), is(2));
         assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(3));
     }
 
     /**
@@ -81,11 +82,11 @@ public class DynLinkedListTest {
         Iterator iterator = list.iterator();
 
         assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next(), is(3));
+        assertThat(iterator.next(), is(1));
         assertThat(iterator.hasNext(), is(true));
         assertThat(iterator.next(), is(2));
         assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(3));
         iterator.next();
     }
 
@@ -97,11 +98,11 @@ public class DynLinkedListTest {
         Iterator iterator = list.iterator();
 
         assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next(), is(3));
+        assertThat(iterator.next(), is(1));
         assertThat(iterator.hasNext(), is(true));
         assertThat(iterator.next(), is(2));
         list.add(4);
         assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(3));
     }
 }

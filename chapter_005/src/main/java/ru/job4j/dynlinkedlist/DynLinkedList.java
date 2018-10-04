@@ -15,6 +15,10 @@ public class DynLinkedList<E> implements Iterable<E> {
      */
     private Node<E> first;
     /**
+     * Последний элемент в списке
+     */
+    private Node<E> last;
+    /**
      * Размер списка
      */
     private int size;
@@ -22,46 +26,55 @@ public class DynLinkedList<E> implements Iterable<E> {
      * Счетчик изменений в массиве
      */
     private int modCount;
-    /**
-     * Количество изменений на момент создания итератора
-     */
-    private int expectedModCount;
 
     /** Добавление элемента в список
      * @param data элемент типа Е
      */
     public void add(E data) {
         Node<E> newLink = new Node<>(data);
-        newLink.next = this.first;
-        this.first = newLink;
-        this.size++;
-        this.modCount++;
+        if (first == null) {
+            first = newLink;
+            last = newLink;
+        } else {
+            last.next = newLink;
+            newLink.prev = last;
+            last = newLink;
+        }
+        size++;
+        modCount++;
     }
 
-    /** Удаление элемента из списка
-     * @param index индекс элемента типа int
-     * @return элемент типа Е
+    /** Удаление элемента по индексу
+     * @param index элемента типа int
+     * @return удаленный элемент
      */
     public E delete(int index) {
         E result = null;
-        if ((this.size > index) & (index >= 0)) {
-            Node<E> node = this.first;
-            Node<E> prev = node;
-            for (int i = this.size - index - 1; i > 0; i--) {
-                prev = node;
+        if ((size > index) && (index >= 0)) {
+            Node<E> node = first;
+            Node<E> previous = first;
+            for (int i = 0; i < index; i++) {
+                previous = node;
                 node = node.next;
             }
-            if (node.equals(prev)) {
-                this.first = node.next;
+            if (node.equals(previous)) {
+                first = node.next;
+                if (node.next != null) {
+                    first.prev = null;
+                }
             } else {
-                prev.next = node.next;
+                previous.next = node.next;
+                if (node.next != null) {
+                    node.next.prev = previous;
+                }
             }
             result = node.data;
-            this.modCount++;
-            this.size--;
+            modCount++;
+            size--;
         }
         return result;
     }
+
 
     /** Получение элемента из списка
      * @param index позиция элемента
@@ -69,9 +82,9 @@ public class DynLinkedList<E> implements Iterable<E> {
      */
     public E get(int index) {
         E result = null;
-        if ((this.size > index) & (index >= 0)) {
-            Node<E> node = this.first;
-            for (int i = this.size - 1; i > index; i--) {
+        if ((size > index) && (index >= 0)) {
+            Node<E> node = first;
+            for (int i = 0; i < index; i++) {
                 node = node.next;
             }
             result = node.data;
@@ -91,7 +104,8 @@ public class DynLinkedList<E> implements Iterable<E> {
      */
     private static class Node<E> {
         E data;
-        DynLinkedList.Node<E> next;
+        Node<E> next;
+        Node<E> prev;
 
         Node(E data) {
             this.data = data;
@@ -100,34 +114,27 @@ public class DynLinkedList<E> implements Iterable<E> {
 
     @Override
     public Iterator<E> iterator() {
-        this.expectedModCount = modCount;
+        int expectedModCount = modCount;
 
         return new Iterator<E>() {
-            int position = -1;
-            boolean isFirst = true;
-            Node<E> itres = DynLinkedList.this.first;
+            int position;
+            Node<E> node = DynLinkedList.this.first;
 
             @Override
-            public boolean hasNext() throws ConcurrentModificationException {
-                if (DynLinkedList.this.expectedModCount != DynLinkedList.this.modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                return position + 1 < DynLinkedList.this.getSize();
+            public boolean hasNext() {
+                return position < DynLinkedList.this.getSize();
             }
 
             @Override
-            public E next() throws NoSuchElementException {
-                E data;
+            public E next() throws NoSuchElementException, ConcurrentModificationException {
+                if (expectedModCount != DynLinkedList.this.modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 if (!hasNext()) {
                     throw new NoSuchElementException("No next element");
                 }
-                if (isFirst) {
-                    data = itres.data;
-                    isFirst = false;
-                } else {
-                    itres = itres.next;
-                    data = itres.data;
-                }
+                E data = node.data;
+                node = node.next;
                 position++;
                 return data;
             }
