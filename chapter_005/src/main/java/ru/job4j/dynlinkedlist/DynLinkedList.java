@@ -75,7 +75,6 @@ public class DynLinkedList<E> implements Iterable<E> {
         return result;
     }
 
-
     /** Получение элемента из списка
      * @param index позиция элемента
      * @return элемент типа Е
