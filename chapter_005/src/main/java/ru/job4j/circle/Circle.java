@@ -6,9 +6,13 @@ package ru.job4j.circle;
  */
 public class Circle<T> {
     /**
-     * Крайний элемент списка
+     * Первый элемент списка
      */
     private Node<T> first;
+    /**
+     * Последний элемент списка
+     */
+    private Node<T> last;
     /**
      * Размер списка
      */
@@ -19,9 +23,14 @@ public class Circle<T> {
      */
     public void add(T data) {
         Node<T> newLink = new Node<>(data);
-        newLink.next = this.first;
-        this.first = newLink;
-        this.size++;
+        if (first == null) {
+            first = newLink;
+            last = newLink;
+        } else {
+            last.next = newLink;
+            last = newLink;
+        }
+        size++;
     }
 
     /** Получение элемента из списка
@@ -30,9 +39,9 @@ public class Circle<T> {
      */
     public Node<T> get(int index) {
         Node<T> result = null;
-        if ((this.size > index) & (index >= 0)) {
-            Node<T> node = this.first;
-            for (int i = this.size - 1; i > index; i--) {
+        if ((size > index) && (index >= 0)) {
+            Node<T> node = first;
+            for (int i = 0; i < index; i++) {
                 node = node.next;
             }
             result = node;

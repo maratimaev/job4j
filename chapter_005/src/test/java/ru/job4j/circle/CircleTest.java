@@ -24,18 +24,18 @@ public class CircleTest {
 
     @Test
     public void whenCircleIsClosedInTheMiddleThenReturnTrue() {
-        circle.link(circle.get(2), circle.get(3));
-        assertThat(circle.hasCircle(circle.get(5)), is(true));
+        circle.link(circle.get(3), circle.get(2));
+        assertThat(circle.hasCircle(circle.get(0)), is(true));
     }
 
     @Test
     public void whenCircleIsClosedToRingThenReturnTrue() {
-        circle.link(circle.get(0), circle.get(5));
-        assertThat(circle.hasCircle(circle.get(5)), is(true));
+        circle.link(circle.get(5), circle.get(0));
+        assertThat(circle.hasCircle(circle.get(0)), is(true));
     }
 
     @Test
     public void whenCircleIsNotClosedThenReturnFalse() {
-        assertThat(circle.hasCircle(circle.get(5)), is(false));
+        assertThat(circle.hasCircle(circle.get(0)), is(false));
     }
 }
