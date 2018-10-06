@@ -1,4 +1,4 @@
-package ru.job4j.dynlinkedlist;
+package ru.job4j.list.dynlinked;
 
 import org.junit.Before;
 import org.junit.Test;

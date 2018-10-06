@@ -1,4 +1,4 @@
-package ru.job4j.simplestack;
+package ru.job4j.simple.stack;
 
 import org.junit.Test;
 import ru.job4j.simple.stack.SimpleStack;

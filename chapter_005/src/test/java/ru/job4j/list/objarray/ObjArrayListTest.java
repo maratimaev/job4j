@@ -1,4 +1,4 @@
-package ru.job4j.objarraylist;
+package ru.job4j.list.objarray;
 
 import org.junit.Test;
 import org.junit.Before;

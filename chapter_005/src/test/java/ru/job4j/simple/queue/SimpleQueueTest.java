@@ -1,4 +1,4 @@
-package ru.job4j.simplequeue;
+package ru.job4j.simple.queue;
 
 import org.junit.Test;
 import ru.job4j.simple.queue.SimpleQueue;
