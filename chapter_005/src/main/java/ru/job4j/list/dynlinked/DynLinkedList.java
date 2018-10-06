@@ -1,4 +1,4 @@
-package ru.job4j.dynlinkedlist;
+package ru.job4j.list.dynlinked;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

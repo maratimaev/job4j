@@ -1,6 +1,6 @@
-package ru.job4j.simplestack;
+package ru.job4j.simple.stack;
 
-import ru.job4j.dynlinkedlist.DynLinkedList;
+import ru.job4j.list.dynlinked.DynLinkedList;
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 28.09.2018

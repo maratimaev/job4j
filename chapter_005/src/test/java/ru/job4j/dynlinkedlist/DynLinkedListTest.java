@@ -2,6 +2,7 @@ package ru.job4j.dynlinkedlist;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.job4j.list.dynlinked.DynLinkedList;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

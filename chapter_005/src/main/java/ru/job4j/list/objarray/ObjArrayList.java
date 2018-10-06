@@ -1,4 +1,4 @@
-package ru.job4j.objarraylist;
+package ru.job4j.list.objarray;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -31,28 +31,28 @@ public class ObjArrayList<E> implements Iterable {
     private int expectedModCount;
 
     public ObjArrayList() {
-        this.container = new Object[this.memSize];
+        container = new Object[memSize];
     }
 
     /**
      * Увеличение размера массива
      */
     private void extendArray() {
-        this.memSize *= 2;
-        Object[] cont = new Object[this.memSize];
-        System.arraycopy(this.container, 0, cont, 0, this.listSize);
-        this.container = cont;
+        memSize *= 2;
+        Object[] cont = new Object[memSize];
+        System.arraycopy(container, 0, cont, 0, listSize);
+        container = cont;
     }
 
     /** Добавление элемента в массив
      * @param value элемент
      */
     public void add(E value) {
-        if (this.listSize >= this.memSize) {
-            this.extendArray();
+        if (listSize >= memSize) {
+            extendArray();
         }
-        this.container[this.listSize++] = value;
-        this.modCount++;
+        container[listSize++] = value;
+        modCount++;
     }
 
     /** Получение элемента из массива
@@ -62,29 +62,29 @@ public class ObjArrayList<E> implements Iterable {
     @SuppressWarnings("unchecked")
     public E get(int index) {
         E result = null;
-        if (this.listSize - index > 0) {
-            result = (E) this.container[index];
+        if (listSize - index > 0) {
+            result = (E) container[index];
         }
         return result;
     }
 
     @Override
     public Iterator iterator() {
-        this.expectedModCount = modCount;
+        expectedModCount = modCount;
 
         return new Iterator<E>() {
             int position = -1;
             @Override
-            public boolean hasNext() throws ConcurrentModificationException {
-                if (ObjArrayList.this.expectedModCount != ObjArrayList.this.modCount) {
-                    throw new ConcurrentModificationException();
-                }
+            public boolean hasNext() {
                 return position + 1 < ObjArrayList.this.listSize;
             }
 
             @SuppressWarnings("unchecked")
             @Override
-            public E next() throws NoSuchElementException {
+            public E next() throws NoSuchElementException, ConcurrentModificationException {
+                if (ObjArrayList.this.expectedModCount != ObjArrayList.this.modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 if (!hasNext()) {
                     throw new NoSuchElementException("No next element");
                 }

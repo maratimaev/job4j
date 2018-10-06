@@ -1,6 +1,6 @@
-package ru.job4j.simplequeue;
+package ru.job4j.simple.queue;
 
-import ru.job4j.simplestack.SimpleStack;
+import ru.job4j.simple.stack.SimpleStack;
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 28.09.2018

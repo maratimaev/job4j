@@ -2,6 +2,7 @@ package ru.job4j.objarraylist;
 
 import org.junit.Test;
 import org.junit.Before;
+import ru.job4j.list.objarray.ObjArrayList;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
