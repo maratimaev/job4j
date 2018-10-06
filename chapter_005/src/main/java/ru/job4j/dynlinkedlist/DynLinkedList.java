@@ -57,7 +57,7 @@ public class DynLinkedList<E> implements Iterable<E> {
                 previous = node;
                 node = node.next;
             }
-            if (node.equals(previous)) {
+            if (index == 0) {
                 first = node.next;
                 if (node.next != null) {
                     first.prev = null;
