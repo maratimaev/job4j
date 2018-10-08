@@ -1,12 +1,16 @@
 package ru.job4j.simple.hashmap;
 
-import java.util.HashMap;
+import ru.job4j.list.objarray.ObjArrayList;
+
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 07.10.2018
  */
-public class SimpleHashMap<K, V> {
+public class SimpleHashMap<K, V> implements Iterable {
 
     private Node[] buckets;
     private int memSize = 2;
@@ -20,8 +24,7 @@ public class SimpleHashMap<K, V> {
     }
 
     private void extendMap(Node<K, V> bucket) {
-        Node[] nodes = new Node[memSize];
-        System.arraycopy(this.buckets, 0, nodes, 0, memSize);
+        Node[] nodes = this.buckets;
         memSize *= 2;
         this.buckets = new Node[memSize];
 
@@ -68,6 +71,39 @@ public class SimpleHashMap<K, V> {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator() {
+            int position;
+            @Override
+            public boolean hasNext() {
+                int i = position;
+                boolean result = false;
+                while (i < buckets.length) {
+                    if (buckets[i++] != null) {
+                        result = true;
+                        break;
+                    }
+                }
+                return result;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public K next() throws NoSuchElementException {
+                while (position < buckets.length) {
+                    if (buckets[position++] != null) {
+                        break;
+                    }
+                }
+                if (position == buckets.length) {
+                    throw new NoSuchElementException("No next element");
+                }
+                return (K) buckets[position].key;
+            }
+        };
     }
 
     private static class Node<K, V> {

@@ -1,8 +1,12 @@
 package ru.job4j.simple.hashmap;
 
 import org.junit.Test;
+
+import java.util.Iterator;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -42,4 +46,20 @@ public class SimpleHashMapTest {
         assertThat(simpleHashMap.delete("test3"), is(false));
         assertThat(simpleHashMap.delete("test"), is(true));
     }
+
+//    @Test
+//    public void whenInsertElementsThenItarateThem() {
+//        simpleHashMap.insert("test", 2);
+//        simpleHashMap.insert("test1", 3);
+//        simpleHashMap.insert("test2", 4);
+//        Iterator it = simpleHashMap.iterator();
+//        assertThat(it.hasNext(), is(true));
+//        assertNotNull(simpleHashMap.get((String) it.next()));
+//        assertThat(it.hasNext(), is(true));
+//        assertNotNull(simpleHashMap.get((String) it.next()));
+//        assertThat(it.hasNext(), is(true));
+//        assertNotNull(simpleHashMap.get((String) it.next()));
+//        assertThat(it.hasNext(), is(false));
+//
+//    }
 }
