@@ -8,16 +8,22 @@ import java.util.NoSuchElementException;
  * @since 07.10.2018
  */
 public class SimpleHashMap<K, V> implements Iterable {
-
     /**
      * Коллекция для хранения Node<K, V>
      */
     private Node[] buckets;
-
     /**
      * Размер коллекции
      */
     private int memSize = 2;
+    /**
+     * Коэффициент заполнения масива элементами
+     */
+    private final double full = 0.8;
+    /**
+     * Количество элементов в массиве
+     */
+    private int count;
 
     public SimpleHashMap() {
         this.buckets = new Node[memSize];
@@ -33,13 +39,17 @@ public class SimpleHashMap<K, V> implements Iterable {
         Node<K, V> bucket = new Node<>(key, value);
         int index = indexFor(bucket.hash, this.memSize);
 
-        if ((buckets[index] != null) && (key == buckets[index].key || (key != null && key.equals(buckets[index].key)))) {
+        if (buckets[index] != null) {
             result = false;
-        } else if (buckets[index] != null) {
-            extendMap(bucket);
         } else {
             buckets[index] = bucket;
+            this.count++;
         }
+
+        if (this.memSize * full <= this.count) {
+            extendMap();
+        }
+
         return result;
     }
 
@@ -49,13 +59,14 @@ public class SimpleHashMap<K, V> implements Iterable {
      * @return индекс типа int
      */
     private int indexFor(int h, int length) {
+        h = h < 0 ? -h : h;
         return h & (length - 1);
     }
 
-    /** Увеличение массива, если индекс нового элемента совпадает с одним из текущих
-     * @param bucket новый элемент типа Node
+    /** Увеличение массива, если достигнут порог
+     * размер массива * full равно количеству элементов
      */
-    private void extendMap(Node<K, V> bucket) {
+    private void extendMap() {
         Node[] nodes = this.buckets;
         memSize *= 2;
         this.buckets = new Node[memSize];
@@ -65,8 +76,6 @@ public class SimpleHashMap<K, V> implements Iterable {
                 insert(node.key, node.value);
             }
         }
-
-        insert(bucket.key, bucket.value);
     }
 
     /** Получение элемента из коллекции по ключу
@@ -94,6 +103,7 @@ public class SimpleHashMap<K, V> implements Iterable {
         if (this.buckets[index] != null && bucket.hash == buckets[index].hash) {
             this.buckets[index] = null;
             result = true;
+            this.count--;
         }
         return result;
     }
@@ -143,37 +153,28 @@ public class SimpleHashMap<K, V> implements Iterable {
         Node(K key, V value) {
             this.key = key;
             this.value = value;
-            hash = hash(this.hashCode());
+            this.hash = hash(this.hashCode());
         }
 
         private int hash(int h) {
+            h = 31 * h;
             h ^= (h >>> 20) ^ (h >>> 12);
             return h ^ (h >>> 7) ^ (h >>> 4);
         }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
 
             Node<?, ?> node = (Node<?, ?>) o;
 
-            if (this.hash != node.hash) {
-                return false;
-            }
-            if (this.key != null ? !this.key.equals(node.key) : node.key != null) {
-                return false;
-            }
-            return this.value != null ? this.value.equals(node.value) : node.value == null;
+            return this.key != null ? this.key.equals(node.key) : node.key == null;
         }
 
         @Override
         public int hashCode() {
-            return key != null ? key.hashCode() : 0;
+            return this.key != null ? this.key.hashCode() : 0;
         }
     }
 }
