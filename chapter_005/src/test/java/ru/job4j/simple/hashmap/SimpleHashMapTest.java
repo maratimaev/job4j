@@ -47,19 +47,20 @@ public class SimpleHashMapTest {
         assertThat(simpleHashMap.delete("test"), is(true));
     }
 
-//    @Test
-//    public void whenInsertElementsThenItarateThem() {
-//        simpleHashMap.insert("test", 2);
-//        simpleHashMap.insert("test1", 3);
-//        simpleHashMap.insert("test2", 4);
-//        Iterator it = simpleHashMap.iterator();
-//        assertThat(it.hasNext(), is(true));
-//        assertNotNull(simpleHashMap.get((String) it.next()));
-//        assertThat(it.hasNext(), is(true));
-//        assertNotNull(simpleHashMap.get((String) it.next()));
-//        assertThat(it.hasNext(), is(true));
-//        assertNotNull(simpleHashMap.get((String) it.next()));
-//        assertThat(it.hasNext(), is(false));
-//
-//    }
+    @Test
+    public void whenInsertElementsThenItarateThem() {
+        simpleHashMap.insert("test", 2);
+        simpleHashMap.insert("test1", 3);
+        simpleHashMap.insert("test2", 4);
+        Iterator it = simpleHashMap.iterator();
+        assertThat(it.hasNext(), is(true));
+        assertNotNull(simpleHashMap.get((String) it.next()));
+        assertThat(it.hasNext(), is(true));
+        assertNotNull(simpleHashMap.get((String) it.next()));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.hasNext(), is(true));
+        assertNotNull(simpleHashMap.get((String) it.next()));
+        assertThat(it.hasNext(), is(false));
+
+    }
 }

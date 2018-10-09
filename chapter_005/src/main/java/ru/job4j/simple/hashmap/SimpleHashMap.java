@@ -1,8 +1,5 @@
 package ru.job4j.simple.hashmap;
 
-import ru.job4j.list.objarray.ObjArrayList;
-
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -12,17 +9,52 @@ import java.util.NoSuchElementException;
  */
 public class SimpleHashMap<K, V> implements Iterable {
 
+    /**
+     * Коллекция для хранения Node<K, V>
+     */
     private Node[] buckets;
+
+    /**
+     * Размер коллекции
+     */
     private int memSize = 2;
 
     public SimpleHashMap() {
         this.buckets = new Node[memSize];
     }
 
+    /** Добавление элемента в коллецию
+     * @param key ключ типа K
+     * @param value значение типа V
+     * @return результат тима boolean
+     */
+    public boolean insert(K key, V value) {
+        boolean result = true;
+        Node<K, V> bucket = new Node<>(key, value);
+        int index = indexFor(bucket.hash, this.memSize);
+
+        if ((buckets[index] != null) && (key == buckets[index].key || (key != null && key.equals(buckets[index].key)))) {
+            result = false;
+        } else if (buckets[index] != null) {
+            extendMap(bucket);
+        } else {
+            buckets[index] = bucket;
+        }
+        return result;
+    }
+
+    /** Получение индекса в массиве на основе хэша
+     * @param h хеш типа int
+     * @param length размер массиива типа int
+     * @return индекс типа int
+     */
     private int indexFor(int h, int length) {
         return h & (length - 1);
     }
 
+    /** Увеличение массива, если индекс нового элемента совпадает с одним из текущих
+     * @param bucket новый элемент типа Node
+     */
     private void extendMap(Node<K, V> bucket) {
         Node[] nodes = this.buckets;
         memSize *= 2;
@@ -37,21 +69,10 @@ public class SimpleHashMap<K, V> implements Iterable {
         insert(bucket.key, bucket.value);
     }
 
-    public boolean insert(K key, V value) {
-        boolean result = true;
-        Node<K, V> bucket = new Node<K, V>(key, value);
-        int index = indexFor(bucket.hash, this.memSize);
-
-        if ((buckets[index] != null) && (key == buckets[index].key || (key != null && key.equals(buckets[index].key)))) {
-            result = false;
-        } else if (buckets[index] != null) {
-            extendMap(bucket);
-        } else {
-            buckets[index] = bucket;
-        }
-        return result;
-    }
-
+    /** Получение элемента из коллекции по ключу
+     * @param key ключ типа K
+     * @return значение типа V
+     */
     public V get(K key) {
         V result = null;
         Node<K, V> bucket = new Node<>(key, null);
@@ -62,6 +83,10 @@ public class SimpleHashMap<K, V> implements Iterable {
         return result;
     }
 
+    /** Удаление элемента из коллекции по ключу
+     * @param key ключ типа K
+     * @return результат типа boolean
+     */
     public boolean delete(K key) {
         boolean result = false;
         Node<K, V> bucket = new Node<>(key, null);
@@ -76,13 +101,13 @@ public class SimpleHashMap<K, V> implements Iterable {
     @Override
     public Iterator iterator() {
         return new Iterator() {
-            int position;
+            int position = -1;
             @Override
             public boolean hasNext() {
                 int i = position;
                 boolean result = false;
-                while (i < buckets.length) {
-                    if (buckets[i++] != null) {
+                while (i < buckets.length - 1) {
+                    if (buckets[++i] != null) {
                         result = true;
                         break;
                     }
@@ -93,8 +118,8 @@ public class SimpleHashMap<K, V> implements Iterable {
             @SuppressWarnings("unchecked")
             @Override
             public K next() throws NoSuchElementException {
-                while (position < buckets.length) {
-                    if (buckets[position++] != null) {
+                while (position < buckets.length - 1) {
+                    if (buckets[++position] != null) {
                         break;
                     }
                 }
@@ -106,6 +131,10 @@ public class SimpleHashMap<K, V> implements Iterable {
         };
     }
 
+    /** Элемент хранения данных
+     * @param <K> ключ элемента
+     * @param <V> значение элемента
+     */
     private static class Node<K, V> {
         int hash;
         K key;
