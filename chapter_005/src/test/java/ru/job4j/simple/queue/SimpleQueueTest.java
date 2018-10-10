@@ -24,4 +24,14 @@ public class SimpleQueueTest {
         assertThat(simpleQueue.poll(), is("test3"));
         assertThat(simpleQueue.poll(), is(nullValue()));
     }
+
+    @Test
+    public void pushElementsOneByOther() {
+        simpleQueue.push("1");
+        assertThat(simpleQueue.poll(), is("1"));
+        simpleQueue.push("2");
+        assertThat(simpleQueue.poll(), is("2"));
+        simpleQueue.push("3");
+        assertThat(simpleQueue.poll(), is("3"));
+    }
 }
