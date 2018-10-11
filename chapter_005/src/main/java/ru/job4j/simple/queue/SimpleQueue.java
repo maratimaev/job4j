@@ -26,11 +26,13 @@ public class SimpleQueue<T> {
      * @return удаленный элемент
      */
     public T poll() {
-        T data = simpleStack1.poll();
-        while (data != null) {
-            simpleStack2.push(data);
-            data = simpleStack1.poll();
-        }
+     if(simpleStack2.length() == 0) {
+         T data = simpleStack1.poll();
+         while (data != null) {
+             simpleStack2.push(data);
+             data = simpleStack1.poll();
+         }
+     }
         return simpleStack2.poll();
     }
 }

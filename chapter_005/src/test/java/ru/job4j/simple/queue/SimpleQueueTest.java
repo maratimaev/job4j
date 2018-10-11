@@ -34,4 +34,23 @@ public class SimpleQueueTest {
         simpleQueue.push("3");
         assertThat(simpleQueue.poll(), is("3"));
     }
+
+    @Test
+    public void pushAndPollTwice() {
+        simpleQueue.push("1");
+        simpleQueue.push("2");
+        simpleQueue.push("3");
+        String poll = simpleQueue.poll();
+        assertThat(poll, is("1"));
+        simpleQueue.push("4");
+        simpleQueue.push("5");
+        poll = simpleQueue.poll();
+        assertThat(poll, is("2"));
+        poll = simpleQueue.poll();
+        assertThat(poll, is("3"));
+        poll = simpleQueue.poll();
+        assertThat(poll, is("4"));
+        poll = simpleQueue.poll();
+        assertThat(poll, is("5"));
+    }
 }

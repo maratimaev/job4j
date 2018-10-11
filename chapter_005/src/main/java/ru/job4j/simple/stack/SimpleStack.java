@@ -24,4 +24,8 @@ public class SimpleStack<T> {
     public T poll() {
         return dynLinkedList.delete(dynLinkedList.getSize() - 1);
     }
+
+    public int length() {
+        return dynLinkedList.getSize();
+    }
 }
