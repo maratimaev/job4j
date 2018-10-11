@@ -26,7 +26,7 @@ public class SimpleQueue<T> {
      * @return удаленный элемент
      */
     public T poll() {
-     if(simpleStack2.length() == 0) {
+     if (simpleStack2.length() == 0) {
          T data = simpleStack1.poll();
          while (data != null) {
              simpleStack2.push(data);
