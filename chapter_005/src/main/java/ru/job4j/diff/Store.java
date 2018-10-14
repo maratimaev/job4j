@@ -23,24 +23,17 @@ public class Store {
         public String getName() {
             return name;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            User user = (User) o;
-            return name != null ? name.equals(user.name) : user.name == null;
-        }
-
-        @Override
-        public int hashCode() {
-            return id;
-        }
     }
 
+    /** Сравнение 2х списков
+     * @param previous предыдущий список
+     * @param current текущий список
+     * @return статистика Info
+     */
     public Info diff(List<User> previous, List<User> current) {
-
-        return null;
+        Info info = new Info(previous, current);
+        info.calc();
+        return info;
     }
 
 }
