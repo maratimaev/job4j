@@ -7,7 +7,6 @@ import java.util.*;
  * @since 14.10.2018
  */
 public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
-
     /**
      * Корень дерева
      */
@@ -49,6 +48,26 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             }
         }
         return rsl;
+    }
+
+    /** Проверка на двоичное дерево
+     * @return типа boolean
+     */
+    public boolean isBinary() {
+        boolean result = true;
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            if (el.leaves().size() > 2) {
+                result = false;
+                break;
+            }
+            for (Node<E> child : el.leaves()) {
+                data.offer(child);
+            }
+        }
+        return result;
     }
 
     @Override
