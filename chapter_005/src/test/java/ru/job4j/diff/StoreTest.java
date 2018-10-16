@@ -13,7 +13,7 @@ import static org.hamcrest.core.Is.is;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 14.10.2018
  */
-public class InfoTest {
+public class StoreTest {
     Store.User user1 = new Store.User(1, "test1");
     Store.User user2 = new Store.User(2, "test2");
     Store.User user3 = new Store.User(3, "test3");
@@ -36,7 +36,8 @@ public class InfoTest {
     @Test
     public void whenCurrentBiggerPreviousThanGetNewUsers() {
         current.add(user4);
-        Info info = store.diff(previous, current);
+
+        Store.Info info = store.diff(previous, current);
         assertThat(info.getNewUsers(), is(1));
         assertThat(info.getRemovedUsers(), is(0));
         assertThat(info.getModifiedUsers(), is(0));
@@ -45,7 +46,7 @@ public class InfoTest {
     @Test
     public void whenCurrentSmallerPreviousThanGetRemovedUsers() {
         previous.add(user4);
-        Info info = store.diff(previous, current);
+        Store.Info info = store.diff(previous, current);
         assertThat(info.getNewUsers(), is(0));
         assertThat(info.getRemovedUsers(), is(1));
         assertThat(info.getModifiedUsers(), is(0));
@@ -55,7 +56,7 @@ public class InfoTest {
     public void whenCurrentModifiedPreviousThanGetModifiedUsers() {
         current.remove(user2);
         current.add(user5);
-        Info info = store.diff(previous, current);
+        Store.Info info = store.diff(previous, current);
         assertThat(info.getNewUsers(), is(0));
         assertThat(info.getRemovedUsers(), is(0));
         assertThat(info.getModifiedUsers(), is(1));
@@ -67,7 +68,7 @@ public class InfoTest {
         current.remove(user2);
         current.remove(user3);
         current.add(user5);
-        Info info = store.diff(previous, current);
+        Store.Info info = store.diff(previous, current);
         assertThat(info.getNewUsers(), is(1));
         assertThat(info.getRemovedUsers(), is(1));
         assertThat(info.getModifiedUsers(), is(1));
