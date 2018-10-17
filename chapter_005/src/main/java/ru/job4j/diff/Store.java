@@ -1,9 +1,5 @@
 package ru.job4j.diff;
 
-import org.omg.CORBA.INTERNAL;
-
-import java.util.BitSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -34,30 +30,46 @@ public class Store {
     }
 
     public interface Info {
+        /** Количество новых пользователей
+         * @return int
+         */
         int getNewUsers();
+
+        /** Количество удуленных пользователей
+         * @return int
+         */
         int getRemovedUsers();
+
+        /** Количество измененных пользователей
+         * @return int
+         */
         int getModifiedUsers();
     }
 
     /**
      * Сравнение 2х списков
-     *
      * @param previous предыдущий список
      * @param current  текущий список
      * @return статистика Info
      */
     public Info diff(List<User> previous, List<User> current) {
         return new Info() {
-            BiFunction<List<User>, List<User>, Integer> listUsers =
-                    (c, p) -> (int) p.stream().filter(u -> !c.contains(u)).count();
-
+            /**
+             * Вернуть разницу в списках
+             */
             BiFunction<Map<Integer, String>, Map<Integer, String>, Integer> diffUsers =
                     (c, p) -> (int) p.keySet().stream().filter(key -> !c.containsKey(key)).count();
 
+            /**
+             * Вернуть пользователей с одинаковыми id, но разными name
+             */
             BiFunction<Map<Integer, String>, Map<Integer, String>, Integer> modUsers =
                     (c, p) -> (int) p.keySet().stream().
                             filter(key -> c.containsKey(key) && !p.get(key).equals(c.get(key))).count();
 
+            /**
+             * Преобразовать список в hashmap
+             */
             Function<List<User>, Map<Integer, String>> toHMap =
                     l -> l.stream().collect(Collectors.toMap(User::getId, User::getName));
 
