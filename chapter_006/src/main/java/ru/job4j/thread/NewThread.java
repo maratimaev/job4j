@@ -4,11 +4,11 @@ package ru.job4j.thread;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 18.10.2018
  */
-public class NewThread implements Runnable{
+public class NewThread implements Runnable {
     Thread t;
     String name;
 
-    NewThread(String name){
+    NewThread(String name) {
         this.name = name;
         //t = new Thread(this, name);
         System.out.println("Child created " + t);
@@ -22,10 +22,10 @@ public class NewThread implements Runnable{
                 System.out.println(name + " Child " + i);
                 Thread.sleep(500);
             }
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             System.out.println(name + " Child interrupt");
         }
-        System.out.println(name + " Child stop") ;
+        System.out.println(name + " Child stop");
     }
 
     public void start() {
