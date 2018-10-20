@@ -57,15 +57,15 @@ public class UserStorage {
         boolean result = false;
         User from = null;
         User to = null;
-        for(User user: this.userList) {
-            if(user.getId() == fromID) {
+        for (User user: this.userList) {
+            if (user.getId() == fromID) {
                 from = user;
             }
-            if(user.getId() == toID) {
+            if (user.getId() == toID) {
                 to = user;
             }
         }
-        if((from != null && to != null) && from.getAmount() > amount) {
+        if ((from != null && to != null) && from.getAmount() > amount) {
             from.setAmount(from.getAmount() - amount);
             to.setAmount(to.getAmount() + amount);
             result = true;
