@@ -69,7 +69,7 @@ public class ObjArrayList<E> implements Iterable {
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<E> iterator() {
         expectedModCount = modCount;
 
         return new Iterator<E>() {
