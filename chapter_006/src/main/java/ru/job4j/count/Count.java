@@ -11,10 +11,10 @@ import net.jcip.annotations.ThreadSafe;
 public class Count {
     @GuardedBy("this")
     private int value;
-    synchronized void increment() {
+    public synchronized void increment() {
         this.value++;
     }
-    synchronized public int get() {
+    public synchronized int get() {
         return this.value;
     }
 }
