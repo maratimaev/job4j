@@ -3,7 +3,6 @@ package ru.job4j.threadsafe;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import ru.job4j.list.objarray.ObjArrayList;
-
 import java.util.Iterator;
 
 /**
@@ -13,17 +12,17 @@ import java.util.Iterator;
 @ThreadSafe
 public class ThreadSafeArray<E> implements Iterable {
     @GuardedBy("this")
-    ObjArrayList<E> objArrayList;
+    private ObjArrayList<E> objArrayList;
 
     public ThreadSafeArray() {
         this.objArrayList = new ObjArrayList<>();
     }
 
-    synchronized public void add(E value) {
+    public synchronized void add(E value) {
         this.objArrayList.add(value);
     }
 
-    synchronized public E get(int index) {
+    public synchronized E get(int index) {
         return this.objArrayList.get(index);
     }
 
@@ -37,7 +36,7 @@ public class ThreadSafeArray<E> implements Iterable {
     }
 
     @Override
-    synchronized public Iterator<E> iterator() {
+    public synchronized Iterator<E> iterator() {
         return copy(this.objArrayList).iterator();
     }
 }
