@@ -14,7 +14,6 @@ public class RectangleMove implements Runnable {
 
     @Override
     public void run() {
-        boolean interrupted = false;
         int x = 5;
         int y = 2;
         try {
@@ -30,11 +29,7 @@ public class RectangleMove implements Runnable {
                 Thread.sleep(50);
             }
         } catch (InterruptedException e) {
-            interrupted = true;
-        } finally {
-            if (interrupted) {
-                Thread.currentThread().interrupt();
-            }
+            Thread.currentThread().interrupt();
         }
     }
 }
