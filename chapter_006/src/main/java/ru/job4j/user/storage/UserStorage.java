@@ -15,13 +15,13 @@ public class UserStorage {
      * Список пользователей
      */
     @GuardedBy("this")
-    List<User> userList = new ArrayList<>();
+    private List<User> userList = new ArrayList<>();
 
     /** Добавить нового пользователя
      * @param user типа User
      * @return типа boolean
      */
-    synchronized public boolean add(User user) {
+    public synchronized boolean add(User user) {
         return this.userList.add(user);
     }
 
@@ -29,7 +29,7 @@ public class UserStorage {
      * @param user типа User
      * @return типа boolean
      */
-    synchronized public boolean delete(User user) {
+    public synchronized boolean delete(User user) {
         return this.userList.remove(user);
     }
 
@@ -37,7 +37,7 @@ public class UserStorage {
      * @param user типа User
      * @return типа boolean
      */
-    synchronized public boolean update(User user) {
+    public synchronized boolean update(User user) {
         boolean result = false;
         int index = this.userList.indexOf(user);
         if (index >= 0) {
@@ -53,7 +53,7 @@ public class UserStorage {
      * @param amount размер перечислений
      * @return типа boolean
      */
-    synchronized public boolean transfer(int fromID, int toID, int amount) {
+    public synchronized boolean transfer(int fromID, int toID, int amount) {
         boolean result = false;
         User from = null;
         User to = null;

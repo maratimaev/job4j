@@ -1,6 +1,5 @@
 package ru.job4j.user.storage;
 
-import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -11,19 +10,11 @@ import static org.junit.Assert.assertThat;
  */
 public class UserStorageTest {
 
-    UserStorage userStorage;
-    User user1;
-    User user2;
-
-    @Before
-    public void setUp() {
-       user1 = new User(1, 100);
-       user2 = new User(2, 200);
-       userStorage = new UserStorage();
-    }
-
     @Test
     public void whenTransfer50FromUser1ThenUser1Have50() {
+        User user1 = new User(1, 100);
+        User user2 = new User(2, 200);
+        UserStorage userStorage = new UserStorage();
         assertThat(userStorage.add(user1), is(true));
         assertThat(userStorage.add(user2), is(true));
         assertThat(userStorage.transfer(1, 2, 50), is(true));
