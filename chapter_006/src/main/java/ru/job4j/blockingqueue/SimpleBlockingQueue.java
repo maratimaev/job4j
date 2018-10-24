@@ -41,14 +41,14 @@ public class SimpleBlockingQueue<T> {
      *  Если элементов нет уснуть
      * @return типа Т
      */
-    public synchronized T poll() {
+    public synchronized T poll() throws InterruptedException {
         T result;
         while (!this.lock) {
             try {
                 System.out.println("poll sleep");
                 wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new InterruptedException();
             }
         }
         result = this.queue.poll();
@@ -86,7 +86,11 @@ class Consumer implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < 6; i++) {
-            this.queue.poll();
+            try {
+                this.queue.poll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
