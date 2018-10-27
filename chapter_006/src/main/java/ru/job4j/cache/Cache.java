@@ -1,8 +1,5 @@
 package ru.job4j.cache;
 
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,12 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 27.10.2018
  */
-@ThreadSafe
 public class Cache {
     /**
      * Поле для хранения синхронизированных объектов
      */
-    @GuardedBy("this")
     private Map<Integer, Base> map = new ConcurrentHashMap<>();
 
     /** Добавить модель
