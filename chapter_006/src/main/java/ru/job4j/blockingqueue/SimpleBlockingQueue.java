@@ -25,16 +25,17 @@ public class SimpleBlockingQueue<T> {
     public synchronized void offer(T value) {
         while (this.lock) {
             try {
-                System.out.println("offer sleep");
+                System.out.println("offer засыпает в " + Thread.currentThread().getName());
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("in offer " + this.lock + value);
+        System.out.println("В offer " + Thread.currentThread().getName() + " добавляет " + value);
         this.queue.offer(value);
         this.lock = true;
-        notify();
+        System.out.println("offer: разбудить всех");
+        notifyAll();
     }
 
     /** Получить элемент, если в очереди есть элементы
@@ -45,56 +46,21 @@ public class SimpleBlockingQueue<T> {
         T result;
         while (!this.lock) {
             try {
-                System.out.println("poll sleep");
+                System.out.println("poll засыпает в " + Thread.currentThread().getName());
                 wait();
             } catch (InterruptedException e) {
                 throw new InterruptedException();
             }
         }
         result = this.queue.poll();
-        System.out.println("in poll " + this.lock + result);
+        System.out.println("В poll " + Thread.currentThread().getName() + " забирает " + result);
         this.lock = false;
-        notify();
+        System.out.println("poll: разбудить всех");
+        notifyAll();
         return result;
     }
 
     public synchronized boolean isEmpty() {
         return this.queue.isEmpty();
-    }
-}
-
-/**
- * Нить добавляет элементы
- */
-class Producer implements Runnable {
-    private SimpleBlockingQueue queue;
-    public Producer(SimpleBlockingQueue queue) {
-        this.queue = queue;
-    }
-    @Override
-    public void run() {
-        for (int i = 0; i < 6; i++) {
-            this.queue.offer(i);
-        }
-    }
-}
-
-/**
- * Нить удаляет элементы
- */
-class Consumer implements Runnable {
-    private SimpleBlockingQueue queue;
-    public Consumer(SimpleBlockingQueue queue) {
-        this.queue = queue;
-    }
-    @Override
-    public void run() {
-        for (int i = 0; i < 6; i++) {
-            try {
-                this.queue.poll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
