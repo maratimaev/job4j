@@ -41,7 +41,7 @@ public class CacheTest {
         @Override
         public void run() {
             try {
-                for (int i = 0; i < 5000; i++) {
+                for (int i = 0; i < 50000; i++) {
                     model.setName("test" + i);
                     cache.update(model);
                 }
