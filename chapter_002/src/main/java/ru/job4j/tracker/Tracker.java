@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @since 0.1
  */
 
-public class Tracker {
+public class Tracker implements ITracker {
     /** Поле список заявок */
     private ArrayList<Item> items = new ArrayList<>();
     /** Поле случайно число для генерации id */
@@ -47,6 +47,7 @@ public class Tracker {
      * @param item типа Item
      * @return заявку типа Item
      */
+    @Override
     public Item add(Item item) {
         item.setId(this.generateId());
         this.items.add(item);
@@ -58,7 +59,8 @@ public class Tracker {
      * @param id типа String
      * @return заявку типа Item
      */
-    protected Item findById(String id, BiPredicate<String, String> isEquals) {
+    @Override
+    public  Item findById(String id, BiPredicate<String, String> isEquals) {
         return this.items.stream()
                 .filter(Objects::nonNull)
                 .filter(item -> isEquals.test(item.getId(), id))
@@ -78,6 +80,7 @@ public class Tracker {
      * Метод возвращает массив заявок
      * @return заявки типа Item[]
      */
+    @Override
     public ArrayList<Item> getAll() {
         return this.items;
     }
@@ -87,6 +90,7 @@ public class Tracker {
      * @param id типа String
      * @param item типа Item
      */
+    @Override
     public void replace(String id, Item item, BiPredicate<String, String> isEquals) {
         this.items = (ArrayList<Item>) this.items.stream()
                 .map(i -> {
@@ -103,6 +107,7 @@ public class Tracker {
      * Метод удаляет заявку
      * @param id типа String
      */
+    @Override
     public void delete(String id, BiPredicate<String, String> isEquals) {
         this.items = (ArrayList<Item>) this.items.stream()
                 .filter(item -> !isEquals.test(item.getId(), id))
@@ -114,6 +119,7 @@ public class Tracker {
      * @param key типа String
      * @return заявки типа Item[]
      */
+    @Override
     public ArrayList<Item> findByName(String key, BiPredicate<String, String> isEquals) {
         return (ArrayList<Item>) this.items.stream()
                 .filter(item -> isEquals.test(item.getName(), key))

@@ -50,7 +50,7 @@ public class StartUITest {
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
         new StartUI(input, tracker).init();
         assertThat(tracker.getAll().get(0).getName(), is("test name"));
@@ -62,7 +62,7 @@ public class StartUITest {
     @Test
     public void whenUpdateThenTrackerHasUpdatedValue() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Item item = tracker.add(new Item("test name", "desc"));
         Input input = new StubInput(new String[]{"2", item.getId(), "test replace", "заменили заявку", "6"});
         new StartUI(input, tracker).init();
@@ -75,7 +75,7 @@ public class StartUITest {
     @Test
     public void whenDeleteThenTrackerHasDeleteValue() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
         Input input = new StubInput(new String[]{"3", item.getId(), "yes", "6"});
@@ -89,7 +89,7 @@ public class StartUITest {
     @Test
     public void whenShowAllThenPrintItemsToScreen() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
         Input input = new StubInput(new String[]{"1", "6"});
@@ -118,7 +118,7 @@ public class StartUITest {
     @Test
     public void whenFindByIdThenPrintItem() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
         Input input = new StubInput(new String[]{"4", item.getId(), "6"});
@@ -143,7 +143,7 @@ public class StartUITest {
     @Test
     public void whenFindByIdThenNoItem() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Input input = new StubInput(new String[]{"4", "12345", "6"});
         new StartUI(input, tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
@@ -164,7 +164,7 @@ public class StartUITest {
     @Test
     public void whenWrongMenuNumberThenException() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Input input = new StubInput(new String[]{"9", "6"});
         new StartUI(new ValidateInput(input), tracker).init();
         assertThat(new String(out.toByteArray()), is(new StringBuilder()
@@ -184,7 +184,7 @@ public class StartUITest {
     @Test
     public void whenFindByNameThenPrintItems() {
         Tracker.resetTracker();
-        Tracker tracker = Tracker.getInstance();
+        ITracker tracker = Tracker.getInstance();
         Item item = tracker.add(new Item("test name", "desc"));
         Item item1 = tracker.add(new Item("test name1", "desc1"));
         Item item2 = tracker.add(new Item("test name", "desc2"));

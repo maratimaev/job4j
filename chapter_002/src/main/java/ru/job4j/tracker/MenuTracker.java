@@ -8,7 +8,7 @@ import  java.util.*;
  */
 public class MenuTracker {
     private Input input;
-    private Tracker tracker;
+    private ITracker tracker;
     private StartUI ui;
     /** Поле список возможных действий пользователя */
     private List<UserAction> actions = new ArrayList<>();
@@ -21,7 +21,7 @@ public class MenuTracker {
      * @param input   объект типа Input
      * @param tracker объект типа Tracker
      */
-    public MenuTracker(Input input, Tracker tracker, StartUI ui) {
+    public MenuTracker(Input input, ITracker tracker, StartUI ui) {
         this.input = input;
         this.tracker = tracker;
         this.ui = ui;
@@ -90,7 +90,7 @@ public class MenuTracker {
          * @param tracker типа Tracker
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Добавление новой заявки --------------");
             String name = input.ask("Введите имя заявки : ");
             String desc = input.ask("Введите описание заявки : ");
@@ -119,7 +119,7 @@ public class MenuTracker {
          * @param tracker типа Tracker
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Список всех заявок -------------");
             for (Item item: tracker.getAll()) {
                 System.out.printf("%s %s %s%n", item.getName(), item.getDescription(), item.getId());
@@ -147,7 +147,7 @@ public class MenuTracker {
          * @param tracker типа Tracker
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Изменение поступившей заявки --------------");
             String id = input.ask("Введите id заявки : ");
             if (tracker.findById(id, String::equals) == null) {
@@ -180,7 +180,7 @@ public class MenuTracker {
          * @param tracker типа Tracker
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Удаление заявки --------------");
             String id = input.ask("Введите id заявки : ");
             Item item = tracker.findById(id, String::equals);
@@ -215,7 +215,7 @@ public class MenuTracker {
          * @param tracker типа Tracker
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             String id = input.ask("Введите id заявки : ");
             Item item = tracker.findById(id, String::equals);
             if (item == null) {
@@ -247,7 +247,7 @@ public class MenuTracker {
          * @param tracker типа Tracker
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             String name = input.ask("Введите имя заявки : ");
             ArrayList<Item> items = tracker.findByName(name, String::equals);
             for (Item item: items) {
@@ -280,7 +280,7 @@ public class MenuTracker {
          * @param tracker типа Tracker
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("Выбран выход из программы. До свидания! -=^_^=-");
             MenuTracker.this.ui.setWorking(false);
         }
