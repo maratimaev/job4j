@@ -1,5 +1,7 @@
 package ru.job4j.sql;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.job4j.tracker.ITracker;
 import ru.job4j.tracker.Item;
 
@@ -16,21 +18,25 @@ import java.util.function.BiPredicate;
  */
 public class TrackerSQL implements ITracker, Cloneable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrackerSQL.class.getName());
+
     private Connection connection;
 
     public boolean init() {
+        LOGGER.info("Connect to DB");
         try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
             this.connection = DriverManager.getConnection(
+                    config.getProperty("url"),
                     config.getProperty("username"),
-                    config.getProperty("password"),
-                    config.getProperty("url")
+                    config.getProperty("password")
             );
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            LOGGER.error(e.getMessage(), e);
         }
+        LOGGER.info("Connected OK " + this.connection);
         return this.connection != null;
     }
 
@@ -63,4 +69,5 @@ public class TrackerSQL implements ITracker, Cloneable {
     public Item findById(String id, BiPredicate<String, String> isEquals) {
         return null;
     }
+
 }
