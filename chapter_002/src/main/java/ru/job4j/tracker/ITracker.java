@@ -9,9 +9,9 @@ import java.util.function.BiPredicate;
  */
 public interface ITracker {
     Item add(Item item);
-    void replace(String id, Item item, BiPredicate<String, String> isEquals);
-    void delete(String id, BiPredicate<String, String> isEquals);
+    void replace(String id, Item item);
+    void delete(String id);
     ArrayList<Item> getAll();
-    ArrayList<Item> findByName(String key, BiPredicate<String, String> isEquals);
-    Item findById(String id, BiPredicate<String, String> isEquals);
+    ArrayList<Item> findByName(String key);
+    Item findById(String id);
 }

@@ -60,10 +60,10 @@ public class Tracker implements ITracker {
      * @return заявку типа Item
      */
     @Override
-    public  Item findById(String id, BiPredicate<String, String> isEquals) {
+    public  Item findById(String id) {
         return this.items.stream()
                 .filter(Objects::nonNull)
-                .filter(item -> isEquals.test(item.getId(), id))
+                .filter(item -> item.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -91,10 +91,10 @@ public class Tracker implements ITracker {
      * @param item типа Item
      */
     @Override
-    public void replace(String id, Item item, BiPredicate<String, String> isEquals) {
+    public void replace(String id, Item item) {
         this.items = (ArrayList<Item>) this.items.stream()
                 .map(i -> {
-                    if (isEquals.test(i.getId(), id)) {
+                    if (i.getId().equals(id)) {
                         item.setId(id);
                         return item;
                     } else {
@@ -108,9 +108,9 @@ public class Tracker implements ITracker {
      * @param id типа String
      */
     @Override
-    public void delete(String id, BiPredicate<String, String> isEquals) {
+    public void delete(String id) {
         this.items = (ArrayList<Item>) this.items.stream()
-                .filter(item -> !isEquals.test(item.getId(), id))
+                .filter(item -> !item.getId().equals(id))
                 .collect(Collectors.toList());
     }
 
@@ -120,9 +120,9 @@ public class Tracker implements ITracker {
      * @return заявки типа Item[]
      */
     @Override
-    public ArrayList<Item> findByName(String key, BiPredicate<String, String> isEquals) {
+    public ArrayList<Item> findByName(String key) {
         return (ArrayList<Item>) this.items.stream()
-                .filter(item -> isEquals.test(item.getName(), key))
+                .filter(item -> item.getName().equals(key))
                 .collect(Collectors.toList());
     }
 }
