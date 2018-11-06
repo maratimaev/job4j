@@ -65,7 +65,8 @@ public class StoreSQLTest {
         StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
         sql.connect();
         param.add("987654321");
-        sql.updateDB("insert into entry (field) values (?)", param);
+        int numRowsUpdated = sql.updateDB("insert into entry (field) values (?)", param);
+        assertThat(numRowsUpdated, is(1));
         try {
             Statement st = sql.getConnection().createStatement();
             ResultSet rs = st.executeQuery("SELECT field FROM entry WHERE field = '987654321'");

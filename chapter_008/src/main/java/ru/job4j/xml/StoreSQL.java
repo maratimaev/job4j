@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -85,20 +87,63 @@ public class StoreSQL {
      * @param sql запрос типа String
      * @param parameters для PrepareStatement
      */
-    public void updateDB(String sql, List<String> parameters) {
+    public <T> int updateDB(String sql, List<T> parameters) {
         PreparedStatement ps = null;
+        int numRowsUpdated = 0;
         try {
             ps = this.conn.prepareStatement(sql);
             int i = 0;
-            for (String parameter : parameters) {
+            for (T parameter : parameters) {
                 ps.setObject(++i, parameter);
             }
-            ps.executeUpdate();
+            numRowsUpdated = ps.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             close(ps);
         }
+        return numRowsUpdated;
+    }
+
+    public <T, E> List<Map<String, E>> queryDB(Connection connection, String sql, List<T> parameters) throws SQLException {
+        List<Map<String, E>> results = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = connection.prepareStatement(sql);
+            int i = 0;
+            for (T parameter : parameters) {
+                ps.setObject(++i, parameter);
+            }
+            rs = ps.executeQuery();
+            results = map(rs);
+        } finally {
+            close(rs);
+            close(ps);
+        }
+        return results;
+    }
+
+    public <E> List<Map<String, E>> map(ResultSet rs) throws SQLException {
+        List<Map<String, E>> results = new ArrayList<>();
+        try {
+            if (rs != null) {
+                ResultSetMetaData meta = rs.getMetaData();
+                int numColumns = meta.getColumnCount();
+                while (rs.next()) {
+                    Map<String, E> row = new HashMap<>();
+                    for (int i = 1; i <= numColumns; ++i) {
+                        String name = meta.getColumnName(i);
+                        E value = (E) rs.getObject(i);
+                        row.put(name, value);
+                    }
+                    results.add(row);
+                }
+            }
+        } finally {
+            close(rs);
+        }
+        return results;
     }
 
     /** Проверка существования таблицы в БД
