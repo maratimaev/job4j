@@ -14,10 +14,20 @@ import java.util.List;
 public class StoreSQL {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StoreSQL.class.getName());
-    Connection conn = null;
-    Statement st = null;
+    private Connection conn = null;
 
+    /**
+     * Поле с параметрами подключения к БД
+     */
+    private String config;
 
+    public StoreSQL(String config) {
+        this.config = config;
+    }
+
+    /** Генерация n строк в БД
+     * @param n типа int
+     */
     public void generate(int n) {
         if (this.connect()) {
             if (!this.tableExists("entry")) {
@@ -30,18 +40,15 @@ public class StoreSQL {
             try {
                 try {
                     this.conn.setAutoCommit(false);
-                    ps = conn.prepareStatement("INSERT OR REPLACE INTO entry (field) VALUES(?)");
-
+                    ps = conn.prepareStatement("INSERT INTO entry (field) VALUES(?)");
                     for (int i = 0; i < n; i++) {
                         ps.setInt(1, i);
                         ps.addBatch();
                         if (i % 1000 == 0) {
-                            ps.executeBatch();
+                            int[] count = ps.executeBatch();
                         }
-                        ps.executeBatch();
-                        conn.commit();
                     }
-
+                    ps.executeBatch();
                 } catch (Exception e) {
                     LOGGER.error(e.getMessage(), e);
                     success = false;
@@ -60,83 +67,96 @@ public class StoreSQL {
         }
     }
 
-        public boolean connect() {
-            if (this.conn == null) {
-                try {
-                    Class.forName("org.sqlite.JDBC");
-                    this.conn = DriverManager.getConnection("jdbc:sqlite:xml.s3db");
-                } catch (Exception e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-                LOGGER.info("Opened database successfully");
-            }
-            return true;
+    /** Установка соединения с БД this.config
+     * @return типа boolean
+     */
+    public boolean connect() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            this.conn = DriverManager.getConnection(this.config);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
-
-        private void updateDB(String sql, List<String> parameters) {
-            PreparedStatement ps = null;
-            try {
-                ps = this.conn.prepareStatement(sql);
-                int i = 0;
-                for (String parameter : parameters) {
-                    ps.setObject(++i, parameter);
-                }
-                ps.executeUpdate();
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
-            } finally {
-                close(ps);
-            }
-        }
-
-        public boolean tableExists(String tableName) {
-            boolean result = false;
-            if (this.conn != null) {
-                try{
-                    DatabaseMetaData md = conn.getMetaData();
-                    ResultSet rs = md.getColumns(null, null, tableName, "%");
-                    result = rs.next();
-                }catch(SQLException e){
-                    LOGGER.error(e.getMessage(), e);
-                }
-            } else {
-                LOGGER.error("Can't check table existance, DB not connected");
-            }
-            return result;
-        }
-
-        private void close(Statement st) {
-            try {
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-        }
-
-        private void close(ResultSet rs) {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-        }
-
-        /**
-         * Закрытие соединения с БД
-         */
-        public void close() {
-            try {
-                if (this.conn != null) {
-                    this.conn.close();
-                    LOGGER.info("DB disconnected");
-                }
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-        }
-
+        LOGGER.info("Opened database successfully");
+        return true;
     }
+
+    /** Выполнение запроса на изменение данных в БД
+     * @param sql запрос типа String
+     * @param parameters для PrepareStatement
+     */
+    public void updateDB(String sql, List<String> parameters) {
+        PreparedStatement ps = null;
+        try {
+            ps = this.conn.prepareStatement(sql);
+            int i = 0;
+            for (String parameter : parameters) {
+                ps.setObject(++i, parameter);
+            }
+            ps.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        } finally {
+            close(ps);
+        }
+    }
+
+    /** Проверка существования таблицы в БД
+     * @param tableName имя таблицы
+     * @return типа boolean
+     */
+    public boolean tableExists(String tableName) {
+        boolean result = false;
+        if (this.conn != null) {
+            try {
+                DatabaseMetaData md = conn.getMetaData();
+                ResultSet rs = md.getColumns(null, null, tableName, "%");
+                result = rs.next();
+                close(rs);
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        } else {
+            LOGGER.error("Can't check table existance, DB not connected");
+        }
+        return result;
+    }
+
+    private void close(Statement st) {
+        try {
+            if (st != null) {
+                st.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private void close(ResultSet rs) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Закрытие соединения с БД
+     */
+    public void close() {
+        try {
+            if (this.conn != null) {
+                this.conn.close();
+                LOGGER.info("DB disconnected");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    public Connection getConnection() {
+        return this.conn;
+    }
+}
