@@ -120,7 +120,7 @@ public class StoreSQL {
                 int value = rs.getInt(column);
                 results.add(value);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             close(rs);

@@ -32,8 +32,8 @@ public class StoreXML {
         ArrayList<Integer> result = new ArrayList<>();
         StoreSQL sql = new StoreSQL(this.configDB);
         if (sql.connect()) {
-            if(sql.tableExists(this.table)) {
-                result = sql.getColumn("SELECT field FROM entry", new ArrayList<>(),"field");
+            if (sql.tableExists(this.table)) {
+                result = sql.getColumn("SELECT field FROM entry", new ArrayList<>(), "field");
             }
         }
         return result;
@@ -41,7 +41,7 @@ public class StoreXML {
 
     public List<Entry> convertToEntries(List<Integer> fields) {
         ArrayList<Entry> list = new ArrayList<>();
-        for(Integer field: fields) {
+        for (Integer field: fields) {
             list.add(new Entry(field));
         }
         return list;
@@ -53,7 +53,7 @@ public class StoreXML {
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jaxbMarshaller.marshal(new Entries(list), System.out);
-        }catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
     }

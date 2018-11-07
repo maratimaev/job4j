@@ -16,7 +16,7 @@ public class StoreXMLTest {
     public void checkSave() {
         File file = new File("store.xml");
         StoreXML xml = new StoreXML(file);
-        xml.setConfigDB("jdbc:sqlite:xml.s3db","entry");
+        xml.setConfigDB("jdbc:sqlite:xml.s3db", "entry");
         xml.save(xml.convertToEntries(xml.getColumnFromDB()));
     }
 }
