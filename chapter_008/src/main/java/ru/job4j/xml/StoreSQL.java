@@ -105,19 +105,19 @@ public class StoreSQL {
         return numRowsUpdated;
     }
 
-    public ArrayList<Integer> getColumn(String sql, ArrayList<String> parameters, String column) {
-        ArrayList<Integer> results = new ArrayList<>();
+    public <T, E> ArrayList<T> getColumn(String sql, List<E> parameters, String column) {
+        ArrayList<T> results = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             ps = this.conn.prepareStatement(sql);
             int i = 0;
-            for (String parameter : parameters) {
-                ps.setString(++i, parameter);
+            for (E parameter : parameters) {
+                ps.setObject(++i, parameter);
             }
             rs = ps.executeQuery();
             while (rs.next()) {
-                int value = rs.getInt(column);
+                T value = (T) rs.getObject(column);
                 results.add(value);
             }
         } catch (Exception e) {
