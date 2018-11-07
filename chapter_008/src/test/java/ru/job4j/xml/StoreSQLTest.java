@@ -1,11 +1,7 @@
 package ru.job4j.xml;
 
 import org.junit.Test;
-
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -31,55 +27,26 @@ public class StoreSQLTest {
 
     @Test
     public void checkGenerate() {
+        ArrayList<Integer> list;
         StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
         sql.generate(200);
         sql.connect();
-
-        Connection conn = sql.getConnection();
-        try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM entry");
-            while (rs.next()) {
-                int count = rs.getInt(1);
-                assertThat(count, is(200));
-            }
-            rs.close();
-            st.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        list = sql.getColumn("SELECT field FROM entry", new ArrayList<>(), "field");
+        assertThat(list.size(), is(200));
     }
-
 
     @Test
     public void whenUpdateDBThenGetThemFromDB() {
+        ArrayList<Integer> list;
         ArrayList<String> param = new ArrayList<>();
         StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
         sql.connect();
         param.add("987654321");
         int numRowsUpdated = sql.updateDB("insert into entry (field) values (?)", param);
         assertThat(numRowsUpdated, is(1));
-        try {
-            Statement st = sql.getConnection().createStatement();
-            ResultSet rs = st.executeQuery("SELECT field FROM entry WHERE field = '987654321'");
-            while (rs.next()) {
-                int i = rs.getInt("field");
-                assertThat(rs.getInt("field"), is(987654321));
-            }
-            sql.updateDB("DELETE FROM entry WHERE field = '987654321'", new ArrayList<>());
-            rs.close();
-            st.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        list = sql.getColumn("SELECT field FROM entry WHERE field = '987654321'", new ArrayList<>(), "field");
+        assertThat(list.get(0), is(987654321));
+        sql.updateDB("DELETE FROM entry WHERE field = '987654321'", new ArrayList<>());
         sql.close();
     }
 }

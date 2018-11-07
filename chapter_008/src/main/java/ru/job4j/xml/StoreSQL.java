@@ -105,43 +105,26 @@ public class StoreSQL {
         return numRowsUpdated;
     }
 
-    public <T, E> List<Map<String, E>> queryDB(Connection connection, String sql, List<T> parameters) throws SQLException {
-        List<Map<String, E>> results = null;
+    public ArrayList<Integer> getColumn(String sql, ArrayList<String> parameters, String column) {
+        ArrayList<Integer> results = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = connection.prepareStatement(sql);
+            ps = this.conn.prepareStatement(sql);
             int i = 0;
-            for (T parameter : parameters) {
-                ps.setObject(++i, parameter);
+            for (String parameter : parameters) {
+                ps.setString(++i, parameter);
             }
             rs = ps.executeQuery();
-            results = map(rs);
+            while (rs.next()) {
+                int value = rs.getInt(column);
+                results.add(value);
+            }
+        }catch (Exception e){
+            LOGGER.error(e.getMessage(), e);
         } finally {
             close(rs);
             close(ps);
-        }
-        return results;
-    }
-
-    public <E> List<Map<String, E>> map(ResultSet rs) throws SQLException {
-        List<Map<String, E>> results = new ArrayList<>();
-        try {
-            if (rs != null) {
-                ResultSetMetaData meta = rs.getMetaData();
-                int numColumns = meta.getColumnCount();
-                while (rs.next()) {
-                    Map<String, E> row = new HashMap<>();
-                    for (int i = 1; i <= numColumns; ++i) {
-                        String name = meta.getColumnName(i);
-                        E value = (E) rs.getObject(i);
-                        row.put(name, value);
-                    }
-                    results.add(row);
-                }
-            }
-        } finally {
-            close(rs);
         }
         return results;
     }
