@@ -25,7 +25,7 @@ public class ConvertXSQT {
             Source xml = new StreamSource(source);
             transformer.transform(xml, new StreamResult(dest));
             transformer.transform(xml, new StreamResult(System.out));
-        }catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
