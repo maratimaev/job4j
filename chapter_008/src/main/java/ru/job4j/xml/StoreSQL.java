@@ -2,20 +2,19 @@ package ru.job4j.xml;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
+/** Получение данных из БД
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 05.11.2018
  */
 public class StoreSQL {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(StoreSQL.class.getName());
+    /**
+     * Экземпляр соединения с БД
+     */
     private Connection conn = null;
 
     /**
@@ -43,7 +42,7 @@ public class StoreSQL {
                 try {
                     this.conn.setAutoCommit(false);
                     ps = conn.prepareStatement("INSERT INTO entry (field) VALUES(?)");
-                    for (int i = 0; i < n; i++) {
+                    for (int i = 0; i <= n; i++) {
                         ps.setInt(1, i);
                         ps.addBatch();
                         if (i % 1000 == 0) {

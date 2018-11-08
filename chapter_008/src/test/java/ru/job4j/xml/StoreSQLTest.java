@@ -29,10 +29,10 @@ public class StoreSQLTest {
     public void checkGenerate() {
         ArrayList<Integer> list;
         StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
-        sql.generate(200);
+        sql.generate(2);
         sql.connect();
         list = sql.getColumn("SELECT field FROM entry", new ArrayList<>(), "field");
-        assertThat(list.size(), is(200));
+        assertThat(list.size(), is(3));
     }
 
     @Test
