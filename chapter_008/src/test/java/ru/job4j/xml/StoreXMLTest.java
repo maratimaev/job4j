@@ -1,16 +1,9 @@
 package ru.job4j.xml;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.hamcrest.core.Is;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
