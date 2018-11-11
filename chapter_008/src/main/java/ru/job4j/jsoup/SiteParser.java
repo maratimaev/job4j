@@ -54,6 +54,8 @@ public class SiteParser {
 //                }
                 if (!sqlru.getMessage().contains("Важно: ") && formatedDate.before(beginYear)) {
                     next = false;
+                    LOGGER.info(String.format("Loaded %s messages from %s page(s). First messages date: %s",
+                            this.messagesCount, this.pagesCount, beginYear));
                     break;
                 }
                 this.sqlruList.add(sqlru);
@@ -64,8 +66,6 @@ public class SiteParser {
                 grabSQLRU(nextPage);
             }
         }
-        LOGGER.info(String.format("Loaded %s messages from %s page(s). First messages date: %s",
-                                    this.messagesCount, this.pagesCount, beginYear));
         return this.sqlruList;
     }
 
