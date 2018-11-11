@@ -14,7 +14,7 @@ import javax.xml.transform.stream.StreamResult;
  * @since 07.11.2018
  */
 public class ConvertXSQT {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoreSQL.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConvertXSQT.class.getName());
 
     /** Конвертация через xsl
      * @param source исходный файл store.xml

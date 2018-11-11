@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -21,14 +22,10 @@ public class SiteParserTest {
     @Test
     public void startSiteParser() {
         SiteParser parser = new SiteParser();
-//        parser.grabSQLRU("http://www.sql.ru/forum/job-offers");
-
-//        Date date = null;
-//        try {
-//            date = new SimpleDateFormat("d MMM y, H:m").parse("31 окт 18, 19:34");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(new SimpleDateFormat("EEE, d MMM yyyy HH:mm Z", Locale.getDefault()).format(date));
+        PostrgreDB db = new PostrgreDB();
+        db.connect();
+        ArrayList<SQLRU> list = parser.grabSQLRU("http://www.sql.ru/forum/job-offers");
+        db.add(list);
+        db.close();
     }
 }

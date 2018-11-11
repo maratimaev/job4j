@@ -15,7 +15,7 @@ import java.util.List;
  * @since 06.11.2018
  */
 public class StoreXML {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoreSQL.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(StoreXML.class.getName());
     /**
      * Целевой файл
      */

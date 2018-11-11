@@ -13,7 +13,7 @@ import java.io.File;
  * @since 08.11.2018
  */
 public class ParserSAX extends DefaultHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoreSQL.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParserSAX.class.getName());
     /**
      * Сумма чисел
      */
