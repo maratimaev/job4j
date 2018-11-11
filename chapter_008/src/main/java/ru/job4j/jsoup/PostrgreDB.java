@@ -2,15 +2,11 @@ package ru.job4j.jsoup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.job4j.sql.SQL;
-
 import java.io.InputStream;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -18,15 +14,10 @@ import java.util.Random;
  */
 public class PostrgreDB {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostrgreDB.class.getName());
-    //private ArrayList<SQLRU> sqlruList;
     /**
      * Экземпляр соединения с БД
      */
     private Connection connection;
-
-//    public PostrgreDB(ArrayList<SQLRU> sqlruList) {
-//        this.sqlruList = sqlruList;
-//    }
 
     /** Установка соединения с БД
      * @return результат boolean
@@ -57,15 +48,15 @@ public class PostrgreDB {
             ResultSet rsTables = dbmd.getColumns(null, null, "messages", "%");
             if (!rsTables.next()) {
                 st = this.connection.createStatement();
-                st.execute("CREATE TABLE messages (" +
-                                "id serial PRIMARY KEY, " +
-                                "message VARCHAR(2000), " +
-                                "messageLink VARCHAR(200), " +
-                                "memberName VARCHAR(100), " +
-                                "answerCount VARCHAR(100), " +
-                                "viewsCount VARCHAR(100), " +
-                                "body TEXT, " +
-                                "date VARCHAR(100))"
+                st.execute("CREATE TABLE messages ("
+                            + "id serial PRIMARY KEY, "
+                            + "message VARCHAR(2000), "
+                            + "messageLink VARCHAR(200), "
+                            + "memberName VARCHAR(100), "
+                            + "answerCount VARCHAR(100), "
+                            + "viewsCount VARCHAR(100), "
+                            + "body TEXT, "
+                            + "date VARCHAR(100))"
                 );
                 LOGGER.warn("Table 'messages' not found. Empty table created");
             } else {
@@ -84,8 +75,8 @@ public class PostrgreDB {
         try {
             try {
                 this.connection.setAutoCommit(false);
-                ps = connection.prepareStatement("INSERT INTO messages (message, messageLink, memberName, " +
-                        "answerCount, viewsCount, body, date) VALUES(?, ?, ?, ?, ?, ?, ?)");
+                ps = connection.prepareStatement("INSERT INTO messages (message, messageLink, memberName, "
+                        + "answerCount, viewsCount, body, date) VALUES(?, ?, ?, ?, ?, ?, ?)");
                 int i = 0;
                 for (SQLRU msg: sqlruList) {
                     ps.setString(1, msg.getMessage());

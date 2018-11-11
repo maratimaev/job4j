@@ -1,14 +1,11 @@
 package ru.job4j.jsoup;
 
-import com.sun.javafx.binding.StringFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.job4j.xml.StoreSQL;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,17 +19,17 @@ public class SiteParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(SiteParser.class.getName());
     private int pagesCount = 2;
     private int messagesCount = 0;
-    private ArrayList <SQLRU> sqlruList;
+    private ArrayList<SQLRU> sqlruList;
 
     public SiteParser() {
         this.sqlruList = new ArrayList<>();
     }
 
-    public ArrayList <SQLRU> grabSQLRU(String html) {
+    public ArrayList<SQLRU> grabSQLRU(String html) {
         boolean next = true;
-        Date beginYear = formatDate(String.format("01 авг %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
+        Date beginYear = formatDate(String.format("01 окт %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
         Document doc = htmlConnect(html);
-        if(!doc.baseUri().contains("error")) {
+        if (!doc.baseUri().contains("error")) {
             Elements message = doc.select(
                     "td[class=postslisttopic],"
                             + "a[href~=http://www.sql.ru/forum/[0-9]+/],"
@@ -63,11 +60,11 @@ public class SiteParser {
                 this.messagesCount++;
             }
             String nextPage = String.format("http://www.sql.ru/forum/job-offers/%s", this.pagesCount++);
-            if(next) {
+            if (next) {
                 grabSQLRU(nextPage);
             }
         }
-        LOGGER.info(String.format("Загружено %s сообщений с %s страниц(ы). Дата первых сообщений: %s",
+        LOGGER.info(String.format("Loaded %s messages from %s page(s). First messages date: %s",
                                     this.messagesCount, this.pagesCount, beginYear));
         return this.sqlruList;
     }
@@ -79,15 +76,14 @@ public class SiteParser {
         String yesterday = new SimpleDateFormat("d MMM y").format(cal.getTime());
         String today = new SimpleDateFormat("d MMM y").format(new Date());
         try {
-            String date = rawDate;
-            if(date.contains("сегодня")) {
-                String time = date.substring(date.indexOf(" "));
+            if (rawDate.contains("сегодня")) {
+                String time = rawDate.substring(rawDate.indexOf(" "));
                 result = new SimpleDateFormat("d MMM y, H:m").parse(today + "," + time);
-            } else if(date.contains("вчера")) {
-                String time = date.substring(date.indexOf(" "));
+            } else if (rawDate.contains("вчера")) {
+                String time = rawDate.substring(rawDate.indexOf(" "));
                 result = new SimpleDateFormat("d MMM y, H:m").parse(yesterday + "," + time);
             } else {
-                result = new SimpleDateFormat("d MMM y, H:m").parse(date);
+                result = new SimpleDateFormat("d MMM y, H:m").parse(rawDate);
             }
         } catch (ParseException e) {
             LOGGER.error(e.getMessage(), e);

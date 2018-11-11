@@ -26,6 +26,5 @@ public class SiteParserTest {
         db.connect();
         ArrayList<SQLRU> list = parser.grabSQLRU("http://www.sql.ru/forum/job-offers");
         db.add(list);
-        db.close();
     }
 }
