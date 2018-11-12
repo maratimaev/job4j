@@ -24,7 +24,8 @@ public class SiteParserTest {
         SiteParser parser = new SiteParser();
         PostrgreDB db = new PostrgreDB();
         db.connect();
-        ArrayList<SQLRU> list = parser.grabSQLRU("http://www.sql.ru/forum/job-offers");
+        SQLRU sql = db.getLast();
+        ArrayList<SQLRU> list = parser.grabSQLRU("http://www.sql.ru/forum/job-offers", sql);
         db.add(list);
     }
 }

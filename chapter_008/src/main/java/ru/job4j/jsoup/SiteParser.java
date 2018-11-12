@@ -25,9 +25,9 @@ public class SiteParser {
         this.sqlruList = new ArrayList<>();
     }
 
-    public ArrayList<SQLRU> grabSQLRU(String html) {
+    public ArrayList<SQLRU> grabSQLRU(String html, SQLRU last) {
         boolean next = true;
-        Date beginYear = formatDate(String.format("01 окт %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
+        Date beginYear = formatDate(String.format("01 ноя %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
         Document doc = htmlConnect(html);
         if (!doc.baseUri().contains("error")) {
             Elements message = doc.select(
@@ -52,7 +52,11 @@ public class SiteParser {
 //                    Element bodyMsg = body.selectFirst("td[ style=width:15%] ~ td[class=msgBody]");
 //                    sqlru.setBody(bodyMsg.text());
 //                }
-                if (!sqlru.getMessage().contains("Важно: ") && formatedDate.before(beginYear)) {
+                boolean parseDelta = false;
+                if (last.getMessage() != null) {
+                    parseDelta = formatedDate.before(last.getDate());
+                }
+                if (!sqlru.getMessage().contains("Важно: ") && (parseDelta | formatedDate.before(beginYear))) {
                     next = false;
                     LOGGER.info(String.format("Loaded %s messages from %s page(s). First messages date: %s",
                             this.messagesCount, this.pagesCount, beginYear));
@@ -63,7 +67,7 @@ public class SiteParser {
             }
             String nextPage = String.format("http://www.sql.ru/forum/job-offers/%s", this.pagesCount++);
             if (next) {
-                grabSQLRU(nextPage);
+                grabSQLRU(nextPage, last);
             }
         }
         return this.sqlruList;

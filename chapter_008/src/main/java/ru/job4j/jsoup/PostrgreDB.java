@@ -2,6 +2,8 @@ package ru.job4j.jsoup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.sql.SQL;
+
 import java.io.InputStream;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -56,7 +58,7 @@ public class PostrgreDB {
                             + "answerCount VARCHAR(100), "
                             + "viewsCount VARCHAR(100), "
                             + "body TEXT, "
-                            + "date VARCHAR(100))"
+                            + "date TIMESTAMP)"
                 );
                 LOGGER.warn("Table 'messages' not found. Empty table created");
             } else {
@@ -85,7 +87,7 @@ public class PostrgreDB {
                     ps.setString(4, msg.getAnswerCount());
                     ps.setString(5, msg.getViewsCount());
                     ps.setString(6, msg.getBody());
-                    ps.setString(7, msg.getDate().toString());
+                    ps.setTimestamp(7, new Timestamp(msg.getDate().getTime()));
                     ps.addBatch();
 
                     if (i++ % 1000 == 0) {
@@ -130,7 +132,7 @@ public class PostrgreDB {
                 msg.setAnswerCount(rs.getString("answerCount"));
                 msg.setViewsCount(rs.getString("viewsCount"));
                 msg.setBody(rs.getString("body"));
-                msg.setDate(new SimpleDateFormat("d MMM y, H:m").parse(rs.getString("date")));
+                msg.setDate(new SimpleDateFormat("y-M-d H:m:s").parse(rs.getString("date")));
                 result.add(msg);
                 //LOGGER.info(String.format("Get item %s, %s, %s", item.getName(), item.getDescription(), item.getId()));
             }
@@ -143,8 +145,13 @@ public class PostrgreDB {
         return result;
     }
 
-    public ArrayList<SQLRU> getLast() {
-        return query("SELECT message, messageLink, memberName, answerCount, viewsCount, body, date ORDER BY date FROM messages WHERE rownum=1", new ArrayList<>());
+    public SQLRU getLast() {
+        SQLRU result = new SQLRU();
+        ArrayList<SQLRU> last = query("SELECT message, messageLink, memberName, answerCount, viewsCount, body, date FROM messages WHERE message NOT LIKE 'Важно: %' ORDER BY date DESC LIMIT 1", new ArrayList<>());
+        if (!last.isEmpty()) {
+            result = last.get(0);
+        }
+        return result;
     }
 
     public ArrayList<SQLRU> getAll() {
