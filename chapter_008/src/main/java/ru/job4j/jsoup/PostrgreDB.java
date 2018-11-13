@@ -2,8 +2,6 @@ package ru.job4j.jsoup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.job4j.sql.SQL;
-
 import java.io.InputStream;
 import java.sql.*;
 import java.text.SimpleDateFormat;
