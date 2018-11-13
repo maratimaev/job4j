@@ -58,7 +58,9 @@ public class PostrgreDB {
                             + "answerCount VARCHAR(100), "
                             + "viewsCount VARCHAR(100), "
                             + "body TEXT, "
-                            + "date TIMESTAMP)"
+                            + "date TIMESTAMP, "
+                            + "UNIQUE(message), "
+                            + "UNIQUE(body))"
                 );
                 LOGGER.warn("Table 'messages' not found. Empty table created");
             } else {
@@ -78,8 +80,9 @@ public class PostrgreDB {
             try {
                 this.connection.setAutoCommit(false);
                 ps = connection.prepareStatement("INSERT INTO messages (message, messageLink, memberName, "
-                        + "answerCount, viewsCount, body, date) VALUES(?, ?, ?, ?, ?, ?, ?)");
+                        + "answerCount, viewsCount, body, date) VALUES(?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING");
                 int i = 0;
+                int addedRows = 0;
                 for (SQLRU msg: sqlruList) {
                     ps.setString(1, msg.getMessage());
                     ps.setString(2, msg.getMessageLink());
@@ -92,9 +95,16 @@ public class PostrgreDB {
 
                     if (i++ % 1000 == 0) {
                         int[] count = ps.executeBatch();
+                        for (int j: count) {
+                            addedRows += j;
+                        }
                     }
                 }
-                ps.executeBatch();
+                int[] count = ps.executeBatch();
+                for (int j: count) {
+                    addedRows += j;
+                }
+                LOGGER.info(String.format("Messsages %s. Added to DB %s unique rows", sqlruList.size(), addedRows));
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
                 success = false;

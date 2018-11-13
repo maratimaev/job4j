@@ -27,15 +27,11 @@ public class SiteParser {
 
     public ArrayList<SQLRU> grabSQLRU(String html, SQLRU last) {
         boolean next = true;
-        Date beginYear = formatDate(String.format("01 ноя %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
+        Date beginYear = formatDate(String.format("01 янв %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
         Document doc = htmlConnect(html);
         if (!doc.baseUri().contains("error")) {
             Elements message = doc.select(
-                    "td[class=postslisttopic],"
-                            + "a[href~=http://www.sql.ru/forum/[0-9]+/],"
-                            + "a[href*=memberinfo],"
-                            + "td[style=text-align:center][class=altCol],"
-                            + "td[style=text-align:center]:not(.altCol)"
+                    "td[class=postslisttopic],a[href*=memberinfo],a[href~=https://www.sql.ru/forum/[0-9]+/], td[style=text-align:center][class=altCol],td[style=text-align:center]:not(.altCol)"
             );
             Iterator<Element> iterator = message.iterator();
             while (iterator.hasNext()) {
@@ -62,8 +58,12 @@ public class SiteParser {
                             this.messagesCount, this.pagesCount, beginYear));
                     break;
                 }
-                this.sqlruList.add(sqlru);
-                this.messagesCount++;
+                if (sqlru.getMessage().toLowerCase().contains("java")
+                        && !sqlru.getMessage().toLowerCase().contains("javascript")
+                        && !sqlru.getMessage().toLowerCase().contains("java script")) {
+                    this.sqlruList.add(sqlru);
+                    this.messagesCount++;
+                }
             }
             String nextPage = String.format("http://www.sql.ru/forum/job-offers/%s", this.pagesCount++);
             if (next) {
