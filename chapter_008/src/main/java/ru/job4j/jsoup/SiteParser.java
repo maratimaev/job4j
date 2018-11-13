@@ -30,9 +30,14 @@ public class SiteParser {
         Date beginYear = formatDate(String.format("01 янв %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
         Document doc = htmlConnect(html);
         if (!doc.baseUri().contains("error")) {
-            Elements message = doc.select(
-                    "td[class=postslisttopic],a[href*=memberinfo],a[href~=https://www.sql.ru/forum/[0-9]+/], td[style=text-align:center][class=altCol],td[style=text-align:center]:not(.altCol)"
-            );
+            String cssQuery = new StringBuilder()
+                    .append("td[class=postslisttopic],")
+                    .append("a[href*=memberinfo],")
+                    .append("a[href~=https://www.sql.ru/forum/[0-9]+/],")
+                    .append("td[style=text-align:center][class=altCol],")
+                    .append("td[style=text-align:center]:not(.altCol)")
+                    .toString();
+            Elements message = doc.select(cssQuery);
             Iterator<Element> iterator = message.iterator();
             while (iterator.hasNext()) {
                 SQLRU sqlru = new SQLRU();
@@ -54,8 +59,9 @@ public class SiteParser {
                 }
                 if (!sqlru.getMessage().contains("Важно: ") && (parseDelta | formatedDate.before(beginYear))) {
                     next = false;
-                    LOGGER.info(String.format("Loaded %s messages from %s page(s). First messages date: %s",
-                            this.messagesCount, this.pagesCount, beginYear));
+                    LOGGER.info(String.format("Last message in DB at %s - %s", last.getDate(), last.getMessage()));
+                    LOGGER.info(String.format("Loaded %s messages from %s page(s). Begining messages date: %s",
+                            this.messagesCount, this.pagesCount - 1, beginYear));
                     break;
                 }
                 if (sqlru.getMessage().toLowerCase().contains("java")
@@ -77,17 +83,19 @@ public class SiteParser {
         Date result = null;
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
-        String yesterday = new SimpleDateFormat("d MMM y").format(cal.getTime());
-        String today = new SimpleDateFormat("d MMM y").format(new Date());
+        SimpleDateFormat dateTime = new SimpleDateFormat("d MMM y, H:m");
+        SimpleDateFormat dateOnly = new SimpleDateFormat("d MMM y");
+        String yesterday = dateOnly.format(cal.getTime());
+        String today = dateOnly.format(new Date());
         try {
             if (rawDate.contains("сегодня")) {
                 String time = rawDate.substring(rawDate.indexOf(" "));
-                result = new SimpleDateFormat("d MMM y, H:m").parse(today + "," + time);
+                result = dateTime.parse(today + "," + time);
             } else if (rawDate.contains("вчера")) {
                 String time = rawDate.substring(rawDate.indexOf(" "));
-                result = new SimpleDateFormat("d MMM y, H:m").parse(yesterday + "," + time);
+                result = dateTime.parse(yesterday + "," + time);
             } else {
-                result = new SimpleDateFormat("d MMM y, H:m").parse(rawDate);
+                result = dateTime.parse(rawDate);
             }
         } catch (ParseException e) {
             LOGGER.error(e.getMessage(), e);
