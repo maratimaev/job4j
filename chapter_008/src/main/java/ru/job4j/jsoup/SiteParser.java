@@ -64,12 +64,12 @@ public class SiteParser {
                             this.messagesCount, this.pagesCount - 1, beginYear));
                     break;
                 }
-                if (sqlru.getMessage().toLowerCase().contains("java")
-                        && !sqlru.getMessage().toLowerCase().contains("javascript")
-                        && !sqlru.getMessage().toLowerCase().contains("java script")) {
+//                if (sqlru.getMessage().toLowerCase().contains("java")
+//                        && !sqlru.getMessage().toLowerCase().contains("javascript")
+//                        && !sqlru.getMessage().toLowerCase().contains("java script")) {
                     this.sqlruList.add(sqlru);
                     this.messagesCount++;
-                }
+//                }
             }
             String nextPage = String.format("http://www.sql.ru/forum/job-offers/%s", this.pagesCount++);
             if (next) {
