@@ -37,38 +37,47 @@ public class PostrgreDB {
             LOGGER.error(e.getMessage(), e);
         }
         LOGGER.info("Connected OK " + this.connection);
-        checkTableExistance();
+        if (tableNotExists()) {
+            createEmptyTable();
+        }
         return this.connection != null;
     }
 
-    private void checkTableExistance() {
-        Statement st = null;
+    private boolean tableNotExists() {
+        boolean result = true;
         try {
             DatabaseMetaData dbmd = this.connection.getMetaData();
             ResultSet rsTables = dbmd.getColumns(null, null, "messages", "%");
             if (!rsTables.next()) {
-                st = this.connection.createStatement();
-                st.execute("CREATE TABLE messages ("
-                            + "id serial PRIMARY KEY, "
-                            + "message VARCHAR(2000), "
-                            + "messageLink VARCHAR(200), "
-                            + "memberName VARCHAR(100), "
-                            + "answerCount VARCHAR(100), "
-                            + "viewsCount VARCHAR(100), "
-                            + "body TEXT, "
-                            + "date TIMESTAMP, "
-                            + "UNIQUE(message), "
-                            + "UNIQUE(body))"
-                );
-                LOGGER.warn("Table 'messages' not found. Empty table created");
+                LOGGER.warn("Table 'messages' not found");
             } else {
                 LOGGER.info("Table 'messages' founded");
+                result = false;
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(st);
         }
+        return result;
+    }
+
+    private void createEmptyTable() {
+        try (Statement st = this.connection.createStatement()) {
+            st.execute("CREATE TABLE messages ("
+                    + "id serial PRIMARY KEY, "
+                    + "message VARCHAR(2000), "
+                    + "messageLink VARCHAR(200), "
+                    + "memberName VARCHAR(100), "
+                    + "answerCount VARCHAR(100), "
+                    + "viewsCount VARCHAR(100), "
+                    + "body TEXT, "
+                    + "date TIMESTAMP, "
+                    + "UNIQUE(message), "
+                    + "UNIQUE(body))"
+            );
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        LOGGER.info("Empty table 'message' created");
     }
 
     public boolean add(ArrayList<SQLRU> sqlruList) {
