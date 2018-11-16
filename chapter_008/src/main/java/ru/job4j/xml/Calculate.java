@@ -9,10 +9,17 @@ import java.time.Instant;
  * @since 08.11.2018
  */
 public class Calculate {
-    private StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
-    private StoreXML xml = new StoreXML(new File("store.xml"));
-    private ConvertXSQT xsl = new ConvertXSQT();
-    private ParserSAX parser = new ParserSAX();
+    private StoreSQL sql;
+    private StoreXML xml;
+    private ConvertXSQT xsl;
+    private ParserSAX parser;
+
+    public Calculate() {
+        sql = new StoreSQL("jdbc:sqlite:xml.s3db");
+        xml = new StoreXML(new File("store.xml"));
+        xsl = new ConvertXSQT();
+        parser = new ParserSAX();
+    }
 
     /**
      * Вывод в консоль этапы генерации, конвертации и подсчета чисел
@@ -20,7 +27,7 @@ public class Calculate {
     public void calc() {
         Instant start = Instant.now();
         System.out.println("Start generate...");
-        sql.generate(1000000);
+        sql.generate(10);
         System.out.println("Start export to xml...");
         xml.save(xml.getColumnFromDB("jdbc:sqlite:xml.s3db", "entry", "field"));
         System.out.println("Start convert...");
