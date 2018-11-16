@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.tracker.ITracker;
 import ru.job4j.tracker.Item;
-
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.Random;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 31.10.2018
  */
-public class TrackerSQL implements ITracker, Cloneable {
+public class TrackerSQL implements ITracker, Cloneable, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrackerSQL.class.getName());
 
@@ -43,29 +42,37 @@ public class TrackerSQL implements ITracker, Cloneable {
             LOGGER.error(e.getMessage(), e);
         }
         LOGGER.info("Connected OK " + this.connection);
-        checkTableExistance();
+        if (tableNotExists()) {
+            createEmptyTable();
+        }
         return this.connection != null;
     }
 
     /**
      *  Проверка на существовfние таблицы items
      */
-    private void checkTableExistance() {
-        Statement st = null;
+    private boolean tableNotExists() {
+        boolean result = true;
         try {
             DatabaseMetaData dbmd = this.connection.getMetaData();
             ResultSet rsTables = dbmd.getColumns(null, null, "items", "%");
             if (!rsTables.next()) {
-                st = this.connection.createStatement();
-                st.execute("CREATE TABLE items (id serial PRIMARY KEY, name VARCHAR(200), description VARCHAR(2000), item_id VARCHAR(200))");
-                LOGGER.warn("Table 'items' not found. Empty table created");
+                LOGGER.warn("Table 'items' not found");
             } else {
                 LOGGER.info("Table 'items' founded");
+                result = false;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(st);
+        }
+        return result;
+    }
+
+    private void createEmptyTable() {
+        try (Statement st = this.connection.createStatement()) {
+            st.execute("CREATE TABLE items (id serial PRIMARY KEY, name VARCHAR(200), description VARCHAR(2000), item_id VARCHAR(200))");
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -75,19 +82,15 @@ public class TrackerSQL implements ITracker, Cloneable {
      */
     @Override
     public Item add(Item item) {
-        PreparedStatement ps = null;
         item.setId(this.generateId());
-        try {
-            ps = this.connection.prepareStatement("INSERT INTO items (name, description, item_id) VALUES (?, ?, ?)");
+        try (PreparedStatement ps = this.connection.prepareStatement("INSERT INTO items (name, description, item_id) VALUES (?, ?, ?)")) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDescription());
             ps.setString(3, item.getId());
             int rs = ps.executeUpdate();
             LOGGER.info(String.format("Insert %s row: %s, %s, %s", rs, item.getName(), item.getDescription(), item.getId()));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(ps);
         }
         return item;
     }
@@ -98,18 +101,14 @@ public class TrackerSQL implements ITracker, Cloneable {
      */
     @Override
     public void replace(String id, Item item) {
-        PreparedStatement ps = null;
-        try {
-            ps = this.connection.prepareStatement("UPDATE items SET name = ?, description = ? WHERE item_id = ?");
+        try (PreparedStatement ps = this.connection.prepareStatement("UPDATE items SET name = ?, description = ? WHERE item_id = ?");) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDescription());
             ps.setString(3, id);
             int rs = ps.executeUpdate();
             LOGGER.info(String.format("Replaced %s row, %s", rs, id));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(ps);
         }
     }
 
@@ -118,16 +117,12 @@ public class TrackerSQL implements ITracker, Cloneable {
      */
     @Override
     public void delete(String id) {
-        PreparedStatement ps = null;
-        try {
-            ps = this.connection.prepareStatement("DELETE FROM items WHERE item_id = ?");
+        try (PreparedStatement ps = this.connection.prepareStatement("DELETE FROM items WHERE item_id = ?")) {
             ps.setString(1, id);
             int rs = ps.executeUpdate();
             LOGGER.info(String.format("Deleted %s row, %s", rs, id));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(ps);
         }
     }
 
@@ -138,26 +133,21 @@ public class TrackerSQL implements ITracker, Cloneable {
      */
     private ArrayList<Item> query(String sql, List<String> parameters) {
         ArrayList<Item> result = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = this.connection.prepareStatement(sql);
+        try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
             int i = 0;
             for (String parameter : parameters) {
                 ps.setObject(++i, parameter);
             }
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Item item = new Item(rs.getString("name"), rs.getString("description"));
-                item.setId(rs.getString("item_id"));
-                result.add(item);
-                LOGGER.info(String.format("Get item %s, %s, %s", item.getName(), item.getDescription(), item.getId()));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Item item = new Item(rs.getString("name"), rs.getString("description"));
+                    item.setId(rs.getString("item_id"));
+                    result.add(item);
+                    LOGGER.info(String.format("Get item %s, %s, %s", item.getName(), item.getDescription(), item.getId()));
+                }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(rs);
-            close(ps);
         }
         return result;
     }
@@ -197,29 +187,10 @@ public class TrackerSQL implements ITracker, Cloneable {
         return item;
     }
 
-    private void close(Statement st) {
-        try {
-            if (st != null) {
-                st.close();
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
-
-    private void close(ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
-
     /**
      * Закрытие соединения с БД
      */
+    @Override
     public void close() {
         try {
             if (this.connection != null) {
