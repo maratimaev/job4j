@@ -1,18 +1,7 @@
 package ru.job4j.jsoup;
 
 import org.junit.Test;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
