@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
@@ -28,7 +29,7 @@ public class ConvertXSQT {
             Transformer transformer = factory.newTransformer(xslt);
             Source xml = new StreamSource(source);
             transformer.transform(xml, new StreamResult(dest));
-        } catch (Exception e) {
+        } catch (TransformerException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }

@@ -13,13 +13,15 @@ public class ParserSAXTest {
 
     @Test
     public void whenStartParserGetSum() {
-        StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
+        Config config = new Config();
+        config.init();
+        try (StoreSQL sql = new StoreSQL(config)) {
+            sql.generate(10);
+        }
         StoreXML xml = new StoreXML(new File("store.xml"));
         ConvertXSQT xsl = new ConvertXSQT();
         ParserSAX parser = new ParserSAX();
-
-        sql.generate(10);
-        xml.save(xml.getColumnFromDB("jdbc:sqlite:xml.s3db", "entry", "field"));
+        xml.save(xml.getColumnFromDB(config, "entry", "field"));
         xsl.convert(new File("store.xml"), new File("converted.xml"), new File("schema.xsl"));
         assertThat(parser.parse(new File("converted.xml")), is(55));
     }

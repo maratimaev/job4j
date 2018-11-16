@@ -9,13 +9,16 @@ import java.time.Instant;
  * @since 08.11.2018
  */
 public class Calculate {
+    private Config config;
     private StoreSQL sql;
     private StoreXML xml;
     private ConvertXSQT xsl;
     private ParserSAX parser;
 
     public Calculate() {
-        sql = new StoreSQL("jdbc:sqlite:xml.s3db");
+        this.config = new Config();
+        this.config.init();
+        sql = new StoreSQL(this.config);
         xml = new StoreXML(new File("store.xml"));
         xsl = new ConvertXSQT();
         parser = new ParserSAX();
@@ -29,7 +32,7 @@ public class Calculate {
         System.out.println("Start generate...");
         sql.generate(10);
         System.out.println("Start export to xml...");
-        xml.save(xml.getColumnFromDB("jdbc:sqlite:xml.s3db", "entry", "field"));
+        xml.save(xml.getColumnFromDB(this.config, "entry", "field"));
         System.out.println("Start convert...");
         xsl.convert(new File("store.xml"), new File("converted.xml"), new File("schema.xsl"));
         System.out.println("Start parse...");

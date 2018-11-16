@@ -2,6 +2,7 @@ package ru.job4j.xml;
 
 import org.junit.Test;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import static org.hamcrest.Matchers.is;
@@ -13,12 +14,15 @@ import static org.junit.Assert.assertThat;
  */
 public class ConvertXSQTTest {
     @Test
-    public void whenConvert1EentryThenCheckStdOut() {
-        StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
+    public void whenConvert1EentryThenCheckStdOut() throws IOException {
+        Config config = new Config();
+        config.init();
+        try (StoreSQL sql = new StoreSQL(config)) {
+            sql.generate(0);
+        }
         StoreXML xml = new StoreXML(new File("store.xml"));
         ConvertXSQT xsl = new ConvertXSQT();
-        sql.generate(0);
-        xml.save(xml.getColumnFromDB("jdbc:sqlite:xml.s3db", "entry", "field"));
+        xml.save(xml.getColumnFromDB(config, "entry", "field"));
         xsl.convert(new File("store.xml"), new File("converted.xml"), new File("schema.xsl"));
         String expect = new StringBuilder()
                 .append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
@@ -30,11 +34,7 @@ public class ConvertXSQTTest {
                 .append("</entries>")
                 .toString();
         String file = null;
-        try {
-            file = new String(Files.readAllBytes(Paths.get("converted.xml")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        file = new String(Files.readAllBytes(Paths.get("converted.xml")));
         assertThat(file, is(expect));
     }
 

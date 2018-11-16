@@ -10,7 +10,7 @@ import java.util.List;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 05.11.2018
  */
-public class StoreSQL {
+public class StoreSQL implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(StoreSQL.class.getName());
     /**
      * Экземпляр соединения с БД
@@ -20,9 +20,9 @@ public class StoreSQL {
     /**
      * Поле с параметрами подключения к БД
      */
-    private String config;
+    private Config config;
 
-    public StoreSQL(String config) {
+    public StoreSQL(Config config) {
         this.config = config;
     }
 
@@ -31,17 +31,15 @@ public class StoreSQL {
      */
     public void generate(int n) {
         if (this.connect()) {
-            if (!this.tableExists("entry")) {
+            if (this.tableNotExists("entry")) {
                 this.updateDB("CREATE TABLE entry (field INTEGER)", new ArrayList<>());
             } else {
                 this.updateDB("DELETE FROM entry", new ArrayList<>());
             }
-            PreparedStatement ps = null;
             boolean success = true;
             try {
-                try {
-                    this.conn.setAutoCommit(false);
-                    ps = conn.prepareStatement("INSERT INTO entry (field) VALUES(?)");
+                this.conn.setAutoCommit(false);
+                try (PreparedStatement ps = this.conn.prepareStatement("INSERT INTO entry (field) VALUES(?)")) {
                     for (int i = 0; i <= n; i++) {
                         ps.setInt(1, i);
                         ps.addBatch();
@@ -50,20 +48,20 @@ public class StoreSQL {
                         }
                     }
                     ps.executeBatch();
-                } catch (Exception e) {
-                    LOGGER.error(e.getMessage(), e);
-                    success = false;
-                } finally {
-                    this.close(ps);
+                }
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage(), e);
+                success = false;
+            } finally {
+                try {
                     if (success) {
                         conn.commit();
                     } else {
                         conn.rollback();
                     }
-                    this.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
                 }
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
             }
         }
     }
@@ -74,7 +72,7 @@ public class StoreSQL {
     public boolean connect() {
         try {
             Class.forName("org.sqlite.JDBC");
-            this.conn = DriverManager.getConnection(this.config);
+            this.conn = DriverManager.getConnection(this.config.get("sqliteDB"));
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -87,43 +85,42 @@ public class StoreSQL {
      * @param parameters для PrepareStatement
      */
     public <T> int updateDB(String sql, List<T> parameters) {
-        PreparedStatement ps = null;
         int numRowsUpdated = 0;
-        try {
-            ps = this.conn.prepareStatement(sql);
+        try (PreparedStatement ps = this.conn.prepareStatement(sql)) {
             int i = 0;
             for (T parameter : parameters) {
                 ps.setObject(++i, parameter);
             }
             numRowsUpdated = ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(ps);
         }
         return numRowsUpdated;
     }
 
+    /** Получение столбца из БД
+     * @param sql запрос
+     * @param parameters для prepareStatement
+     * @param column имя столбца
+     * @param <T> типа данных в столбце
+     * @param <E> тип в prepareStatement
+     * @return список данных столбца
+     */
     public <T, E> ArrayList<T> getColumn(String sql, List<E> parameters, String column) {
         ArrayList<T> results = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = this.conn.prepareStatement(sql);
+        try (PreparedStatement ps = this.conn.prepareStatement(sql)) {
             int i = 0;
             for (E parameter : parameters) {
                 ps.setObject(++i, parameter);
             }
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                T value = (T) rs.getObject(column);
-                results.add(value);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    T value = (T) rs.getObject(column);
+                    results.add(value);
+                }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            close(rs);
-            close(ps);
         }
         return results;
     }
@@ -132,46 +129,27 @@ public class StoreSQL {
      * @param tableName имя таблицы
      * @return типа boolean
      */
-    public boolean tableExists(String tableName) {
+    public boolean tableNotExists(String tableName) {
         boolean result = false;
         if (this.conn != null) {
             try {
                 DatabaseMetaData md = conn.getMetaData();
-                ResultSet rs = md.getColumns(null, null, tableName, "%");
-                result = rs.next();
-                close(rs);
+                try (ResultSet rs = md.getColumns(null, null, tableName, "%")) {
+                    result = rs.next();
+                }
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage(), e);
             }
         } else {
             LOGGER.error("Can't check table existance, DB not connected");
         }
-        return result;
-    }
-
-    private void close(Statement st) {
-        try {
-            if (st != null) {
-                st.close();
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
-
-    private void close(ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        return !result;
     }
 
     /**
      * Закрытие соединения с БД
      */
+    @Override
     public void close() {
         try {
             if (this.conn != null) {
@@ -181,9 +159,5 @@ public class StoreSQL {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-    }
-
-    public Connection getConnection() {
-        return this.conn;
     }
 }

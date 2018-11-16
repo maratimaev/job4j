@@ -10,43 +10,53 @@ import static org.junit.Assert.assertThat;
  * @since 05.11.2018
  */
 public class StoreSQLTest {
+
     @Test
     public void checkConnection() {
-        StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
-        assertThat(sql.connect(), is(true));
-        sql.close();
+        Config config = new Config();
+        config.init();
+        try (StoreSQL sql = new StoreSQL(config)) {
+            assertThat(sql.connect(), is(true));
+        }
     }
 
     @Test
     public void checkTableExists() {
-        StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
-        sql.connect();
-        assertThat(sql.tableExists("entry"), is(true));
-        sql.close();
+        Config config = new Config();
+        config.init();
+        try (StoreSQL sql = new StoreSQL(config)) {
+            sql.connect();
+            assertThat(sql.tableNotExists("entry"), is(false));
+        }
     }
 
     @Test
     public void checkGenerate() {
         ArrayList<Integer> list;
-        StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
-        sql.generate(2);
-        sql.connect();
-        list = sql.getColumn("SELECT field FROM entry", new ArrayList<>(), "field");
-        assertThat(list.size(), is(3));
+        Config config = new Config();
+        config.init();
+        try (StoreSQL sql = new StoreSQL(config)) {
+            sql.generate(2);
+            sql.connect();
+            list = sql.getColumn("SELECT field FROM entry", new ArrayList<>(), "field");
+            assertThat(list.size(), is(3));
+        }
     }
 
     @Test
     public void whenUpdateDBThenGetThemFromDB() {
         ArrayList<Integer> list;
         ArrayList<String> param = new ArrayList<>();
-        StoreSQL sql = new StoreSQL("jdbc:sqlite:xml.s3db");
-        sql.connect();
-        param.add("987654321");
-        int numRowsUpdated = sql.updateDB("insert into entry (field) values (?)", param);
-        assertThat(numRowsUpdated, is(1));
-        list = sql.getColumn("SELECT field FROM entry WHERE field = '987654321'", new ArrayList<>(), "field");
-        assertThat(list.get(0), is(987654321));
-        sql.updateDB("DELETE FROM entry WHERE field = '987654321'", new ArrayList<>());
-        sql.close();
+        Config config = new Config();
+        config.init();
+        try (StoreSQL sql = new StoreSQL(config)) {
+            sql.connect();
+            param.add("987654321");
+            int numRowsUpdated = sql.updateDB("insert into entry (field) values (?)", param);
+            assertThat(numRowsUpdated, is(1));
+            list = sql.getColumn("SELECT field FROM entry WHERE field = '987654321'", new ArrayList<>(), "field");
+            assertThat(list.get(0), is(987654321));
+            sql.updateDB("DELETE FROM entry WHERE field = '987654321'", new ArrayList<>());
+        }
     }
 }

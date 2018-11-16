@@ -10,6 +10,9 @@ import java.util.Properties;
 public class Config {
     private final Properties values = new Properties();
 
+    /**
+     * Чтение полей из файла app.properties
+     */
     public void init() {
         try (InputStream in = Config.class.getClassLoader().getResourceAsStream("app.properties")) {
             values.load(in);
@@ -18,6 +21,10 @@ public class Config {
         }
     }
 
+    /** Получение значения поля
+     * @param key поле
+     * @return значение
+     */
     public String get(String key) {
         return this.values.getProperty(key);
     }

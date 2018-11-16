@@ -31,12 +31,12 @@ public class StoreXML {
      * @param column имя столбца
      * @return список полей
      */
-    public List<Entry> getColumnFromDB(String configDB, String table, String column) {
+    public List<Entry> getColumnFromDB(Config configDB, String table, String column) {
         ArrayList<Integer> sqlList;
         ArrayList<Entry> result = new ArrayList<>();
         StoreSQL sql = new StoreSQL(configDB);
         if (sql.connect()) {
-            if (sql.tableExists(table)) {
+            if (!sql.tableNotExists(table)) {
                 sqlList = sql.getColumn("SELECT field FROM entry", new ArrayList<>(), column);
                 for (Integer element: sqlList) {
                     result.add(new Entry(element));
