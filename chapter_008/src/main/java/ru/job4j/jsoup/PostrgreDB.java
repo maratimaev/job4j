@@ -2,6 +2,8 @@ package ru.job4j.jsoup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.sql.SQL;
+
 import java.io.InputStream;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -45,18 +47,19 @@ public class PostrgreDB {
 
     private boolean tableNotExists() {
         boolean result = true;
-        try {
-            DatabaseMetaData dbmd = this.connection.getMetaData();
-            ResultSet rsTables = dbmd.getColumns(null, null, "messages", "%");
-            if (!rsTables.next()) {
-                LOGGER.warn("Table 'messages' not found");
-            } else {
-                LOGGER.info("Table 'messages' founded");
-                result = false;
+        if (this.connection != null) {
+            try {
+                DatabaseMetaData dbmd = this.connection.getMetaData();
+                try (ResultSet rsTables = dbmd.getColumns(null, null, "messages", "%")) {
+                    result = rsTables.next();
+                }
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage(), e);
             }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+        } else {
+            LOGGER.error("Can't check table existance, DB not connected");
         }
+        LOGGER.warn(String.format("Table 'messages' founded: %s", result));
         return result;
     }
 

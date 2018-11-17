@@ -28,7 +28,7 @@ public class QuartzScheduller {
 
             SchedulerFactory schedulerFactory = new StdSchedulerFactory();
             Scheduler scheduler = schedulerFactory.getScheduler();
-            JobDetail job = JobBuilder.newJob(StartJob.class)
+            JobDetail job = JobBuilder.newJob(Job.class)
                     .withIdentity("Parser", "ParserGroup").build();
 
             CronTrigger trigger = TriggerBuilder.newTrigger()

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 13.11.2018
  */
-public class StartJob implements Job {
+public class Job implements org.quartz.Job {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostrgreDB.class.getName());
 
     @Override
