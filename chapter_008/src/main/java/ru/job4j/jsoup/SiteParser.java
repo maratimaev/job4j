@@ -11,20 +11,34 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
+/** Парсер сайта sql.ru
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
  * @since 10.11.2018
  */
 public class SiteParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(SiteParser.class.getName());
-    private int pagesCount = 2;
+    /**
+     * Количество запрошенных страниц
+     */
+    private int pagesCount = 0;
+    /**
+     * Количество загруженных сообщений
+     */
     private int messagesCount = 0;
+    /**
+     * Список загруженных сообщений
+     */
     private ArrayList<SQLRU> sqlruList;
 
     public SiteParser() {
         this.sqlruList = new ArrayList<>();
     }
 
+    /** ЗАгрузка сообщений с сайта
+     * @param html ссылка на сайт
+     * @param last последнее сообщение в БД
+     * @return список сообщений
+     */
     public ArrayList<SQLRU> grabSQLRU(String html, SQLRU last) {
         boolean next = true;
         Date beginYear = formatDate(String.format("01 янв %s, 00:00", new SimpleDateFormat("yyyy").format(new Date())));
@@ -48,7 +62,7 @@ public class SiteParser {
                 sqlru.setViewsCount(iterator.next().text());
                 Date formatedDate = formatDate(iterator.next().text());
                 sqlru.setDate(formatedDate);
-//                Document body = htmlConnect(sqlru.getMessageLink());
+                Document body = htmlConnect(sqlru.getMessageLink());
 //                if(body.hasText()) {
 //                    Element bodyMsg = body.selectFirst("td[ style=width:15%] ~ td[class=msgBody]");
 //                    sqlru.setBody(bodyMsg.text());
@@ -61,24 +75,29 @@ public class SiteParser {
                     next = false;
                     LOGGER.info(String.format("Last message in DB at %s - %s", last.getDate(), last.getMessage()));
                     LOGGER.info(String.format("Loaded %s messages from %s page(s). Begining messages date: %s",
-                            this.messagesCount, this.pagesCount - 1, beginYear));
+                            this.messagesCount, this.pagesCount + 1, beginYear));
                     break;
                 }
-//                if (sqlru.getMessage().toLowerCase().contains("java")
-//                        && !sqlru.getMessage().toLowerCase().contains("javascript")
-//                        && !sqlru.getMessage().toLowerCase().contains("java script")) {
+                if (sqlru.getMessage().toLowerCase().contains("java")
+                        && !sqlru.getMessage().toLowerCase().contains("javascript")
+                        && !sqlru.getMessage().toLowerCase().contains("java script")) {
                     this.sqlruList.add(sqlru);
                     this.messagesCount++;
-//                }
+                }
             }
-            String nextPage = String.format("http://www.sql.ru/forum/job-offers/%s", this.pagesCount++);
+            String nextPage = String.format("http://www.sql.ru/forum/job-offers/%s", (this.pagesCount++) + 2);
             if (next) {
+                LOGGER.info(String.format("Parsing page %s", this.pagesCount + 1));
                 grabSQLRU(nextPage, last);
             }
         }
         return this.sqlruList;
     }
 
+    /** Форматирование даты сообщения
+     * @param rawDate строка может содержать "сегодня", "вчера"
+     * @return типа Date
+     */
     public Date formatDate(String rawDate) {
         Date result = null;
         Calendar cal = Calendar.getInstance();
@@ -103,6 +122,10 @@ public class SiteParser {
         return result;
     }
 
+    /** Получение Jsoup соединения с сайтом
+     * @param html ссылка на сайт
+     * @return типа Document
+     */
     public Document htmlConnect(String html) {
         Document result = new Document("");
         try {
@@ -114,6 +137,9 @@ public class SiteParser {
     }
 }
 
+/**
+ * Класс для хранения сообщений с сайта
+ */
 class SQLRU {
     private String message;
     private String messageLink;

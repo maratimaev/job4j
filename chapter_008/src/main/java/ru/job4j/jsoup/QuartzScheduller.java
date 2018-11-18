@@ -20,11 +20,9 @@ public class QuartzScheduller {
     }
 
     public void runParser() {
-        try {
-            InputStream file = QuartzScheduller.class.getClassLoader().getResourceAsStream("app.properties");
+        try (InputStream file = QuartzScheduller.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties properties = new Properties();
             properties.load(file);
-            file.close();
 
             SchedulerFactory schedulerFactory = new StdSchedulerFactory();
             Scheduler scheduler = schedulerFactory.getScheduler();
