@@ -101,7 +101,7 @@ public class TrackerSQL implements ITracker, Cloneable, AutoCloseable {
      */
     @Override
     public void replace(String id, Item item) {
-        try (PreparedStatement ps = this.connection.prepareStatement("UPDATE items SET name = ?, description = ? WHERE item_id = ?");) {
+        try (PreparedStatement ps = this.connection.prepareStatement("UPDATE items SET name = ?, description = ? WHERE item_id = ?")) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDescription());
             ps.setString(3, id);
