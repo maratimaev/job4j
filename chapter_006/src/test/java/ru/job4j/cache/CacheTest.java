@@ -24,6 +24,7 @@ public class CacheTest {
         two.start();
         one.join();
         two.join();
+
         assertThat(ex.get().getMessage(), is("Нарушение доступа"));
     }
 

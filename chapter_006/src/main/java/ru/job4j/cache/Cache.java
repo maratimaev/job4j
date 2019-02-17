@@ -2,6 +2,7 @@ package ru.job4j.cache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Marat Imaev (mailto:imaevmarat@outlook.com)
@@ -9,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Cache {
     /**
-     * Поле для хранения синхронизированных объектов
+     * Поле для хранения объектов Base
      */
     private Map<Integer, Base> map = new ConcurrentHashMap<>();
 
@@ -19,7 +20,6 @@ public class Cache {
     public void add(Base model) {
         if (model != null) {
             this.map.put(model.id, model);
-            model.version++;
         }
     }
 
@@ -28,16 +28,17 @@ public class Cache {
      * @throws OptimisticException если во время обновления другой поток изменил модель
      */
     public void update(Base model) throws OptimisticException {
-        if (this.map.containsValue(model)) {
-            if (model.version == this.map.get(model.id).version) {
-                this.map.put(model.id, model);
+        Base destModel = this.map.get(model.id);
+        if (destModel != null) {
+            if (model.version.get() == (this.map.get(model.id).version.get())) {
+                this.map.computeIfPresent(model.id, (key, value) -> model);
             } else {
                 throw new OptimisticException("Нарушение доступа");
             }
         } else {
             this.add(model);
         }
-        model.version++;
+        model.version.incrementAndGet();
     }
 
     /** Удалить модель
@@ -46,7 +47,6 @@ public class Cache {
     public void delete(Base model) {
         if (model != null) {
             this.map.remove(model.id);
-            model.version++;
         }
     }
 
@@ -61,7 +61,7 @@ public class Cache {
         /**
          * Поле для проверки нарушения доступа к объекту
          */
-        private int version;
+        private volatile AtomicInteger version = new AtomicInteger(0);
         /**
          * Имя модели
          */
