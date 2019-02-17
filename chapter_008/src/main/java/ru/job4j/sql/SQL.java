@@ -5,7 +5,9 @@ package ru.job4j.sql;
  * @since 31.10.2018
  */
 public class SQL {
-/*    private static final String DEFAULT_DRIVER = "org.postgresql.Driver";
+
+}
+    /*    private static final String DEFAULT_DRIVER = "org.postgresql.Driver";
     private static final String DEFAULT_URL = "jdbc:postgresql://localhost:5432/party";
     private static final String DEFAULT_USERNAME = "pgsuper";
     private static final String DEFAULT_PASSWORD = "pgsuper";
@@ -211,4 +213,4 @@ public class SQL {
     }
 }
 */
-}
+
